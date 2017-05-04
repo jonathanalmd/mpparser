@@ -64,11 +64,21 @@ class PDDLDomain:
         self.domain_name = domain_name
 
     def setDomainPredicates(self):
-        # print(self.lista_predicados)
-        # print(self.lista_pddl_vars_sep)
-        # print(self.dealing_with_types_sep)
+        print(self.lista_predicados)
+        print(self.lista_pddl_vars_sep)
+        print(self.dealing_with_types_sep)
+        
+        i = 0
+        while i < len(self.lista_pddl_vars_sep):
+            self.lista_pddl_vars_sep[i] = [x for x in self.lista_pddl_vars_sep[i] if x != []]
+            i = i + 1
+        self.dealing_with_types_sep = [x for x in self.dealing_with_types_sep if x != []]
+
+        print("\n>>>",self.lista_pddl_vars_sep)
+        print("\n>>",self.dealing_with_types_sep)
 
         i = 0
+        self.lista_predicados.reverse()
         for pred_name in self.lista_predicados:
             pddl_predicate = PDDLPredicate(pred_name)
             len_pred_types = len(self.dealing_with_types_sep[i])
@@ -88,10 +98,10 @@ class PDDLDomain:
         self.lista_pddl_vars_sep = []
 
     def setDomainActions(self):
-        print("ACTION>>>>",self.lista_actions)
+        # print("ACTION>>>>",self.lista_actions)
         # print(self.lista_pddl_vars_sep)
-        print("ACTION1>>",self.lista_pddl_vars)
-        print("ACTION2>>",self.lista_types)
+        # print("ACTION1>>",self.lista_pddl_vars)
+        # print("ACTION2>>",self.lista_types)
         # print(self.pddl_vars)
         self.lista_actions.reverse()
         indx = 0
@@ -137,18 +147,22 @@ class PDDLDomain:
         self.lista_types = []
 
     def dealWithAction(self):
-        print("ACTION>>>>",self.lista_actions)
+        # print("ACTION>>>>",self.lista_actions)
         # print(self.lista_pddl_vars_sep)
-        print("ACTION1>>",self.lista_pddl_vars)
-        print("ACTION2>>",self.lista_types)
+        # print("ACTION1>>",self.lista_pddl_vars)
+        # print("ACTION2>>",self.lista_types)
+
+        self.lista_pddl_vars[0] = [x for x in self.lista_pddl_vars[0] if x != []]
+        self.lista_pddl_vars[1] = [x for x in self.lista_pddl_vars[1] if x != []]
+        self.lista_pddl_vars[2] = [x for x in self.lista_pddl_vars[2] if x != []]
 
         action = PDDLAction()
         action.parameters = self.lista_pddl_vars[0]
         action.preconditions = self.lista_pddl_vars[1]
         action.effects = self.lista_pddl_vars[2]
         self.domain_actions.append(action)
-        print("\n\n\n\n")
-        print(action)
+        # print("\n\n\n\n")
+        # print(action)
 
         self.cleanPDDLvars()
         self.cleanListaPDDLvars()
@@ -178,13 +192,14 @@ class PDDLDomain:
             lista = []
             lista = self.lista_pddl_vars
             lista.append(self.pddl_vars)
-            print(lista)
+            # print(lista)
             # lista = self.lista_pddl_vars.append(self.pddl_vars)
-            print(">>>>>>.",lista)
+            # print(">>>>>>.",lista)
             self.lista_pddl_vars = []
             self.lista_pddl_vars.append(lista)
-            print(">>AAAAA>>>:",self.lista_pddl_vars)
+            # print(">>AAAAA>>>:",self.lista_pddl_vars)
             self.cleanPDDLvars()
+
 
     def dealWithPreconditions(self):
         lista = []
@@ -206,12 +221,12 @@ class PDDLDomain:
         lista = self.lista_pddl_vars[2:] # tira a lista de parameters e lista precond
         # lista.append(self.pddl_vars)
         # lista = self.lista_pddl_vars.append(self.pddl_vars)
-        print(">>>>>>.",lista)
-        print("hihi:",self.lista_pddl_vars)
+        # print(">>>>>>.",lista)
+        # print("hihi:",self.lista_pddl_vars)
         lista2 = self.lista_pddl_vars[:2]
         lista2.append(lista)
         self.lista_pddl_vars = lista2
-        print("hihi:",self.lista_pddl_vars)
+        # print("hihi:",self.lista_pddl_vars)
         self.lista_types.reverse()
         print(self.lista_types)
 
@@ -593,8 +608,8 @@ def p_lista_predicates_2(p):
 def p_p_def_1(p):
     '''p_def : lista_var MINUS ID p_def'''
     # {;}
-    if objDomain.pddl_vars:
-        objDomain.appendListaPDDLvars()
+    # if objDomain.pddl_vars:
+    objDomain.appendListaPDDLvars()
 
     objDomain.cleanPDDLvars()
     objDomain.dealingWithType(p[3])
@@ -605,8 +620,7 @@ def p_p_def_1(p):
 def p_p_def_2(p):
     '''p_def : lista_var'''
     # {;}
-    if objDomain.dealing_with_types:
-        objDomain.dealingWithTypeSep()
+    objDomain.dealingWithTypeSep()
     objDomain.appendListaPDDLPredVars()
     objDomain.cleanListaPDDLvars()
 ()
@@ -751,8 +765,8 @@ def p_lista_predicados_1(p):
     # print(objDomain.lista_pddl_vars)
     # print(">>>",objDomain.pddl_vars)
 
-    if objDomain.pddl_vars:
-        objDomain.appendListaPDDLvars()
+    # if objDomain.pddl_vars:
+    objDomain.appendListaPDDLvars()
     objDomain.cleanPDDLvars()
 ()
 def p_lista_predicados_2(p):
@@ -773,17 +787,17 @@ def p_lista_predicados_5(p):
 ()
 def p_lista_var_1(p):
     '''lista_var : '''
-    print(">>kekekekekekeke>",objDomain.pddl_vars)
-    if objDomain.pddl_vars:
-        objDomain.appendListaPDDLvars()
-        objDomain.cleanPDDLvars()
+    # print(">>kekekekekekeke>",objDomain.pddl_vars)
+    # if objDomain.pddl_vars:
+    objDomain.appendListaPDDLvars()
+    objDomain.cleanPDDLvars()
 
 ()
 def p_lista_var_2(p):
     '''lista_var : VAR ID lista_var'''
     # {;}
-    print(">",p[2])
-    print(">>>jajajajjajajajaj>>",objDomain.pddl_vars)
+    # print(">",p[2])
+    # print(">>>jajajajjajajajaj>>",objDomain.pddl_vars)
     objDomain.appendVar(p[2])
 ()
 def p_lista_var_3(p):

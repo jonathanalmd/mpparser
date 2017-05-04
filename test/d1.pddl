@@ -19,8 +19,7 @@
 	)
 
 	(:action pick
-		:parameters (?roomAAA ?BBs - roomPICK
-					?dskd - d)
+		:parameters (?roomAAA ?e3 - rm)
 		:precondition  (and  (at ?obj11 ?room11) (at-robby ?room) (free ?gripper))
 		:effect (and (carry ?obj ?gripper) (not (at ?obj ?room)) (not (free ?gripperd))))
 
