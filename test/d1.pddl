@@ -19,14 +19,14 @@
 	)
 
 	(:action pick
-		:parameters (?roomAAA ?e3 - rm)
+		:parameters (?roomAAA ?e3 - rm ?aaa - sad)
 		:precondition  (and  (at ?obj11 ?room11) (at-robby ?room) (free ?gripper))
 		:effect (and (carry ?obj ?gripper) (not (at ?obj ?room)) (not (free ?gripperd))))
 
-	;(:action drop
-	;	:parameters (?obj - ball ?room - room ?gripper - gripper)
-	;	:precondition (and (ball ?obj) (room ?room) (gripper ?gripper) (carry ?obj ?gripper) (at-robby ?room))
-	;	:effect (and (at ?obj ?room) (free ?gripper) (not (carry ?obj ?gripper))))
+	(:action drop
+		:parameters (?room - room)
+		:precondition (and (ball ?obj) (room ?room) (gripper ?gripper) (carry ?obj ?gripper) (at-robby ?room))
+		:effect (and (at ?obj ?room) (free ?gripper) (not (carry ?obj ?gripper))))
 )
 
 

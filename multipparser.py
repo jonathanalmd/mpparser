@@ -151,7 +151,6 @@ class PDDLDomain:
         # print(self.lista_pddl_vars_sep)
         # print("ACTION1>>",self.lista_pddl_vars)
         # print("ACTION2>>",self.lista_types)
-
         self.lista_pddl_vars[0] = [x for x in self.lista_pddl_vars[0] if x != []]
         self.lista_pddl_vars[1] = [x for x in self.lista_pddl_vars[1] if x != []]
         self.lista_pddl_vars[2] = [x for x in self.lista_pddl_vars[2] if x != []]
@@ -189,15 +188,23 @@ class PDDLDomain:
 
     def dealWithParameters(self):
         if self.pddl_vars:
+            self.lista_pddl_vars = [x for x in self.lista_pddl_vars if x != []]
+
             lista = []
             lista = self.lista_pddl_vars
             lista.append(self.pddl_vars)
             # print(lista)
             # lista = self.lista_pddl_vars.append(self.pddl_vars)
-            # print(">>>>>>.",lista)
-            self.lista_pddl_vars = []
-            self.lista_pddl_vars.append(lista)
-            # print(">>AAAAA>>>:",self.lista_pddl_vars)
+            print(">>>>>>.",lista)
+            if len(lista) == 1:
+                self.lista_pddl_vars = []
+                self.lista_pddl_vars.append(lista[0])
+                print(">>BBBB>>>:",self.lista_pddl_vars)
+
+            else:
+                self.lista_pddl_vars = []
+                self.lista_pddl_vars.append(lista)
+                print(">>AAAAA>>>:",self.lista_pddl_vars)
             self.cleanPDDLvars()
 
 
