@@ -44,7 +44,7 @@ class PDDLDomain:
         self.domain_name = domain_name
         self.lista_predicados = lista_predicados
         self.domain_predicates = [] # lista de PDDLPredicate()
-
+        self.domain_types = []
         self.lista_types = lista_types
         self.dict_constants = dict_constants
         self.pddl_ids = pddl_ids
@@ -74,8 +74,8 @@ class PDDLDomain:
             i = i + 1
         self.dealing_with_types_sep = [x for x in self.dealing_with_types_sep if x != []]
 
-        print("\n>>>",self.lista_pddl_vars_sep)
-        print("\n>>",self.dealing_with_types_sep)
+        # print("\n>>>",self.lista_pddl_vars_sep)
+        # print("\n>>",self.dealing_with_types_sep)
 
         i = 0
         self.lista_predicados.reverse()
@@ -97,18 +97,14 @@ class PDDLDomain:
         self.cleanListaPDDLvars()
         self.lista_pddl_vars_sep = []
 
-    def setDomainActions(self):
-        # print("ACTION>>>>",self.lista_actions)
+    def setDomainActions(self, action_name):
+        print("<<<ACTION>>>>",self.lista_actions)
         # print(self.lista_pddl_vars_sep)
         # print("ACTION1>>",self.lista_pddl_vars)
         # print("ACTION2>>",self.lista_types)
         # print(self.pddl_vars)
-        self.lista_actions.reverse()
-        indx = 0
-        for action_name in self.lista_actions:
-            self.domain_actions[indx].name = action_name
-            indx = indx + 1
-        self.cleanTypes()
+        # self.lista_actions.reverse()
+        self.domain_actions[len(self.domain_actions)-len(self.lista_actions)].name = action_name
 
 
     def appendPredicado(self,predicado):
@@ -141,6 +137,7 @@ class PDDLDomain:
             self.dealing_with_types = []
         else:
             print("Erro sintatico: decalracao de constante ausente (só colocou o tipo)")
+        self.domain_types = self.lista_types
         self.cleanTypes()
 
     def cleanTypes(self):
@@ -195,16 +192,16 @@ class PDDLDomain:
             lista.append(self.pddl_vars)
             # print(lista)
             # lista = self.lista_pddl_vars.append(self.pddl_vars)
-            print(">>>>>>.",lista)
+            # print(">>>>>>.",lista)
             if len(lista) == 1:
                 self.lista_pddl_vars = []
                 self.lista_pddl_vars.append(lista[0])
-                print(">>BBBB>>>:",self.lista_pddl_vars)
+                # print(">>BBBB>>>:",self.lista_pddl_vars)
 
             else:
                 self.lista_pddl_vars = []
                 self.lista_pddl_vars.append(lista)
-                print(">>AAAAA>>>:",self.lista_pddl_vars)
+                # print(">>AAAAA>>>:",self.lista_pddl_vars)
             self.cleanPDDLvars()
 
 
@@ -258,14 +255,15 @@ class PDDLDomain:
         #     print(item)
         print("\t", *self.domain_predicates, sep = "\n\t") 
         print("Types:")
-        print("\t", self.lista_types)
+        print("\t", self.domain_types)
         print("Constants:")
         print("\t", self.dict_constants)
 
-        print(self.lista_actions)
+        print("Actions:")
+        print("\t",self.lista_actions)
         # print(self.lista_pddl_vars_sep)
-        print(self.lista_pddl_vars)
-        print(self.lista_types)
+        # print(self.lista_pddl_vars)
+        # print(self.lista_types)
         # print(self.pddl_vars)
 
         print(self.domain_actions)
@@ -658,9 +656,10 @@ def p_def_actions_1(p):
 def p_def_actions_2(p):
     '''def_actions : LPAREN COLON ACTION ID a_def RPAREN def_actions'''
     # {;}
+    print("ACTION>>>>",p[4])
     objDomain.lista_actions.append(p[4])
     # objDomain.dealWithAction(p[4])
-    objDomain.setDomainActions()
+    objDomain.setDomainActions(p[4])
 ()
 def p_def_actions_3(p):
     '''def_actions : LPAREN COLON ACTION ID COLON AGENT agent_def a_def RPAREN def_actions'''
