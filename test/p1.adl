@@ -1,0 +1,37 @@
+
+INIT(
+    at(c1,sfo) 
+    ANd
+    at(c2,jfk)
+    and 
+    at(p1,sfo) 
+    and 
+    at(p2,jfk) 
+    and 
+    cargo(c1) 
+    and 
+    cargo(c2) 
+    and 
+    plane(p1) 
+    and 
+    plane(p2) 
+    and 
+    airport(jfk) 
+    and 
+    airport(sfo)
+)
+
+goal (
+        at(c1,jfk) and at(c2,sfo)
+)
+action (
+        load(c:cargo,p:plane,a:airport airport2),
+        precond: at(c,a) and at(p,a)
+        effect: at(c,a) and in(c,p)
+)
+
+action (
+        unload(c:cargo,p:plane,a:air-port),
+        precond: in(c,p) and at(p,a)
+        effect: at(c,a) and in(c,p)
+)
