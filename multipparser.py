@@ -159,7 +159,11 @@ class PDDLDomain:
                 num = int(logic_operator[1:])
                 print("pre",op,num)
                 for i in range(0,num):
-                    self.lista_action_predicados[indx_action_predicado][len_action_pred - i] = op + self.lista_action_predicados[indx_action_predicado][len_action_pred - i]
+                    if op == "!" and self.lista_action_predicados[indx_action_predicado][len_action_pred - i][0] == "!":
+                        print("ERRO: junte os predicados em uma unica operacao logica: ",self.lista_action_predicados[indx_action_predicado][len_action_pred - i][2:], "e", self.lista_action_predicados[indx_action_predicado][len_action_pred - i - 1][2:])
+                        break
+                    else:
+                        self.lista_action_predicados[indx_action_predicado][len_action_pred - i] = op + self.lista_action_predicados[indx_action_predicado][len_action_pred - i]
             print("pre_predicados:",self.lista_action_predicados[indx_action_predicado])
 
         # last_predicado = self.lista_action_predicados[1][-1]

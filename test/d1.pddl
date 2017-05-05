@@ -14,9 +14,11 @@
 	(:action move
 		:parameters  (?from1 ?to2 - room
 						?from11 ?to22 - ball)
-		:precondition (and
+		:precondition 
 			(at-robby1 ?from11 ?from11)
-
+		(and
+			(a ?aa ?aaa)
+			(NOT(b ?b ?bb))
 			(not(at-robby2 ?from22 ?from22))
 		)
 		:effect (and
