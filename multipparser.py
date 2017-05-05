@@ -152,19 +152,19 @@ class PDDLDomain:
             last_predicado = last_predicado.split("*")
             self.lista_action_predicados[indx_action_predicado][-1] = last_predicado[-1]
             last_predicado = last_predicado[:-1]
-            print(indx_action_predicado,"LAST_PREDICADO>>>",last_predicado)
+            # print(indx_action_predicado,"LAST_PREDICADO>>>",last_predicado)
             len_action_pred = len(self.lista_action_predicados[indx_action_predicado]) - 1
             for logic_operator in last_predicado:
                 op = logic_operator[0]
                 num = int(logic_operator[1:])
-                print("pre",op,num)
+                # print("pre",op,num)
                 for i in range(0,num):
                     if op == "!" and self.lista_action_predicados[indx_action_predicado][len_action_pred - i][0] == "!":
-                        print("ERRO: junte os predicados em uma unica operacao logica: ",self.lista_action_predicados[indx_action_predicado][len_action_pred - i][2:], "e", self.lista_action_predicados[indx_action_predicado][len_action_pred - i - 1][2:])
+                        print("WARNING: junte os predicados em uma unica operacao logica: ",self.lista_action_predicados[indx_action_predicado][len_action_pred - i][2:], "e", self.lista_action_predicados[indx_action_predicado][len_action_pred - i - 1][2:])
                         break
                     else:
                         self.lista_action_predicados[indx_action_predicado][len_action_pred - i] = op + self.lista_action_predicados[indx_action_predicado][len_action_pred - i]
-            print("pre_predicados:",self.lista_action_predicados[indx_action_predicado])
+            # print("pre_predicados:",self.lista_action_predicados[indx_action_predicado])
 
         # last_predicado = self.lista_action_predicados[1][-1]
         # last_predicado = last_predicado.split("*")
@@ -185,19 +185,22 @@ class PDDLDomain:
         self.lista_pddl_vars[1] = [x for x in self.lista_pddl_vars[1] if x != []]
         self.lista_pddl_vars[2] = [x for x in self.lista_pddl_vars[2] if x != []]
         # print("ACTION1>>",self.lista_pddl_vars)
+        print("<TYPE>>>>>",self.lista_types)
 
         action = PDDLAction()
         i = 0
         if all(isinstance(n, list) for n in self.lista_pddl_vars[0]):
             for utype in self.lista_types:
+                self.lista_pddl_vars[0][i].reverse()
                 action.parameters[utype] = self.lista_pddl_vars[0][i]
                 i = i + 1
         else:
+            self.lista_pddl_vars[0].reverse()
             for utype in self.lista_types:
                 action.parameters[utype] = self.lista_pddl_vars[0]
                 i = i + 1
-
-        action.parameters = self.lista_pddl_vars[0]
+        print(action.parameters)
+        # action.parameters = self.lista_pddl_vars[0]
         self.lista_action_predicados[0].reverse()
         self.lista_action_predicados[1].reverse()
         self.dealWithActionLogicPredicate()
@@ -219,6 +222,9 @@ class PDDLDomain:
 
         # print(self.lista_predicados)
         # print("PTOTAL>>>>>>>>>>>",self.lista_action_predicados)
+
+
+
         self.lista_action_predicados = []
 
         self.cleanPDDLvars()
@@ -285,7 +291,7 @@ class PDDLDomain:
         lista2.append(self.lista_pddl_vars[0])
         lista2.append(lista)
         self.lista_pddl_vars = lista2
-        print("LOGIC>>",self.curLogicalOperator)
+        # print("LOGIC>>",self.curLogicalOperator)
         self.dealWithActionPredicates()
 
     def dealWithEffects(self):
@@ -780,6 +786,7 @@ def p_lista_parameters_2(p):
     # print("<<<############",objDomain.lista_pddl_vars)
 
     objDomain.appendVar(p[2])
+
     objDomain.dealWithParameters()
 
 
@@ -813,14 +820,14 @@ def p_lista_preds_op_3(p):
     #     objDomain.dealingWithTypeSep()
     objDomain.curLogicalOperator = "AND"
     # objDomain.lista_predicados.append("AND")
-    print("\t\tAND>>>>",objDomain.lista_predicados)
+    # print("\t\tAND>>>>",objDomain.lista_predicados)
     objDomain.lista_predicados[0] = "&" + str(len(objDomain.lista_predicados)) + "*" + objDomain.lista_predicados[0]
 def p_lista_preds_op_9(p):
     '''lista_preds_op : LPAREN NOT lista_predicados RPAREN '''
     # {;}
     objDomain.curLogicalOperator = "NOT"
     # objDomain.lista_predicados.append("AND")
-    print("\t\tNOT>>>>",objDomain.lista_predicados)
+    # print("\t\tNOT>>>>",objDomain.lista_predicados)
     objDomain.lista_predicados[0] = "!" + str(len(objDomain.lista_predicados)) + "*" +objDomain.lista_predicados[0]
 ()
 def p_lista_preds_op_4(p):
@@ -840,7 +847,7 @@ def p_lista_preds_op_7(p):
     # {;}
 ()
 def p_lista_preds_op_8(p):
-    '''lista_preds_op : LPAREN WHEN lista_preds_op RPAREN lista_preds_op'''
+    '''lista_preds_op : LPAREN WHEN lista_preds_op RPAREN'''
     # {;}
 ()
 def p_lista_predicados_1(p):
