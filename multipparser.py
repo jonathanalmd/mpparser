@@ -801,7 +801,7 @@ def p_lista_preds_op_1(p):
     '''lista_preds_op : '''
 ()
 def p_lista_preds_op_2(p):
-    '''lista_preds_op : lista_predicados lista_preds_op'''
+    '''lista_preds_op : lista_predicados'''
     # {;}
     # print("<<<<<<<<<FINAL_LOGIC>>>>",objDomain.curLogicalOperator)
 ()
@@ -816,7 +816,7 @@ def p_lista_preds_op_3(p):
     print("\t\tAND>>>>",objDomain.lista_predicados)
     objDomain.lista_predicados[0] = "&" + str(len(objDomain.lista_predicados)) + "*" + objDomain.lista_predicados[0]
 def p_lista_preds_op_9(p):
-    '''lista_preds_op : LPAREN NOT lista_preds_op RPAREN lista_preds_op'''
+    '''lista_preds_op : LPAREN NOT lista_predicados RPAREN '''
     # {;}
     objDomain.curLogicalOperator = "NOT"
     # objDomain.lista_predicados.append("AND")
@@ -824,19 +824,19 @@ def p_lista_preds_op_9(p):
     objDomain.lista_predicados[0] = "!" + str(len(objDomain.lista_predicados)) + "*" +objDomain.lista_predicados[0]
 ()
 def p_lista_preds_op_4(p):
-    '''lista_preds_op : LPAREN FORALL lista_preds_op RPAREN lista_preds_op'''
+    '''lista_preds_op : LPAREN FORALL lista_preds_op RPAREN '''
     # {;}
 ()
 def p_lista_preds_op_5(p):
-    '''lista_preds_op : LPAREN EXISTS lista_preds_op RPAREN lista_preds_op'''
+    '''lista_preds_op : LPAREN EXISTS lista_preds_op RPAREN '''
     # {;}
 ()
 def p_lista_preds_op_6(p):
-    '''lista_preds_op : LPAREN IMPLY lista_preds_op RPAREN lista_preds_op'''
+    '''lista_preds_op : LPAREN IMPLY lista_preds_op RPAREN '''
     # {;}
 ()
 def p_lista_preds_op_7(p):
-    '''lista_preds_op : LPAREN PREFERENCE '[' ID ']' RPAREN lista_preds_op'''
+    '''lista_preds_op : LPAREN PREFERENCE '[' ID ']' RPAREN '''
     # {;}
 ()
 def p_lista_preds_op_8(p):

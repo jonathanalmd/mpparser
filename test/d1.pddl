@@ -18,8 +18,8 @@
 			(at-robby1 ?from11 ?from11)
 		(and
 			(a ?aa ?aaa)
-			(NOT(b ?b ?bb))
-			(not(at-robby2 ?from22 ?from22))
+			(NOT(b ?b ?bb) 
+			(at-robby2 ?from22 ?from22))
 		)
 		:effect (and
 			(not
