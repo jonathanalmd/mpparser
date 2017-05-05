@@ -6,10 +6,13 @@
 	(:constants left right - gripper)
 
 	(:predicates
-		(at-robby ?r ?r2 - room ?b1 - ball)
 		(at ?b - ball ?r - room)
 		(free ?g - gripper)
-		(carry ?o - ball ?g - gripper ?t - teste))
+		(at-robby ?r ?r2)
+
+		(carry ?o - ball ?g - gripper ?t - teste)
+		
+)
 
 	(:action move
 		:parameters  (?from1 ?to2 - room
