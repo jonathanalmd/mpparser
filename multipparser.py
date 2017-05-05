@@ -57,6 +57,10 @@ class PDDLDomain:
         self.lista_pddl_vars = [] #[[]]
         self.lista_pddl_vars_sep = [] #[[[]]]
 
+        self.lista_pddl_func = []
+        self.lista_pddl_func_types = []
+
+
         self.lista_actions = []
         self.domain_actions = [] # lista de PDDLAction()
 
@@ -84,7 +88,7 @@ class PDDLDomain:
         
         if self.dealing_with_types_sep == []:
             for pddl_vars in self.lista_pddl_vars_sep:
-                self.dealing_with_types_sep.append(["NOTYPE"])
+                self.dealing_with_types_sep.append(["(NOTYPE)"])
         # print("\n>>>",self.lista_pddl_vars_sep)
         # print("\n>>",self.dealing_with_types_sep)
         
@@ -121,8 +125,29 @@ class PDDLDomain:
         # self.lista_actions.reverse()
         self.domain_actions[len(self.domain_actions)-len(self.lista_actions)].name = action_name
 
+    def appendFunction(self, func):
+        self.lista_pddl_func.append(func)
+    def appendFuncType(self, ftype):
+        self.lista_pddl_func_types.append(ftype)
+
     def appendPredicado(self,predicado):
         self.lista_predicados.append(predicado)
+    
+    def dealWithFunctionDef(self):
+        # self.lista_pddl_vars_sep[i] = [x for x in self.lista_pddl_vars_sep[i] if x != []]
+        self.lista_pddl_vars = [x for x in self.lista_pddl_vars if x != []]
+        self.lista_pddl_func.reverse()
+        self.lista_types.reverse()
+        self.lista_pddl_func_types.reverse()
+        i = 0
+        for func in self.lista_pddl_func:
+            if func[0] == "0":
+                self.lista_pddl_vars.insert(i, ["(NULL)"])
+            i = i + 1
+        print("<func-names>:",self.lista_pddl_func)
+        print("<func-vars>:",self.lista_pddl_vars)
+        print("<func-var_types>:",self.lista_types)
+        print("<func-type>:",self.lista_pddl_func_types)
 
     def cleanListaPDDLvars(self):
         self.lista_pddl_vars = []
@@ -152,6 +177,8 @@ class PDDLDomain:
         else:
             print("Erro sintatico: decalracao de constante ausente (só colocou o tipo)")
         self.domain_types = self.lista_types
+        
+        self.cleanListaPDDLids()
         self.cleanTypes()
 
     def cleanTypes(self):
@@ -200,7 +227,7 @@ class PDDLDomain:
 
         if self.lista_types == []:
             for pddl_vars in self.lista_pddl_vars[0]:
-                self.lista_types.append("NOTYPE")
+                self.lista_types.append("(NOTYPE)")
 
         if (len(self.lista_types) != len(self.lista_pddl_vars[0])) and all(isinstance(n, list) for n in self.lista_pddl_vars[0]):
             print("ERRO: action parameters variables in line %d must be all typed or all not typed"%(self.curLineAction))
@@ -259,6 +286,9 @@ class PDDLDomain:
 
     def appendListaPDDLids(self):
         self.lista_pddl_ids.append(self.pddl_ids)
+
+    def cleanListaPDDLids(self):
+        self.lista_pddl_ids = []
 
     def cleanPDDLids(self):
         self.pddl_ids = []
@@ -741,16 +771,23 @@ def p_def_functions_1(p):
 ()
 def p_def_functions_(p):
     '''def_functions : LPAREN COLON FUNCTIONS lista_functions_def RPAREN'''
+    objDomain.dealWithFunctionDef()
+    objDomain.cleanPDDLvars() # clean antes de dealWithActions    
+    objDomain.cleanListaPDDLvars()
+    objDomain.cleanTypes()
 ()
 def p_lista_functions_def_1(p):
     '''lista_functions_def : '''
-    # {;} 
-    objDomain.cleanPDDLvars() # clean antes de dealWithActions    
+    # {;}  
+    objDomain.lista_pddl_vars.append(objDomain.pddl_vars) # last vars 
 
 def p_lista_functions_def_2(p):
     '''lista_functions_def : LPAREN ID lista_var MINUS ID RPAREN lista_functions_def'''
     # {;}
     print("Function:",p[2])
+    objDomain.appendFunction(p[2])
+    objDomain.appendType(p[5])
+    objDomain.appendFuncType("(NOTYPE)")
 
 
 ()
@@ -758,6 +795,10 @@ def p_lista_functions_def_3(p):
     '''lista_functions_def : LPAREN ID RPAREN lista_functions_def'''
     # {;}
     print("Function:",p[2])
+    objDomain.appendFunction("0"+p[2])
+    objDomain.appendType("(NOTYPE)")
+    objDomain.appendFuncType("(NOTYPE)")
+
 
 def p_lista_functions_def_4(p):
     '''lista_functions_def : LPAREN ID lista_var MINUS ID RPAREN MINUS ID lista_functions_def'''
@@ -765,12 +806,20 @@ def p_lista_functions_def_4(p):
     print("Function:",p[2])
     print("\tvars type:",p[5])
     print("\tfunc type:",p[8])
+    objDomain.appendFunction(p[2])
+    objDomain.appendType(p[5])
+    objDomain.appendFuncType(p[8])
+
 ()
 def p_lista_functions_def_5(p):
     '''lista_functions_def : LPAREN ID RPAREN MINUS ID lista_functions_def'''
     # {;}
     print("Function:",p[2])
-    print("\ttype:",p[5])
+    print("\tfunc type:",p[5])
+    objDomain.appendFunction("0"+p[2])
+    # objDomain.lista_pddl_vars.append(["NULL"])
+    objDomain.appendType("(NOTYPE)")
+    objDomain.appendFuncType(p[5])
 
 
 ()

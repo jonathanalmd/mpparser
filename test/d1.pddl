@@ -12,12 +12,15 @@
 		(carry ?o - ball ?g - gripper ?t - teste)
 	)
   (:functions
-     (road-length ?l1 ?l2 - location) - number
-     (total-cost) - number
+
+     (road-length ?l1 ?l2 - location)
+         (total-cost2)
+
+     (total-cost ?ds - loc) - number3
+
   )
 	(:action move
-		:parameters  (?from1 ?to2 - room
-						?from11 ?to22 - room2)
+		:parameters  (?from1 ?to22)
 		:precondition 
 		(and
 			(at-robby1 ?from11 ?from11)
