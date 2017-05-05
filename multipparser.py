@@ -28,8 +28,8 @@ class PDDLAction:
     def __init__(self):
         self.name = ""
         self.parameters = {}
-        self.preconditions = []
-        self.effects = []
+        self.preconditions = {}
+        self.effects = {}
     
     def __str__(self):
         return self.name + "\n\t" + str(self.parameters) + "\n\t" + str(self.preconditions) + "\n\t" + str(self.effects) + "\n"
@@ -165,8 +165,16 @@ class PDDLDomain:
                 i = i + 1
 
         # action.parameters = self.lista_pddl_vars[0]
-        action.preconditions = self.lista_pddl_vars[1]
-        action.effects = self.lista_pddl_vars[2]
+        self.lista_action_predicados[0].reverse()
+        self.lista_action_predicados[1].reverse()
+        i = 0
+        for predicate in self.lista_action_predicados[0]:
+            action.preconditions[predicate] = self.lista_pddl_vars[1][i]
+            i = i + 1
+        i = 0
+        for predicate in self.lista_action_predicados[1]:
+            action.effects[predicate] = self.lista_pddl_vars[2][i]
+            i = i + 1
         self.domain_actions.append(action)
         # print("\n\n\n\n")
         # print(action)

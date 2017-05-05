@@ -15,7 +15,7 @@
 		:parameters  (?from1 ?to2 - room
 						?from11 ?to22 - ball)
 		:precondition (and
-			(at-robby1 ?from3 ?from33)
+			(at-robby1 ?from3 ?from3)
 			(at-robby2 ?from333 ?from333)
 		)
 		:effect (and
