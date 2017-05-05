@@ -10,9 +10,11 @@
 		(free ?g - gripper)
 
 		(carry ?o - ball ?g - gripper ?t - teste)
-
-)
-
+	)
+  (:functions
+     (road-length ?l1 ?l2 - location) - number
+     (total-cost) - number
+  )
 	(:action move
 		:parameters  (?from1 ?to2 - room
 						?from11 ?to22 - room2)

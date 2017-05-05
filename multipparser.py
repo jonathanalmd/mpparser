@@ -739,23 +739,40 @@ def p_p_def_2(p):
 def p_def_functions_1(p):
     '''def_functions : '''
 ()
-def p_def_functions_2(p):
-    '''def_functions : LPAREN COLON FUNCTIONS lista_functions RPAREN'''
+def p_def_functions_(p):
+    '''def_functions : LPAREN COLON FUNCTIONS lista_functions_def RPAREN'''
 ()
-def p_lista_functions_1(p):
-    '''lista_functions : '''
-()
-def p_lista_functions_2(p):
-    '''lista_functions : function lista_functions'''
+def p_lista_functions_def_1(p):
+    '''lista_functions_def : '''
+    # {;} 
+    objDomain.cleanPDDLvars() # clean antes de dealWithActions    
+
+def p_lista_functions_def_2(p):
+    '''lista_functions_def : LPAREN ID lista_var MINUS ID RPAREN lista_functions_def'''
     # {;}
+    print("Function:",p[2])
+
+
 ()
-def p_function_1(p):
-    '''function : LPAREN ID VAR ID MINUS ID RPAREN'''
+def p_lista_functions_def_3(p):
+    '''lista_functions_def : LPAREN ID RPAREN lista_functions_def'''
     # {;}
+    print("Function:",p[2])
+
+def p_lista_functions_def_4(p):
+    '''lista_functions_def : LPAREN ID lista_var MINUS ID RPAREN MINUS ID lista_functions_def'''
+    # {;}
+    print("Function:",p[2])
+    print("\tvars type:",p[5])
+    print("\tfunc type:",p[8])
 ()
-def p_function_2(p):
-    '''function : LPAREN ID RPAREN'''
+def p_lista_functions_def_5(p):
+    '''lista_functions_def : LPAREN ID RPAREN MINUS ID lista_functions_def'''
     # {;}
+    print("Function:",p[2])
+    print("\ttype:",p[5])
+
+
 ()
 def p_def_actions_1(p):
     '''def_actions : '''
