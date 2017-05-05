@@ -146,6 +146,33 @@ class PDDLDomain:
     def cleanTypes(self):
         self.lista_types = []
 
+    def dealWithActionLogicPredicate(self):
+        for indx_action_predicado in range (0,2):
+            last_predicado = self.lista_action_predicados[indx_action_predicado][-1]
+            last_predicado = last_predicado.split("*")
+            self.lista_action_predicados[indx_action_predicado][-1] = last_predicado[-1]
+            last_predicado = last_predicado[:-1]
+            print(indx_action_predicado,"LAST_PREDICADO>>>",last_predicado)
+            len_action_pred = len(self.lista_action_predicados[indx_action_predicado]) - 1
+            for logic_operator in last_predicado:
+                op = logic_operator[0]
+                num = int(logic_operator[1:])
+                print("pre",op,num)
+                for i in range(0,num):
+                    self.lista_action_predicados[indx_action_predicado][len_action_pred - i] = op + self.lista_action_predicados[indx_action_predicado][len_action_pred - i]
+            print("pre_predicados:",self.lista_action_predicados[indx_action_predicado])
+
+        # last_predicado = self.lista_action_predicados[1][-1]
+        # last_predicado = last_predicado.split("*")
+        # self.lista_action_predicados[1][-1] = last_predicado[-1]
+        # last_predicado = last_predicado[:-1]
+        # print("\n\n\n")
+        # # print("2222LAST_PREDICADO>>>",last_predicado)
+        # for logic_operator in last_predicado:
+        #     op = logic_operator[0]
+        #     num = int(logic_operator[1:])
+        #     print("ef",op,num)
+        # print("ef_predicados:",self.lista_action_predicados[1])
     def dealWithAction(self):
         # print("ACTION>>>>",self.lista_actions)
         # print(self.lista_pddl_vars_sep)
@@ -169,6 +196,7 @@ class PDDLDomain:
         action.parameters = self.lista_pddl_vars[0]
         self.lista_action_predicados[0].reverse()
         self.lista_action_predicados[1].reverse()
+        self.dealWithActionLogicPredicate()
         i = 0
         for predicate in self.lista_action_predicados[0]:
             self.lista_pddl_vars[1][i].reverse()
@@ -186,7 +214,7 @@ class PDDLDomain:
         # print(action)
 
         # print(self.lista_predicados)
-        print("PTOTAL>>>>>>>>>>>",self.lista_action_predicados)
+        # print("PTOTAL>>>>>>>>>>>",self.lista_action_predicados)
         self.lista_action_predicados = []
 
         self.cleanPDDLvars()
@@ -234,7 +262,7 @@ class PDDLDomain:
             self.cleanPDDLvars()
 
     def dealWithActionPredicates(self):
-        print("PRED>>",self.lista_predicados)
+        # print("PRED>>",self.lista_predicados)
         self.lista_action_predicados.append(self.lista_predicados)
         # print("TOTPRED<>",self.lista_action_predicados)
         self.lista_predicados = []
@@ -771,6 +799,7 @@ def p_lista_preds_op_1(p):
 def p_lista_preds_op_2(p):
     '''lista_preds_op : lista_predicados lista_preds_op'''
     # {;}
+    # print("<<<<<<<<<FINAL_LOGIC>>>>",objDomain.curLogicalOperator)
 ()
 def p_lista_preds_op_3(p):
     '''lista_preds_op : LPAREN AND lista_preds_op RPAREN lista_preds_op'''
@@ -781,14 +810,14 @@ def p_lista_preds_op_3(p):
     objDomain.curLogicalOperator = "AND"
     # objDomain.lista_predicados.append("AND")
     print("\t\tAND>>>>",objDomain.lista_predicados)
-    objDomain.lista_predicados[0] = "AND*" + objDomain.lista_predicados[0]
+    objDomain.lista_predicados[0] = "&" + str(len(objDomain.lista_predicados)) + "*" + objDomain.lista_predicados[0]
 def p_lista_preds_op_9(p):
     '''lista_preds_op : LPAREN NOT lista_preds_op RPAREN lista_preds_op'''
     # {;}
     objDomain.curLogicalOperator = "NOT"
     # objDomain.lista_predicados.append("AND")
-    # print("\t\tNOT>>>>",objDomain.lista_predicados)
-    objDomain.lista_predicados[0] = "NOT*" + objDomain.lista_predicados[0]
+    print("\t\tNOT>>>>",objDomain.lista_predicados)
+    objDomain.lista_predicados[0] = "!" + str(len(objDomain.lista_predicados)) + "*" +objDomain.lista_predicados[0]
 ()
 def p_lista_preds_op_4(p):
     '''lista_preds_op : LPAREN FORALL lista_preds_op RPAREN lista_preds_op'''

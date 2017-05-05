@@ -16,7 +16,8 @@
 						?from11 ?to22 - ball)
 		:precondition (and
 			(at-robby1 ?from11 ?from11)
-			(at-robby2 ?from22 ?from22)
+
+			(not(at-robby2 ?from22 ?from22))
 		)
 		:effect (and
 			(not
@@ -36,8 +37,10 @@
 		)
 		:effect (and 
 			(carry ?obj ?gripper)
-			(not (at ?obj ?room)) 
-			(free ?gripperd)
+			(IRRA ?i ?i2)
+
+			(not(free ?gripperd)
+			 (at ?obj ?room))
 		)
 	)
 
