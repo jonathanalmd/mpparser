@@ -1,4 +1,4 @@
-(define (domain gripper-typed)
+(define (domain gripper-typedd)
 	(:requirements :strips :typing)
 
 	(:types room ball gripper)
@@ -8,15 +8,14 @@
 	(:predicates
 		(at ?b - ball ?r - room)
 		(free ?g - gripper)
-		(at-robby ?r ?r2)
 
 		(carry ?o - ball ?g - gripper ?t - teste)
-		
+
 )
 
 	(:action move
 		:parameters  (?from1 ?to2 - room
-						?from11 ?to22 - ball)
+						?from11 ?to22 - room2)
 		:precondition 
 		(and
 			(at-robby1 ?from11 ?from11)

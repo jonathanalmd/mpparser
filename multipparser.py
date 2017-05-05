@@ -64,6 +64,10 @@ class PDDLDomain:
 
         self.curLogicalOperator = ""
 
+        self.curLineAction = 0
+
+        self.curDealingWith = ""
+
     def setDomainName(self,domain_name):
         self.domain_name = domain_name
 
@@ -194,49 +198,61 @@ class PDDLDomain:
         # print("ACTION1>>",self.lista_pddl_vars)
         # print("<TYPE>>>>>",self.lista_types)
 
-        action = PDDLAction()
-        i = 0
-        if all(isinstance(n, list) for n in self.lista_pddl_vars[0]):
-            for utype in self.lista_types:
-                self.lista_pddl_vars[0][i].reverse()
-                action.parameters[utype] = self.lista_pddl_vars[0][i]
-                i = i + 1
+        if self.lista_types == []:
+            for pddl_vars in self.lista_pddl_vars[0]:
+                self.lista_types.append("NOTYPE")
+
+        if (len(self.lista_types) != len(self.lista_pddl_vars[0])) and all(isinstance(n, list) for n in self.lista_pddl_vars[0]):
+            print("ERRO: action parameters variables in line %d must be all typed or all not typed"%(self.curLineAction))
+            print("\tType(s)",self.lista_types)
+            print("\tVar(s)",self.lista_pddl_vars[0])
+            print("\tExpecting " + str(len(self.lista_pddl_vars[0])) + " type(s) and received only " + str(len(self.lista_types)) + " type(s)")
+            
+            sys.exit()
         else:
-            self.lista_pddl_vars[0].reverse()
-            for utype in self.lista_types:
-                action.parameters[utype] = self.lista_pddl_vars[0]
+            action = PDDLAction()
+            i = 0
+            if all(isinstance(n, list) for n in self.lista_pddl_vars[0]):
+                for utype in self.lista_types:
+                    self.lista_pddl_vars[0][i].reverse()
+                    action.parameters[utype] = self.lista_pddl_vars[0][i]
+                    i = i + 1
+            else:
+                self.lista_pddl_vars[0].reverse()
+                for utype in self.lista_types:
+                    action.parameters[utype] = self.lista_pddl_vars[0]
+                    i = i + 1
+            # print(action.parameters)
+            # action.parameters = self.lista_pddl_vars[0]
+            self.lista_action_predicados[0].reverse()
+            self.lista_action_predicados[1].reverse()
+            self.dealWithActionLogicPredicate()
+            i = 0
+            for predicate in self.lista_action_predicados[0]:
+                self.lista_pddl_vars[1][i].reverse()
+                action.preconditions[predicate] = self.lista_pddl_vars[1][i]
                 i = i + 1
-        # print(action.parameters)
-        # action.parameters = self.lista_pddl_vars[0]
-        self.lista_action_predicados[0].reverse()
-        self.lista_action_predicados[1].reverse()
-        self.dealWithActionLogicPredicate()
-        i = 0
-        for predicate in self.lista_action_predicados[0]:
-            self.lista_pddl_vars[1][i].reverse()
-            action.preconditions[predicate] = self.lista_pddl_vars[1][i]
-            i = i + 1
-        i = 0
-        for predicate in self.lista_action_predicados[1]:
-            self.lista_pddl_vars[2][i].reverse()
-            action.effects[predicate] = self.lista_pddl_vars[2][i]
-            i = i + 1
-        self.domain_actions.append(action)
-        # print("\n\n\n\n")
-        # print(action)
-        # print("<TYPES>",self.lista_types)
-        # print(action)
+            i = 0
+            for predicate in self.lista_action_predicados[1]:
+                self.lista_pddl_vars[2][i].reverse()
+                action.effects[predicate] = self.lista_pddl_vars[2][i]
+                i = i + 1
+            self.domain_actions.append(action)
+            # print("\n\n\n\n")
+            # print(action)
+            # print("<TYPES>",self.lista_types)
+            # print(action)
 
-        # print(self.lista_predicados)
-        # print("PTOTAL>>>>>>>>>>>",self.lista_action_predicados)
+            # print(self.lista_predicados)
+            # print("PTOTAL>>>>>>>>>>>",self.lista_action_predicados)
 
 
 
-        self.lista_action_predicados = []
+            self.lista_action_predicados = []
 
-        self.cleanPDDLvars()
-        self.cleanListaPDDLvars()
-        self.cleanTypes()
+            self.cleanPDDLvars()
+            self.cleanListaPDDLvars()
+            self.cleanTypes()
 
     def appendPDDLid(self,pddl_id):
         self.pddl_ids.append(pddl_id)
@@ -258,6 +274,7 @@ class PDDLDomain:
 
 
     def dealWithParameters(self):
+        # print (self.pddl_vars)
         if self.pddl_vars:
             self.lista_pddl_vars = [x for x in self.lista_pddl_vars if x != []]
 
@@ -375,11 +392,11 @@ def p_programa_4(p):
 def p_programa_5(p):
     '''programa : LPAREN DOMAIN RPAREN'''
 
-def p_error(p):
-    if p:
-        print("Syntax error at '%s'" % p.value)
-    else:
-        print("Syntax error at EOI")
+# def p_error(p):
+#     if p:
+#         print("Syntax error at '%s'" % p.value)
+#     else:
+#         print("Syntax error at EOI")
 
 ()
 def p_adl_formalization_1(p):
@@ -398,7 +415,7 @@ def p_adl_initial_state_1(p):
 ()
 def p_initial_state_bad(p):
     '''adl_initial_state : INIT error adl_lista_predicados RPAREN'''
-    print("MALFORMED STATEMENT AT LINE %s" % p[1])
+    print("MALFORMED STATEMENT AT %s LINE %d" %(p[1],plex.lexer.lineno))
     p[0] = None
     p.parser.error = 1
 
@@ -579,6 +596,7 @@ def p_lista_predicados_p_5(p):
 def p_domain_formalization_1(p):
     '''domain_formalization : def_domain def_requirements def_types def_constants def_predicates def_functions def_actions'''
     # {;}
+
 ()
 def p_domain_formalization_2(p):
     '''domain_formalization : def_domain def_requirements def_types def_predicates def_actions'''
@@ -601,15 +619,19 @@ def p_def_domain_1(p):
     # {;}
     objDomain.setDomainName(p[3])
 ()
+
+
 def p_def_requirements_1(p):
     '''def_requirements : '''
 ()
 def p_def_requirements_2(p):
     '''def_requirements : LPAREN COLON REQUIREMENTS lista_requirements RPAREN'''
     # {;}
+
 ()
 def p_lista_requirements_1(p):
     '''lista_requirements : '''
+
 ()
 def p_lista_requirements_2(p):
     '''lista_requirements : COLON ID lista_requirements'''
@@ -764,6 +786,7 @@ def p_agent_def_3(p):
 ()
 def p_a_def_1(p):
     '''a_def : '''
+
 ()
 def p_a_def_2(p):
     '''a_def : COLON PARAMETERS LPAREN lista_parameters RPAREN COLON PRECONDITION pddl_preconditions COLON EFFECT pddl_effects'''
@@ -793,16 +816,13 @@ def p_lista_parameters_2(p):
     # print(objDomain.pddl_vars)
     # print(objDomain.lista_pddl_vars)
     # objDomain.cleanListaPDDLvars()
+
     objDomain.appendType(p[4])
     # print("<<<############",objDomain.lista_pddl_vars)
 
     objDomain.appendVar(p[2])
 
     objDomain.dealWithParameters()
-
-
-
-
 
 ()
 def p_lista_parameters_3(p):
@@ -813,6 +833,20 @@ def p_lista_parameters_3(p):
     # objDomain.cleanListaPDDLvars()
     objDomain.appendType(p[3])
     # print("<<<############",objDomain.lista_pddl_vars)
+
+def p_lista_parameters_4(p):
+    '''lista_parameters : lista_var '''
+    # {;}
+    # print(objDomain.pddl_vars)
+    # print(objDomain.lista_pddl_vars)
+    # objDomain.cleanListaPDDLvars()
+    # print("<<<############",objDomain.lista_pddl_vars)
+
+    objDomain.curLineAction = plex.lexer.lineno - 1
+
+    objDomain.dealWithParameters()
+
+
 
 ()
 def p_lista_preds_op_1(p):
@@ -929,34 +963,21 @@ def p_lista_ids_2(p):
     objDomain.appendPDDLid(p[1])
 
 ()
-# -------------- RULES END ----------------
-# 
-# 
-# 
-# 
-# void yyerror (const char *s) /* chamada por yyparse durante erro*/
-# {
-#     printf("%s line %d\n", s, yylineno);
-# }
-# 
-# int main (int argc, char *argv[]) 
-# {
-# 	int result = 0;
-# 
-# 	yydebug = 0;
-# 	yyin = fopen(argv[1], "r");
-# 
-# 	result = yyparse();
-# 	if(result)
-# 		printf("Programa com erro sintatico!\n");
-# 	else
-# 		printf("Formalizacao %s sintaticamente correta!\n",argv[1]);
-# 	
-# 	return result;
-# }
-# 
-# 
-# 
+
+
+def p_error(p):
+    if p.value == "(":
+        print("Syntax error in line",plex.lexer.lineno-1)
+        print("\tMissing or more ')' than expected")
+    else:
+        print("Syntax error in %s line %d"%(p.value,plex.lexer.lineno))
+    sys.exit()
+
+
+
+
+
+
 
 import lex
 import yacc
