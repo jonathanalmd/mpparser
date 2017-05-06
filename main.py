@@ -4,6 +4,7 @@
 import sys
 import plex
 import multipparser
+# import pddldomain
 
 # If a filename has been specified, we try to run it.
 # If a runtime error occurs, we bail out and enter
