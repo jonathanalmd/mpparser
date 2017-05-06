@@ -29,7 +29,7 @@
 		(CLEAR D) 
 		(ONTABLE C) 
 		(ONTABLE A)
-		(= (onblock C) D)
+		(= (onblock Cdsd) D)
 		(NOT
 				(CLEAR B) 
 			

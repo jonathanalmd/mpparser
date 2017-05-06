@@ -14,13 +14,13 @@ import lex
 import plex
 import pddldomain
 import pddlproblem
-
+import adl
 # Get the token map
 tokens = plex.tokens
 
 
-# -------------- RULES ----------------
-()
+# ========================================== RULES ================================================ #
+
 def p_programa_1(p):
     '''programa : LPAREN DEFINE domain_formalization RPAREN
     '''
@@ -37,11 +37,13 @@ def p_programa_4(p):
 def p_programa_5(p):
     '''programa : LPAREN DOMAIN RPAREN'''
 
-# def p_error(p):
-#     if p:
-#         print("Syntax error at '%s'" % p.value)
-#     else:
-#         print("Syntax error at EOI")
+
+
+
+# =============================================================================================== #
+# ========================================== ADL ================================================ #
+# =============================================================================================== #
+
 
 def p_adl_formalization_1(p):
     '''adl_formalization : adl_initial_state adl_goal_state adl_actions_def'''
@@ -52,6 +54,7 @@ def p_adl_formalization_bad(p):
     p[0] = None
     p.parser.error = 1
 
+
 def p_adl_initial_state_1(p):
     '''adl_initial_state : INIT LPAREN adl_lista_predicados RPAREN'''
 
@@ -61,14 +64,26 @@ def p_initial_state_bad(p):
     p[0] = None
     p.parser.error = 1
 
+
 def p_adl_lista_predicados_1(p):
-    '''adl_lista_predicados : adl_strips_predicado'''
+    '''adl_lista_predicados : adl_predicado'''
+    print("DealingWith: ",objADL.dealingwith)
+    print ("<PRED>",objADL.lista_predicados)
+    print (">>>>>>",objADL.lista_ids_sep)
+
+
+    objADL.dealingwith+=1
+    objADL.cleanListPreds()
+    objADL.cleanListIds()
 
 def p_adl_lista_predicados_2(p):
-    '''adl_lista_predicados : adl_strips_predicado AND adl_lista_predicados'''
+    '''adl_lista_predicados : adl_predicado AND adl_lista_predicados'''
+
+
 
 def p_adl_goal_state_1(p):
     '''adl_goal_state : GOAL LPAREN adl_lista_predicados RPAREN'''
+
 
 def p_adl_actions_def_1(p):
     '''adl_actions_def : adl_action'''
@@ -76,8 +91,10 @@ def p_adl_actions_def_1(p):
 def p_adl_actions_def_2(p):
     '''adl_actions_def : adl_action adl_actions_def'''
 
+
 def p_adl_action_1(p):
     '''adl_action : ACTION LPAREN ID LPAREN adl_lista_parametros RPAREN COMMA adl_precond adl_effect RPAREN'''
+
 
 def p_adl_lista_parametros_1(p):
     '''adl_lista_parametros : adl_parametro'''
@@ -85,8 +102,10 @@ def p_adl_lista_parametros_1(p):
 def p_adl_lista_parametros_2(p):
     '''adl_lista_parametros : adl_parametro COMMA adl_lista_parametros'''
 
+
 def p_adl_parametro_1(p):
     '''adl_parametro : ID COLON lista_ids'''
+
 
 def p_adl_precond_1(p):
     '''adl_precond : PRECOND COLON adl_lista_predicados'''
@@ -94,29 +113,60 @@ def p_adl_precond_1(p):
 def p_adl_effect_1(p):
     '''adl_effect : EFFECT COLON adl_lista_predicados'''
 
+
+def p_adl_predicado_1(p):
+    '''adl_predicado : ID LPAREN adl_lista_ids RPAREN'''
+    objADL.appendPredicado(p[1])
+    objADL.appendListIds()
+    # print (objADL.lista_ids_sep)
+
+def p_adl_predicado_2(p):
+    '''adl_predicado : AND ID LPAREN adl_lista_ids RPAREN'''
+    objADL.appendPredicado(p[2])
+
+
+def p_adl_lista_ids_1(p):
+    '''adl_lista_ids : ID'''
+    objADL.appendId(p[1])
+    
+def p_adl_lista_ids_2(p):
+    '''adl_lista_ids : ID COMMA adl_lista_ids'''
+    objADL.appendId(p[1])
+
+
+
+
+# =================================================================================================== #
+# =========================================== STRIPS ================================================ #
+# =================================================================================================== #
+
+
 def p_strips_formalization_1(p):
     '''strips_formalization : strips_initial_state strips_goal_state strips_actions_def'''
 
 def p_strips_initial_state_1(p):
     '''strips_initial_state : INITS STATE COLON strips_lista_predicados'''
 
+
 def p_strips_lista_predicados_1(p):
-    '''strips_lista_predicados : adl_strips_predicado'''
+    '''strips_lista_predicados : strips_predicado'''
 
 def p_strips_lista_predicados_2(p):
-    '''strips_lista_predicados : adl_strips_predicado COMMA strips_lista_predicados'''
+    '''strips_lista_predicados : strips_predicado COMMA strips_lista_predicados'''
 
-def p_adl_strips_predicado_1(p):
-    '''adl_strips_predicado : ID LPAREN adl_strips_lista_ids RPAREN'''
 
-def p_adl_strips_predicado_2(p):
-    '''adl_strips_predicado : AND ID LPAREN adl_strips_lista_ids RPAREN'''
+def p_strips_predicado_1(p):
+    '''strips_predicado : ID LPAREN strips_lista_ids RPAREN'''
 
-def p_adl_strips_lista_ids_1(p):
-    '''adl_strips_lista_ids : ID'''
+def p_strips_predicado_2(p):
+    '''strips_predicado : AND ID LPAREN strips_lista_ids RPAREN'''
 
-def p_adl_strips_lista_ids_2(p):
-    '''adl_strips_lista_ids : ID COMMA adl_strips_lista_ids'''
+def p_strips_lista_ids_1(p):
+    '''strips_lista_ids : ID'''
+
+def p_strips_lista_ids_2(p):
+    '''strips_lista_ids : ID COMMA strips_lista_ids'''
+
 
 def p_strips_goal_state_1(p):
     '''strips_goal_state : GOAL STATE COLON strips_lista_predicados'''
@@ -126,21 +176,28 @@ def p_strips_actions_def_1(p):
 
 def p_strips_actions_def_2(p):
     '''strips_actions_def : ACTIONS COLON strips_lista_actions'''
-    # {;}
-()
+
+
 def p_strips_lista_actions_1(p):
     '''strips_lista_actions : strips_action'''
 
 def p_strips_lista_actions_2(p):
     '''strips_lista_actions : strips_action strips_lista_actions'''
 
+
 def p_strips_action_1(p):
-    '''strips_action : adl_strips_predicado PRECONDITIONS COLON strips_lista_predicados EFFECT COLON strips_lista_predicados'''
+    '''strips_action : strips_predicado PRECONDITIONS COLON strips_lista_predicados EFFECT COLON strips_lista_predicados'''
 
 
 
 
 
+# =================================================================================================== #
+# ============================================ PDDL ================================================= #
+# =================================================================================================== #
+
+
+# ========================================== PROBLEM ================================================ #
 
 def p_problem_formalization_1(p):
     '''problem_formalization : def_problem def_domain_p def_objects def_init def_goal'''
@@ -176,13 +233,15 @@ def p_lista_objects_3(p):
 def p_def_init_1(p):
     '''def_init : LPAREN COLON INIT lista_predicados_p RPAREN'''
     # print(objProblem.lista_ids_sep)
-    objProblem.setProblemInitPredicates()
+    objProblem.setProblemPredicates("i")
 
 def p_def_goal_1(p):
     '''def_goal : '''
 
 def p_def_goal_2(p):
     '''def_goal : LPAREN COLON GOAL LPAREN AND lista_predicados_p RPAREN RPAREN'''
+    # print(objProblem.lista_ids_sep)
+    objProblem.setProblemPredicates("g")
 
 def p_def_goal_5(p):
     '''def_goal : LPAREN COLON GOAL LPAREN NOT lista_predicados_p RPAREN RPAREN'''
@@ -311,6 +370,8 @@ def p_lista_ids_p_5(p):
     objProblem.lista_ids.insert(0,p[6])
     # print(objProblem.lista_ids)
 
+
+# ========================================== DOMAIN ================================================ #
 
 
 def p_domain_formalization_1(p):
@@ -652,8 +713,10 @@ def p_error(p):
         print("\tMissing or more ')' than expected OR")
         if run_mode == "pddlproblem":
             print("\tUsing more than one predicate inside 'NOT' operator: please apply 'NOT' operator on each predicate individually")
-    else:
+    elif p.value != "(":
         print("Syntax error in %s line %d"%(p.value,plex.lexer.lineno))
+    else:
+        print("Syntax error at EOI")
     sys.exit()
 
 
@@ -662,14 +725,28 @@ def p_error(p):
 pparser = yacc.yacc()
 objDomain = pddldomain.PDDLDomain()
 objProblem = pddlproblem.PDDLProblem()
+objADL = adl.ADLForm()
+
 
 run_mode = "pddlproblem"
-def parse(data):
-    pparser.error = 0
-    p = pparser.parse(data)
-    if pparser.error:
-        return False
-    else:
-        # objDomain.printDomainInfo()
+def parse(pmode, filelist):
+    if pmode == "pddl":
+        domain_f = open(filelist[0]).read()
+        problem_f = open(filelist[1]).read()
+        pparser.error = 0
+        p = pparser.parse(domain_f)
+        if pparser.error:
+            return False
+        p = pparser.parse(problem_f)
+        if pparser.error:
+            return False
+
+        objDomain.printDomainInfo()
         objProblem.printProblemInfo()
+        return True
+    else:
+        strips_adl = open(filelist[0]).read()
+        pparser.error = 0
+        p = pparser.parse(strips_adl)
+
         return True

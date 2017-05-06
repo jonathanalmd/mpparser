@@ -1,5 +1,5 @@
 
-class PDDLInitPredicate:
+class PDDLProblemPredicate:
     def __init__(self, pred_name):
         self.name = pred_name
         self.p_vars = [] 
@@ -17,6 +17,7 @@ class PDDLProblem:
         self.problem_domain = ""
         self.problem_objects = {}
         self.problem_init_pred = []
+        self.problem_goal_pred = []
 
         self.lista_obj_type = []
 
@@ -44,27 +45,44 @@ class PDDLProblem:
         self.cleanProblemIds()
         self.cleanProblemListaIdsSep()
 
-    def setProblemInitPredicates(self):
+    def setProblemPredicates(self, runmode):
         # print (self.lista_ids_sep)
         # print ("\n\n")
-        for init_pred in self.lista_ids_sep:
-            if init_pred[0] == "!":
-                ipred = PDDLInitPredicate(init_pred[1])
-                ipred.p_vars = init_pred[2:]
-                ipred.name = "!" + ipred.name 
-            elif init_pred[0] == "=":
-                print(init_pred)
-                ipred = PDDLInitPredicate(init_pred[1])
-                ipred.p_vars = init_pred[2:len(init_pred)-1]
-                ipred_p_vars = ipred.p_vars.append(init_pred[-1])
-                ipred.name = "=" + ipred.name 
-            else:
-                ipred = PDDLInitPredicate(init_pred[0])       
-                ipred.p_vars = init_pred[1:]
+        if runmode == "i":
+            for init_pred in self.lista_ids_sep:
+                if init_pred[0] == "!":
+                    ipred = PDDLProblemPredicate(init_pred[1])
+                    ipred.p_vars = init_pred[2:]
+                    ipred.name = "!" + ipred.name 
+                elif init_pred[0] == "=":
+                    # print(init_pred)
+                    ipred = PDDLProblemPredicate(init_pred[1])
+                    ipred.p_vars = init_pred[2:len(init_pred)-1]
+                    ipred_p_vars = ipred.p_vars.append(init_pred[-1])
+                    ipred.name = "=" + ipred.name 
+                else:
+                    ipred = PDDLProblemPredicate(init_pred[0])       
+                    ipred.p_vars = init_pred[1:]
 
-            self.problem_init_pred.append(ipred)
-        
-        print (self.problem_init_pred)
+                self.problem_init_pred.append(ipred)
+        else:
+            for goal_pred in self.lista_ids_sep:
+                if goal_pred[0] == "!":
+                    gpred = PDDLProblemPredicate(goal_pred[1])
+                    gpred.p_vars = goal_pred[2:]
+                    gpred.name = "!" + gpred.name 
+                elif goal_pred[0] == "=":
+                    # print(init_pred)
+                    gpred = PDDLProblemPredicate(goal_pred[1])
+                    gpred.p_vars = goal_pred[2:len(goal_pred)-1]
+                    gpred_p_vars = gpred.p_vars.append(goal_pred[-1])
+                    gpred.name = "=" + gpred.name 
+                else:
+                    gpred = PDDLProblemPredicate(goal_pred[0])       
+                    gpred.p_vars = goal_pred[1:]
+
+                self.problem_goal_pred.append(gpred)
+        # print (self.problem_init_pred)
         self.cleanProblemIds()
         self.cleanProblemListaIdsSep()
 
@@ -92,6 +110,6 @@ class PDDLProblem:
         print ("From Domain:\n\t",self.problem_domain)
         print ("Objects:\n\t",self.problem_objects)
         print ("Init Predicates:\n\t",self.problem_init_pred)
-
+        print ("Goal Predicates:\n\t",self.problem_goal_pred)
 
 
