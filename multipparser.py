@@ -748,4 +748,6 @@ def parse(pmode, filelist):
         pparser.error = 0
         p = pparser.parse(strips_adl)
 
+        objADL.printADLInfo()
+
         return True
