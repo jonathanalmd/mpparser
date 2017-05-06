@@ -86,14 +86,14 @@ def p_adl_goal_state_1(p):
 
 def p_adl_actions_def_1(p):
     '''adl_actions_def : adl_action'''
+    objADL.setADLActions()
 
 def p_adl_actions_def_2(p):
     '''adl_actions_def : adl_action adl_actions_def'''
 
-
 def p_adl_action_1(p):
     '''adl_action : ACTION LPAREN ID LPAREN adl_lista_parametros RPAREN COMMA adl_precond adl_effect RPAREN'''
-
+    objADL.appendActionName(p[3])
 
 def p_adl_lista_parametros_1(p):
     '''adl_lista_parametros : adl_parametro'''

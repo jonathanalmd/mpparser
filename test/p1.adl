@@ -35,3 +35,4 @@ action (
         precond: in(c,p) and at(p,a)
         effect: at(c,a) and in(c,p)
 )
+
