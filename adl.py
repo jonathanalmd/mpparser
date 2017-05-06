@@ -8,7 +8,7 @@ class ADLForm:
         self.lista_ids_sep = []
 
         self.adl_init = []
-        self.adl_goal = {}
+        self.adl_goal = []
 
         self.dealingwith = 0
 
@@ -44,7 +44,18 @@ class ADLForm:
             print ("<DEALING_GOAL>")
             print ("\t<PRED>",self.lista_predicados)
             print ("\t>>>>>>",self.lista_ids_sep)
+
+            for pred_name, pred_params in zip(self.lista_predicados, self.lista_ids_sep):
+                self.adl_goal.append(pred_name)
+                self.adl_goal.append(pred_params)
+            print (self.adl_goal)
+
         else: # action(s)
             print ("<DEALING_ACTION>")
             print ("\t<PRED>",self.lista_predicados)
             print ("\t>>>>>>",self.lista_ids_sep)
+
+
+
+
+
