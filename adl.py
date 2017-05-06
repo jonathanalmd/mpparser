@@ -67,19 +67,37 @@ class ADLForm:
 
             if self.dealingwith % 2 == 0:
                 print("precond")
+                precond = []
                 for pred_name, pred_params in zip(self.lista_predicados, self.lista_ids_sep):
-                    aux_list = []
-                    aux_list.append(pred_name)
-                    aux_list.append(pred_params)
-                    self.action_precond.append(aux_list)
-                    # self.action_precond.append(pred_name)
-                    # self.action_precond.append(pred_params)
+                    # aux_list = []
+                    # aux_list.append(pred_name)
+                    # aux_list.append(pred_params)
+                    # aux_list = self.action_precond.append(aux_list)
+                    # print(aux_list)
+
+                    # precond[pred_name] = pred_params
+
+                    precond.append(pred_name)
+                    precond.append(pred_params)
+                
+                self.action_precond.append(precond)
+
             else:
                 print("effect")
-
+                effect = []
+                for pred_name, pred_params in zip(self.lista_predicados, self.lista_ids_sep):
+                    # self.action_precond.append(pred_name)
+                    # self.action_precond.append(pred_params)   
+                    effect.append(pred_name)
+                    effect.append(pred_params)
+                
+                self.action_effect.append(effect)
+                
     def setADLActions(self):
-        print ("\t<name>",self.action_names)
-        print ("\t<PRED>",self.action_precond)
+        print ("\t<name>\n\t",self.action_names)
+        print ("\t<precond>\n\t",self.action_precond)
+        print ("\t<effect>\n\t",self.action_effect)
+        print (len(self.action_names),len(self.action_precond),len(self.action_effect))
         # print ("\t>>>>>>",self.lista_ids_sep)
 
     def printADLInfo(self):
