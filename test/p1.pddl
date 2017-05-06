@@ -16,24 +16,17 @@
 	(ONTABLE B) 
 	(ONTABLE D) 
 	(HANDEMPTY)
-	(= (ondblock C) D)
+	(= (ondblock C D E F) 10)
+	(NOT(con AAA BBB CCC))
+	(NOT(con AAA))
+	(NOT(con AAA))
+
 )
 
 
 
 (:goal 
-	(AND
-		(CLEAR B) 
-		(CLEAR D) 
-		(ONTABLE C) 
-		(ONTABLE A)
-		(= (onblock C) D)
-		(NOT
-				(CLEAR B) 
-				(CLEAR D) 
-				(ONTABLE C) 
-		)
-	)
+	
 )
 
 )

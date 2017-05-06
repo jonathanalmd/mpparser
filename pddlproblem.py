@@ -5,10 +5,10 @@ class PDDLInitPredicate:
         self.p_vars = [] 
     
     def __str__(self):
-        return self.name + ":" + str(self.p_vars)
+        return "\n\t" + self.name + ":" + str(self.p_vars)
 
     def __repr__(self):
-        return self.name + ":" + str(self.p_vars)
+        return "\n\t" + self.name + ":" + str(self.p_vars)
 
 
 class PDDLProblem:
@@ -46,13 +46,21 @@ class PDDLProblem:
 
     def setProblemInitPredicates(self):
         print (self.lista_ids_sep)
-
+        print ("\n\n")
         for init_pred in self.lista_ids_sep:
-            ipred = PDDLInitPredicate(init_pred[0])
-            if init_pred[1:]:
-                ipred.p_vars = init_pred[1:]
+            if init_pred[0] == "!":
+                ipred = PDDLInitPredicate(init_pred[1])
+                ipred.p_vars = init_pred[2:]
+                ipred.name = "!" + ipred.name 
+            elif init_pred[0] == "=":
+                print(init_pred)
+                ipred = PDDLInitPredicate(init_pred[1])
+                ipred.p_vars = init_pred[2:len(init_pred)-1]
+                ipred_p_vars = ipred.p_vars.append(init_pred[-1])
+                ipred.name = "=" + ipred.name 
             else:
-                ipred.p_vars = ["(NULL)"]
+                ipred = PDDLInitPredicate(init_pred[0])       
+                ipred.p_vars = init_pred[1:]
 
             self.problem_init_pred.append(ipred)
         
@@ -83,7 +91,7 @@ class PDDLProblem:
         print ("Problem Name:\n\t",self.problem_name)
         print ("From Domain:\n\t",self.problem_domain)
         print ("Objects:\n\t",self.problem_objects)
-
+        print ("Init Predicates:\n\t",self.problem_init_pred)
 
 
 

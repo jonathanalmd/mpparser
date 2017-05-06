@@ -16,7 +16,7 @@ reserved = [
     'PREDICATES', 'FUNCTIONS', 'ACTION', 'PARAMETERS', 'PRECONDITION', 'EFFECT',
     'FORALL', 'EXISTS', 'INCREASE', 'DECREASE', 'ASSIGN', 'IMPLY', 'PREFERENCE', 'WHEN',
     'AGENT', 'PROBLEM', 'OBJECTS', 'INIT', 'GOAL', 'CONDITION', 'INITIAL', 'STATE', 'ACTIONS', 'PRECONDITIONS',
-    'PRECOND','INITS', 'AND', 'NOT'
+    'PRECOND','INITS', 'AND', 'NOT', 'OPERATOR'
 ]
 
 tokens = reserved + [
@@ -150,6 +150,18 @@ def t_NUM(t):
     r'\d+'
     t.value = int(t.value)    
     return t
+
+
+# def t_OPERATOR(t):
+#     r'='
+#     # if t.value == "=":
+#     #     t.type = "COMP"
+#     # elif t.value in ["=","not","NOT"]:
+#     #     t.type = t.value.upper()
+#     if t.value in ["=","not","NOT"]:
+#         t.type = "OPERATOR"
+        
+#     return t
 
 # Integer literal
 t_ICONST = r'\d+([uU]|[lL]|[uU][lL]|[lL][uU])?'
