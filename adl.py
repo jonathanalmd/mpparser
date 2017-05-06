@@ -1,4 +1,16 @@
 
+class ADLAction:
+    def __init__(self, action_name, precond, effect):
+        self.name = action_name
+        self.precond = precond
+        self.effect = effect
+
+    def __str__(self):
+        return "\n\tAction Name: " + self.name + "\n\tPrecondition: " + str(self.precond) + "\n\tEffect:" + str(self.effect) + "\n"
+
+    def __repr__(self):
+        return "\n\tAction Name: " + self.name + "\n\tPrecondition: " + str(self.precond) + "\n\tEffect:" + str(self.effect) + "\n"
+
 
 
 class ADLForm:
@@ -9,7 +21,7 @@ class ADLForm:
 
         self.adl_init = []
         self.adl_goal = []
-
+        self.adl_actions = []
         self.dealingwith = 0
 
         self.action_names = []
@@ -92,7 +104,7 @@ class ADLForm:
                     effect.append(pred_params)
                 
                 self.action_effect.append(effect)
-                
+
     def setADLActions(self):
         print ("\t<name>\n\t",self.action_names)
         print ("\t<precond>\n\t",self.action_precond)
@@ -100,6 +112,11 @@ class ADLForm:
         print (len(self.action_names),len(self.action_precond),len(self.action_effect))
         # print ("\t>>>>>>",self.lista_ids_sep)
 
+        for action_name, precond, effect in zip(self.action_names, self.action_precond, self.action_effect):
+            uaction = ADLAction(action_name,precond,effect)
+            self.adl_actions.append(uaction)
+
+        print (self.adl_actions)
     def printADLInfo(self):
         print ("Init Predicates:\n\t",self.adl_init)
         print ("Goal Predicates:\n\t",self.adl_goal)
