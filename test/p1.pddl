@@ -6,7 +6,8 @@
 			X Y Z - block2
 )
 
-(:INIT 	(CLEAR C) 
+(:INIT 	
+	(CLEAR C) 
 	(CLEAR A) 
 	(CLEAR B) 
 	(CLEAR D) 
@@ -21,20 +22,17 @@
 
 
 (:goal 
-	:agent agent1 :condition (lifted table)
 	(AND
-		(NOT
-			(AND
-				(CLEAR B) 
-				(CLEAR D) 
-				(ONTABLE C) 
-			)
-		)
 		(CLEAR B) 
 		(CLEAR D) 
 		(ONTABLE C) 
 		(ONTABLE A)
 		(= (onblock C) D)
+		(NOT
+				(CLEAR B) 
+				(CLEAR D) 
+				(ONTABLE C) 
+		)
 	)
 )
 
