@@ -2,6 +2,8 @@
 Multi-Lingual Parser: PDDL, ADL and STRIPS
 
 pddl domain v1.0: ok
+pddl problem v1.0: ok
+adl v1.0: ok
 
-working with pddl problem 1.0
+working with strips 1.0
 
