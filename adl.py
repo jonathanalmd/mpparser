@@ -7,6 +7,9 @@ class ADLForm:
         self.lista_ids = []
         self.lista_ids_sep = []
 
+        self.adl_init = []
+        self.adl_goal = {}
+
         self.dealingwith = 0
 
     def appendPredicado(self, upred):
@@ -31,6 +34,12 @@ class ADLForm:
             print ("<DEALING_INIT>")
             print ("\t<PRED>",self.lista_predicados)
             print ("\t>>>>>>",self.lista_ids_sep)
+
+            for pred_name, pred_params in zip(self.lista_predicados, self.lista_ids_sep):
+                self.adl_init.append(pred_name)
+                self.adl_init.append(pred_params)
+            print (self.adl_init)
+
         elif self.dealingwith == 1: # goal
             print ("<DEALING_GOAL>")
             print ("\t<PRED>",self.lista_predicados)
