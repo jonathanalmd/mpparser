@@ -92,18 +92,53 @@ def p_adl_actions_def_2(p):
     '''adl_actions_def : adl_action adl_actions_def'''
 
 def p_adl_action_1(p):
-    '''adl_action : ACTION LPAREN ID LPAREN adl_lista_parametros RPAREN COMMA adl_precond adl_effect RPAREN'''
+    '''adl_action : ACTION LPAREN ID LPAREN adl_params RPAREN COMMA adl_precond adl_effect RPAREN'''
+    # print(objADL.action_params)
+    # print(objADL.action_p_types)
+    objADL.appendListActionParam()
     objADL.appendActionName(p[3])
 
-def p_adl_lista_parametros_1(p):
-    '''adl_lista_parametros : adl_parametro'''
+def p_adl_params_1(p):
+    '''adl_params : ID COLON adl_parametro COMMA adl_params'''
+    # print("<VAR>",p[1])
+    objADL.appendActionParam(p[1])
 
-def p_adl_lista_parametros_2(p):
-    '''adl_lista_parametros : adl_parametro COMMA adl_lista_parametros'''
+def p_adl_params_2(p):
+    '''adl_params : ID COLON adl_parametro'''
+    # print("<VAR>",p[1])
+    objADL.appendActionParam(p[1])
 
+# def p_adl_lista_parametros_1(p):
+#     '''adl_lista_parametros : adl_parametro '''
+   
+
+# def p_adl_lista_parametros_2(p):
+#     '''adl_lista_parametros : adl_parametro COMMA adl_lista_parametros'''
+#     # objADL.appendListActionParam()
 
 def p_adl_parametro_1(p):
-    '''adl_parametro : ID COLON lista_ids'''
+    '''adl_parametro : ID'''
+    # print("<TYPE>",p[1])
+    objADL.appendActionParamType(p[1])
+
+# def p_adl_parametro_2(p):
+#     '''adl_parametro : ID COLON ID'''
+#     print("<TYPE>",p[1])
+#     print("\t<VAR>",p[3])
+
+#     objADL.appendActionParamType(p[1])
+#     objADL.appendActionParam(p[3])
+# def p_adl_lista_params_1(p):
+#     ''' adl_lista_params : ID '''
+#     print("\t<VAR>",p[1])
+
+# def p_adl_lista_params_2(p):
+#     '''adl_lista_params : ID COMMA adl_lista_params '''
+#     print("\t<VAR2>",p[1])
+
+
+
+
 
 
 def p_adl_precond_1(p):

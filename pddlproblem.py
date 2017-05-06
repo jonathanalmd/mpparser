@@ -75,7 +75,7 @@ class PDDLProblem:
                     # print(init_pred)
                     gpred = PDDLProblemPredicate(goal_pred[1])
                     gpred.p_vars = goal_pred[2:len(goal_pred)-1]
-                    gpred_p_vars = gpred.p_vars.append(goal_pred[-1])
+                    gpred.p_vars = gpred.p_vars.append(goal_pred[-1])
                     gpred.name = "=" + gpred.name 
                 else:
                     gpred = PDDLProblemPredicate(goal_pred[0])       

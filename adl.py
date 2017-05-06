@@ -1,15 +1,16 @@
 
 class ADLAction:
-    def __init__(self, action_name, precond, effect):
+    def __init__(self, action_name, param, precond, effect):
         self.name = action_name
+        self.param = param
         self.precond = precond
         self.effect = effect
 
     def __str__(self):
-        return "\n\tAction Name: " + self.name + "\n\tPrecondition: " + str(self.precond) + "\n\tEffect:" + str(self.effect) + "\n"
+        return "\n\tAction Name: " + self.name + "\n\tParameters: " + str(self.param) + "\n\tPrecondition: " + str(self.precond) + "\n\tEffect: " + str(self.effect) + "\n"
 
     def __repr__(self):
-        return "\n\tAction Name: " + self.name + "\n\tPrecondition: " + str(self.precond) + "\n\tEffect:" + str(self.effect) + "\n"
+        return "\n\tAction Name: " + self.name + "\n\tParameters: " + str(self.param) + "\n\tPrecondition: " + str(self.precond) + "\n\tEffect: " + str(self.effect) + "\n"
 
 
 
@@ -25,8 +26,11 @@ class ADLForm:
         self.dealingwith = 0
 
         self.action_names = []
+
         self.action_params = []
+        self.action_params_sep = []
         self.action_p_types = []
+        self.action_p_types_sep = []
 
         self.action_precond = []
         self.action_effect = []
@@ -45,6 +49,24 @@ class ADLForm:
     def appendActionName(self, aname):
         self.action_names.append(aname)
     
+    def appendActionParam(self, aparam):
+        self.action_params.append(aparam)
+    
+    def appendActionParamType(self, ptype):
+        self.action_p_types.append(ptype)
+
+    def appendListActionParam(self):
+        self.action_params_sep.append(self.action_params)
+        self.action_p_types_sep.append(self.action_p_types)
+        self.cleanActionParam()
+        self.cleanActionTypes()
+
+    def cleanActionParam(self):
+        self.action_params = []
+
+    def cleanActionTypes(self):
+        self.action_p_types = []
+
     def cleanListIds(self):
         self.lista_ids_sep = []
 
@@ -73,12 +95,12 @@ class ADLForm:
             # print (self.adl_goal)
 
         else: # action(s)
-            print ("<DEALING_ACTION>")
-            print ("\t<PRED>",self.lista_predicados)
-            print ("\t>>>>>>",self.lista_ids_sep)
+            # print ("<DEALING_ACTION>")
+            # print ("\t<PRED>",self.lista_predicados)
+            # print ("\t>>>>>>",self.lista_ids_sep)
 
             if self.dealingwith % 2 == 0:
-                print("precond")
+                # print("precond")
                 precond = []
                 for pred_name, pred_params in zip(self.lista_predicados, self.lista_ids_sep):
                     # aux_list = []
@@ -95,7 +117,7 @@ class ADLForm:
                 self.action_precond.append(precond)
 
             else:
-                print("effect")
+                # print("effect")
                 effect = []
                 for pred_name, pred_params in zip(self.lista_predicados, self.lista_ids_sep):
                     # self.action_precond.append(pred_name)
@@ -106,19 +128,34 @@ class ADLForm:
                 self.action_effect.append(effect)
 
     def setADLActions(self):
-        print ("\t<name>\n\t",self.action_names)
-        print ("\t<precond>\n\t",self.action_precond)
-        print ("\t<effect>\n\t",self.action_effect)
-        print (len(self.action_names),len(self.action_precond),len(self.action_effect))
+        # print ("\t<name>\n\t",self.action_names)
+        # print ("\t<precond>\n\t",self.action_precond)
+        # print ("\t<effect>\n\t",self.action_effect)
+        # print (len(self.action_names),len(self.action_precond),len(self.action_effect))
         # print ("\t>>>>>>",self.lista_ids_sep)
 
-        for action_name, precond, effect in zip(self.action_names, self.action_precond, self.action_effect):
-            uaction = ADLAction(action_name,precond,effect)
+        print("<TYPES>:",self.action_p_types_sep)
+        print("<vars>:",self.action_params_sep)
+        
+        paction_list = []
+        for param_types, param_vars in zip(self.action_p_types_sep, self.action_params_sep):
+            paction = {}
+            for utype, uvar in zip(param_types, param_vars):
+                paction[uvar] = utype
+            paction_list.append(paction)
+        print("\n<PARAMETERS:",paction_list)
+
+        for action_name, param, precond, effect in zip(self.action_names, paction_list, self.action_precond, self.action_effect):
+            uaction = ADLAction(action_name,param,precond,effect)
             self.adl_actions.append(uaction)
 
-        print (self.adl_actions)
-    def printADLInfo(self):
-        print ("Init Predicates:\n\t",self.adl_init)
-        print ("Goal Predicates:\n\t",self.adl_goal)
+        # print (self.adl_actions)
 
+    def printADLInfo(self):
+        print ("\n")
+        print ("Init Predicates:\n\t",self.adl_init)
+        print ("\n")
+        print ("Goal Predicates:\n\t",self.adl_goal)
+        print ("\n")
+        print ("Actions:\n\t",self.adl_actions)
 
