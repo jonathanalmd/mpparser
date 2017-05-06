@@ -67,10 +67,9 @@ def p_initial_state_bad(p):
 
 def p_adl_lista_predicados_1(p):
     '''adl_lista_predicados : adl_predicado'''
-    print("DealingWith: ",objADL.dealingwith)
-    print ("<PRED>",objADL.lista_predicados)
-    print (">>>>>>",objADL.lista_ids_sep)
-
+    # print ("<PRED>",objADL.lista_predicados)
+    # print (">>>>>>",objADL.lista_ids_sep)
+    objADL.setPredicates()
 
     objADL.dealingwith+=1
     objADL.cleanListPreds()

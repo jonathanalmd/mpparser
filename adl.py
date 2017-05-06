@@ -25,3 +25,17 @@ class ADLForm:
 
     def cleanListPreds(self):
         self.lista_predicados = []
+
+    def setPredicates(self):
+        if self.dealingwith == 0: # init
+            print ("<DEALING_INIT>")
+            print ("\t<PRED>",self.lista_predicados)
+            print ("\t>>>>>>",self.lista_ids_sep)
+        elif self.dealingwith == 1: # goal
+            print ("<DEALING_GOAL>")
+            print ("\t<PRED>",self.lista_predicados)
+            print ("\t>>>>>>",self.lista_ids_sep)
+        else: # action(s)
+            print ("<DEALING_ACTION>")
+            print ("\t<PRED>",self.lista_predicados)
+            print ("\t>>>>>>",self.lista_ids_sep)
