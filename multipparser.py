@@ -175,6 +175,8 @@ def p_lista_objects_3(p):
 
 def p_def_init_1(p):
     '''def_init : LPAREN COLON INIT lista_predicados_p RPAREN'''
+    # print(objProblem.lista_ids_sep)
+    objProblem.setProblemInitPredicates()
 
 def p_def_goal_1(p):
     '''def_goal : '''
@@ -193,10 +195,10 @@ def p_def_goal_4(p):
 
 def p_lista_predicados_p_1(p):
     '''lista_predicados_p : '''
-
 def p_lista_predicados_p_2(p):
-    '''lista_predicados_p : LPAREN lista_ids RPAREN lista_predicados_p'''
+    '''lista_predicados_p : LPAREN lista_ids_p RPAREN lista_predicados_p'''
     # {;}
+
 
 def p_lista_predicados_p_3(p):
     '''lista_predicados_p : LPAREN AND lista_predicados_p RPAREN lista_predicados_p'''
@@ -205,10 +207,10 @@ def p_lista_predicados_p_6(p):
     '''lista_predicados_p : LPAREN NOT lista_predicados_p RPAREN lista_predicados_p'''
 
 def p_lista_predicados_p_4(p):
-    '''lista_predicados_p : LPAREN COMP LPAREN lista_ids RPAREN NUM RPAREN lista_predicados_p'''
+    '''lista_predicados_p : LPAREN COMP LPAREN lista_ids_p RPAREN NUM RPAREN lista_predicados_p'''
 
 def p_lista_predicados_p_5(p):
-    '''lista_predicados_p : LPAREN COMP LPAREN lista_ids RPAREN ID RPAREN lista_predicados_p'''
+    '''lista_predicados_p : LPAREN COMP LPAREN lista_ids_p RPAREN ID RPAREN lista_predicados_p'''
 
 # def p_lista_predicados_p_6(p):
 #     '''lista_predicados_p : LPAREN AT NUM ID RPAREN lista_predicados_p'''

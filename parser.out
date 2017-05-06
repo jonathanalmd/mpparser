@@ -100,11 +100,11 @@ Rule 45    def_goal -> LPAREN COLON GOAL LPAREN NOT lista_predicados_p RPAREN RP
 Rule 46    def_goal -> LPAREN COLON GOAL COLON AGENT agent_def COLON CONDITION lista_predicados_p RPAREN
 Rule 47    def_goal -> LPAREN COLON GOAL RPAREN
 Rule 48    lista_predicados_p -> <empty>
-Rule 49    lista_predicados_p -> LPAREN lista_ids RPAREN lista_predicados_p
+Rule 49    lista_predicados_p -> LPAREN lista_ids_p RPAREN lista_predicados_p
 Rule 50    lista_predicados_p -> LPAREN AND lista_predicados_p RPAREN lista_predicados_p
 Rule 51    lista_predicados_p -> LPAREN NOT lista_predicados_p RPAREN lista_predicados_p
-Rule 52    lista_predicados_p -> LPAREN COMP LPAREN lista_ids RPAREN NUM RPAREN lista_predicados_p
-Rule 53    lista_predicados_p -> LPAREN COMP LPAREN lista_ids RPAREN ID RPAREN lista_predicados_p
+Rule 52    lista_predicados_p -> LPAREN COMP LPAREN lista_ids_p RPAREN NUM RPAREN lista_predicados_p
+Rule 53    lista_predicados_p -> LPAREN COMP LPAREN lista_ids_p RPAREN ID RPAREN lista_predicados_p
 Rule 54    lista_ids_p -> <empty>
 Rule 55    lista_ids_p -> ID lista_ids_p
 Rule 56    domain_formalization -> def_domain def_requirements def_types def_constants def_predicates def_functions def_actions
@@ -295,8 +295,8 @@ def_types            : 56 57 58 59
 domain_formalization : 1
 lista_constants      : 72 74
 lista_functions_def  : 82 84 85 86 87
-lista_ids            : 18 49 52 53 74 120
-lista_ids_p          : 40 41 55
+lista_ids            : 18 74 120
+lista_ids_p          : 40 41 49 52 53 55
 lista_objects        : 38 40
 lista_parameters     : 95 99 100
 lista_predicados     : 103 105
@@ -1660,11 +1660,11 @@ state 137
 
     (42) def_init -> LPAREN COLON INIT . lista_predicados_p RPAREN
     (48) lista_predicados_p -> .
-    (49) lista_predicados_p -> . LPAREN lista_ids RPAREN lista_predicados_p
+    (49) lista_predicados_p -> . LPAREN lista_ids_p RPAREN lista_predicados_p
     (50) lista_predicados_p -> . LPAREN AND lista_predicados_p RPAREN lista_predicados_p
     (51) lista_predicados_p -> . LPAREN NOT lista_predicados_p RPAREN lista_predicados_p
-    (52) lista_predicados_p -> . LPAREN COMP LPAREN lista_ids RPAREN NUM RPAREN lista_predicados_p
-    (53) lista_predicados_p -> . LPAREN COMP LPAREN lista_ids RPAREN ID RPAREN lista_predicados_p
+    (52) lista_predicados_p -> . LPAREN COMP LPAREN lista_ids_p RPAREN NUM RPAREN lista_predicados_p
+    (53) lista_predicados_p -> . LPAREN COMP LPAREN lista_ids_p RPAREN ID RPAREN lista_predicados_p
 
     RPAREN          reduce using rule 48 (lista_predicados_p -> .)
     LPAREN          shift and go to state 160
@@ -1883,21 +1883,21 @@ state 159
 
 state 160
 
-    (49) lista_predicados_p -> LPAREN . lista_ids RPAREN lista_predicados_p
+    (49) lista_predicados_p -> LPAREN . lista_ids_p RPAREN lista_predicados_p
     (50) lista_predicados_p -> LPAREN . AND lista_predicados_p RPAREN lista_predicados_p
     (51) lista_predicados_p -> LPAREN . NOT lista_predicados_p RPAREN lista_predicados_p
-    (52) lista_predicados_p -> LPAREN . COMP LPAREN lista_ids RPAREN NUM RPAREN lista_predicados_p
-    (53) lista_predicados_p -> LPAREN . COMP LPAREN lista_ids RPAREN ID RPAREN lista_predicados_p
-    (119) lista_ids -> .
-    (120) lista_ids -> . ID lista_ids
+    (52) lista_predicados_p -> LPAREN . COMP LPAREN lista_ids_p RPAREN NUM RPAREN lista_predicados_p
+    (53) lista_predicados_p -> LPAREN . COMP LPAREN lista_ids_p RPAREN ID RPAREN lista_predicados_p
+    (54) lista_ids_p -> .
+    (55) lista_ids_p -> . ID lista_ids_p
 
     AND             shift and go to state 185
     NOT             shift and go to state 186
     COMP            shift and go to state 187
-    RPAREN          reduce using rule 119 (lista_ids -> .)
-    ID              shift and go to state 151
+    RPAREN          reduce using rule 54 (lista_ids_p -> .)
+    ID              shift and go to state 140
 
-    lista_ids                      shift and go to state 184
+    lista_ids_p                    shift and go to state 184
 
 state 161
 
@@ -2085,7 +2085,7 @@ state 183
 
 state 184
 
-    (49) lista_predicados_p -> LPAREN lista_ids . RPAREN lista_predicados_p
+    (49) lista_predicados_p -> LPAREN lista_ids_p . RPAREN lista_predicados_p
 
     RPAREN          shift and go to state 207
 
@@ -2094,11 +2094,11 @@ state 185
 
     (50) lista_predicados_p -> LPAREN AND . lista_predicados_p RPAREN lista_predicados_p
     (48) lista_predicados_p -> .
-    (49) lista_predicados_p -> . LPAREN lista_ids RPAREN lista_predicados_p
+    (49) lista_predicados_p -> . LPAREN lista_ids_p RPAREN lista_predicados_p
     (50) lista_predicados_p -> . LPAREN AND lista_predicados_p RPAREN lista_predicados_p
     (51) lista_predicados_p -> . LPAREN NOT lista_predicados_p RPAREN lista_predicados_p
-    (52) lista_predicados_p -> . LPAREN COMP LPAREN lista_ids RPAREN NUM RPAREN lista_predicados_p
-    (53) lista_predicados_p -> . LPAREN COMP LPAREN lista_ids RPAREN ID RPAREN lista_predicados_p
+    (52) lista_predicados_p -> . LPAREN COMP LPAREN lista_ids_p RPAREN NUM RPAREN lista_predicados_p
+    (53) lista_predicados_p -> . LPAREN COMP LPAREN lista_ids_p RPAREN ID RPAREN lista_predicados_p
 
     RPAREN          reduce using rule 48 (lista_predicados_p -> .)
     LPAREN          shift and go to state 160
@@ -2109,11 +2109,11 @@ state 186
 
     (51) lista_predicados_p -> LPAREN NOT . lista_predicados_p RPAREN lista_predicados_p
     (48) lista_predicados_p -> .
-    (49) lista_predicados_p -> . LPAREN lista_ids RPAREN lista_predicados_p
+    (49) lista_predicados_p -> . LPAREN lista_ids_p RPAREN lista_predicados_p
     (50) lista_predicados_p -> . LPAREN AND lista_predicados_p RPAREN lista_predicados_p
     (51) lista_predicados_p -> . LPAREN NOT lista_predicados_p RPAREN lista_predicados_p
-    (52) lista_predicados_p -> . LPAREN COMP LPAREN lista_ids RPAREN NUM RPAREN lista_predicados_p
-    (53) lista_predicados_p -> . LPAREN COMP LPAREN lista_ids RPAREN ID RPAREN lista_predicados_p
+    (52) lista_predicados_p -> . LPAREN COMP LPAREN lista_ids_p RPAREN NUM RPAREN lista_predicados_p
+    (53) lista_predicados_p -> . LPAREN COMP LPAREN lista_ids_p RPAREN ID RPAREN lista_predicados_p
 
     RPAREN          reduce using rule 48 (lista_predicados_p -> .)
     LPAREN          shift and go to state 160
@@ -2122,8 +2122,8 @@ state 186
 
 state 187
 
-    (52) lista_predicados_p -> LPAREN COMP . LPAREN lista_ids RPAREN NUM RPAREN lista_predicados_p
-    (53) lista_predicados_p -> LPAREN COMP . LPAREN lista_ids RPAREN ID RPAREN lista_predicados_p
+    (52) lista_predicados_p -> LPAREN COMP . LPAREN lista_ids_p RPAREN NUM RPAREN lista_predicados_p
+    (53) lista_predicados_p -> LPAREN COMP . LPAREN lista_ids_p RPAREN ID RPAREN lista_predicados_p
 
     LPAREN          shift and go to state 210
 
@@ -2308,11 +2308,11 @@ state 204
 
     (44) def_goal -> LPAREN COLON GOAL LPAREN AND . lista_predicados_p RPAREN RPAREN
     (48) lista_predicados_p -> .
-    (49) lista_predicados_p -> . LPAREN lista_ids RPAREN lista_predicados_p
+    (49) lista_predicados_p -> . LPAREN lista_ids_p RPAREN lista_predicados_p
     (50) lista_predicados_p -> . LPAREN AND lista_predicados_p RPAREN lista_predicados_p
     (51) lista_predicados_p -> . LPAREN NOT lista_predicados_p RPAREN lista_predicados_p
-    (52) lista_predicados_p -> . LPAREN COMP LPAREN lista_ids RPAREN NUM RPAREN lista_predicados_p
-    (53) lista_predicados_p -> . LPAREN COMP LPAREN lista_ids RPAREN ID RPAREN lista_predicados_p
+    (52) lista_predicados_p -> . LPAREN COMP LPAREN lista_ids_p RPAREN NUM RPAREN lista_predicados_p
+    (53) lista_predicados_p -> . LPAREN COMP LPAREN lista_ids_p RPAREN ID RPAREN lista_predicados_p
 
     RPAREN          reduce using rule 48 (lista_predicados_p -> .)
     LPAREN          shift and go to state 160
@@ -2323,11 +2323,11 @@ state 205
 
     (45) def_goal -> LPAREN COLON GOAL LPAREN NOT . lista_predicados_p RPAREN RPAREN
     (48) lista_predicados_p -> .
-    (49) lista_predicados_p -> . LPAREN lista_ids RPAREN lista_predicados_p
+    (49) lista_predicados_p -> . LPAREN lista_ids_p RPAREN lista_predicados_p
     (50) lista_predicados_p -> . LPAREN AND lista_predicados_p RPAREN lista_predicados_p
     (51) lista_predicados_p -> . LPAREN NOT lista_predicados_p RPAREN lista_predicados_p
-    (52) lista_predicados_p -> . LPAREN COMP LPAREN lista_ids RPAREN NUM RPAREN lista_predicados_p
-    (53) lista_predicados_p -> . LPAREN COMP LPAREN lista_ids RPAREN ID RPAREN lista_predicados_p
+    (52) lista_predicados_p -> . LPAREN COMP LPAREN lista_ids_p RPAREN NUM RPAREN lista_predicados_p
+    (53) lista_predicados_p -> . LPAREN COMP LPAREN lista_ids_p RPAREN ID RPAREN lista_predicados_p
 
     RPAREN          reduce using rule 48 (lista_predicados_p -> .)
     LPAREN          shift and go to state 160
@@ -2348,13 +2348,13 @@ state 206
 
 state 207
 
-    (49) lista_predicados_p -> LPAREN lista_ids RPAREN . lista_predicados_p
+    (49) lista_predicados_p -> LPAREN lista_ids_p RPAREN . lista_predicados_p
     (48) lista_predicados_p -> .
-    (49) lista_predicados_p -> . LPAREN lista_ids RPAREN lista_predicados_p
+    (49) lista_predicados_p -> . LPAREN lista_ids_p RPAREN lista_predicados_p
     (50) lista_predicados_p -> . LPAREN AND lista_predicados_p RPAREN lista_predicados_p
     (51) lista_predicados_p -> . LPAREN NOT lista_predicados_p RPAREN lista_predicados_p
-    (52) lista_predicados_p -> . LPAREN COMP LPAREN lista_ids RPAREN NUM RPAREN lista_predicados_p
-    (53) lista_predicados_p -> . LPAREN COMP LPAREN lista_ids RPAREN ID RPAREN lista_predicados_p
+    (52) lista_predicados_p -> . LPAREN COMP LPAREN lista_ids_p RPAREN NUM RPAREN lista_predicados_p
+    (53) lista_predicados_p -> . LPAREN COMP LPAREN lista_ids_p RPAREN ID RPAREN lista_predicados_p
 
     RPAREN          reduce using rule 48 (lista_predicados_p -> .)
     LPAREN          shift and go to state 160
@@ -2377,15 +2377,15 @@ state 209
 
 state 210
 
-    (52) lista_predicados_p -> LPAREN COMP LPAREN . lista_ids RPAREN NUM RPAREN lista_predicados_p
-    (53) lista_predicados_p -> LPAREN COMP LPAREN . lista_ids RPAREN ID RPAREN lista_predicados_p
-    (119) lista_ids -> .
-    (120) lista_ids -> . ID lista_ids
+    (52) lista_predicados_p -> LPAREN COMP LPAREN . lista_ids_p RPAREN NUM RPAREN lista_predicados_p
+    (53) lista_predicados_p -> LPAREN COMP LPAREN . lista_ids_p RPAREN ID RPAREN lista_predicados_p
+    (54) lista_ids_p -> .
+    (55) lista_ids_p -> . ID lista_ids_p
 
-    RPAREN          reduce using rule 119 (lista_ids -> .)
-    ID              shift and go to state 151
+    RPAREN          reduce using rule 54 (lista_ids_p -> .)
+    ID              shift and go to state 140
 
-    lista_ids                      shift and go to state 233
+    lista_ids_p                    shift and go to state 233
 
 state 211
 
@@ -2573,20 +2573,20 @@ state 229
 
 state 230
 
-    (49) lista_predicados_p -> LPAREN lista_ids RPAREN lista_predicados_p .
+    (49) lista_predicados_p -> LPAREN lista_ids_p RPAREN lista_predicados_p .
 
-    RPAREN          reduce using rule 49 (lista_predicados_p -> LPAREN lista_ids RPAREN lista_predicados_p .)
+    RPAREN          reduce using rule 49 (lista_predicados_p -> LPAREN lista_ids_p RPAREN lista_predicados_p .)
 
 
 state 231
 
     (50) lista_predicados_p -> LPAREN AND lista_predicados_p RPAREN . lista_predicados_p
     (48) lista_predicados_p -> .
-    (49) lista_predicados_p -> . LPAREN lista_ids RPAREN lista_predicados_p
+    (49) lista_predicados_p -> . LPAREN lista_ids_p RPAREN lista_predicados_p
     (50) lista_predicados_p -> . LPAREN AND lista_predicados_p RPAREN lista_predicados_p
     (51) lista_predicados_p -> . LPAREN NOT lista_predicados_p RPAREN lista_predicados_p
-    (52) lista_predicados_p -> . LPAREN COMP LPAREN lista_ids RPAREN NUM RPAREN lista_predicados_p
-    (53) lista_predicados_p -> . LPAREN COMP LPAREN lista_ids RPAREN ID RPAREN lista_predicados_p
+    (52) lista_predicados_p -> . LPAREN COMP LPAREN lista_ids_p RPAREN NUM RPAREN lista_predicados_p
+    (53) lista_predicados_p -> . LPAREN COMP LPAREN lista_ids_p RPAREN ID RPAREN lista_predicados_p
 
     RPAREN          reduce using rule 48 (lista_predicados_p -> .)
     LPAREN          shift and go to state 160
@@ -2597,11 +2597,11 @@ state 232
 
     (51) lista_predicados_p -> LPAREN NOT lista_predicados_p RPAREN . lista_predicados_p
     (48) lista_predicados_p -> .
-    (49) lista_predicados_p -> . LPAREN lista_ids RPAREN lista_predicados_p
+    (49) lista_predicados_p -> . LPAREN lista_ids_p RPAREN lista_predicados_p
     (50) lista_predicados_p -> . LPAREN AND lista_predicados_p RPAREN lista_predicados_p
     (51) lista_predicados_p -> . LPAREN NOT lista_predicados_p RPAREN lista_predicados_p
-    (52) lista_predicados_p -> . LPAREN COMP LPAREN lista_ids RPAREN NUM RPAREN lista_predicados_p
-    (53) lista_predicados_p -> . LPAREN COMP LPAREN lista_ids RPAREN ID RPAREN lista_predicados_p
+    (52) lista_predicados_p -> . LPAREN COMP LPAREN lista_ids_p RPAREN NUM RPAREN lista_predicados_p
+    (53) lista_predicados_p -> . LPAREN COMP LPAREN lista_ids_p RPAREN ID RPAREN lista_predicados_p
 
     RPAREN          reduce using rule 48 (lista_predicados_p -> .)
     LPAREN          shift and go to state 160
@@ -2610,8 +2610,8 @@ state 232
 
 state 233
 
-    (52) lista_predicados_p -> LPAREN COMP LPAREN lista_ids . RPAREN NUM RPAREN lista_predicados_p
-    (53) lista_predicados_p -> LPAREN COMP LPAREN lista_ids . RPAREN ID RPAREN lista_predicados_p
+    (52) lista_predicados_p -> LPAREN COMP LPAREN lista_ids_p . RPAREN NUM RPAREN lista_predicados_p
+    (53) lista_predicados_p -> LPAREN COMP LPAREN lista_ids_p . RPAREN ID RPAREN lista_predicados_p
 
     RPAREN          shift and go to state 252
 
@@ -2760,8 +2760,8 @@ state 251
 
 state 252
 
-    (52) lista_predicados_p -> LPAREN COMP LPAREN lista_ids RPAREN . NUM RPAREN lista_predicados_p
-    (53) lista_predicados_p -> LPAREN COMP LPAREN lista_ids RPAREN . ID RPAREN lista_predicados_p
+    (52) lista_predicados_p -> LPAREN COMP LPAREN lista_ids_p RPAREN . NUM RPAREN lista_predicados_p
+    (53) lista_predicados_p -> LPAREN COMP LPAREN lista_ids_p RPAREN . ID RPAREN lista_predicados_p
 
     NUM             shift and go to state 264
     ID              shift and go to state 265
@@ -2865,11 +2865,11 @@ state 263
 
     (46) def_goal -> LPAREN COLON GOAL COLON AGENT agent_def COLON CONDITION . lista_predicados_p RPAREN
     (48) lista_predicados_p -> .
-    (49) lista_predicados_p -> . LPAREN lista_ids RPAREN lista_predicados_p
+    (49) lista_predicados_p -> . LPAREN lista_ids_p RPAREN lista_predicados_p
     (50) lista_predicados_p -> . LPAREN AND lista_predicados_p RPAREN lista_predicados_p
     (51) lista_predicados_p -> . LPAREN NOT lista_predicados_p RPAREN lista_predicados_p
-    (52) lista_predicados_p -> . LPAREN COMP LPAREN lista_ids RPAREN NUM RPAREN lista_predicados_p
-    (53) lista_predicados_p -> . LPAREN COMP LPAREN lista_ids RPAREN ID RPAREN lista_predicados_p
+    (52) lista_predicados_p -> . LPAREN COMP LPAREN lista_ids_p RPAREN NUM RPAREN lista_predicados_p
+    (53) lista_predicados_p -> . LPAREN COMP LPAREN lista_ids_p RPAREN ID RPAREN lista_predicados_p
 
     RPAREN          reduce using rule 48 (lista_predicados_p -> .)
     LPAREN          shift and go to state 160
@@ -2878,14 +2878,14 @@ state 263
 
 state 264
 
-    (52) lista_predicados_p -> LPAREN COMP LPAREN lista_ids RPAREN NUM . RPAREN lista_predicados_p
+    (52) lista_predicados_p -> LPAREN COMP LPAREN lista_ids_p RPAREN NUM . RPAREN lista_predicados_p
 
     RPAREN          shift and go to state 274
 
 
 state 265
 
-    (53) lista_predicados_p -> LPAREN COMP LPAREN lista_ids RPAREN ID . RPAREN lista_predicados_p
+    (53) lista_predicados_p -> LPAREN COMP LPAREN lista_ids_p RPAREN ID . RPAREN lista_predicados_p
 
     RPAREN          shift and go to state 275
 
@@ -2973,13 +2973,13 @@ state 273
 
 state 274
 
-    (52) lista_predicados_p -> LPAREN COMP LPAREN lista_ids RPAREN NUM RPAREN . lista_predicados_p
+    (52) lista_predicados_p -> LPAREN COMP LPAREN lista_ids_p RPAREN NUM RPAREN . lista_predicados_p
     (48) lista_predicados_p -> .
-    (49) lista_predicados_p -> . LPAREN lista_ids RPAREN lista_predicados_p
+    (49) lista_predicados_p -> . LPAREN lista_ids_p RPAREN lista_predicados_p
     (50) lista_predicados_p -> . LPAREN AND lista_predicados_p RPAREN lista_predicados_p
     (51) lista_predicados_p -> . LPAREN NOT lista_predicados_p RPAREN lista_predicados_p
-    (52) lista_predicados_p -> . LPAREN COMP LPAREN lista_ids RPAREN NUM RPAREN lista_predicados_p
-    (53) lista_predicados_p -> . LPAREN COMP LPAREN lista_ids RPAREN ID RPAREN lista_predicados_p
+    (52) lista_predicados_p -> . LPAREN COMP LPAREN lista_ids_p RPAREN NUM RPAREN lista_predicados_p
+    (53) lista_predicados_p -> . LPAREN COMP LPAREN lista_ids_p RPAREN ID RPAREN lista_predicados_p
 
     RPAREN          reduce using rule 48 (lista_predicados_p -> .)
     LPAREN          shift and go to state 160
@@ -2988,13 +2988,13 @@ state 274
 
 state 275
 
-    (53) lista_predicados_p -> LPAREN COMP LPAREN lista_ids RPAREN ID RPAREN . lista_predicados_p
+    (53) lista_predicados_p -> LPAREN COMP LPAREN lista_ids_p RPAREN ID RPAREN . lista_predicados_p
     (48) lista_predicados_p -> .
-    (49) lista_predicados_p -> . LPAREN lista_ids RPAREN lista_predicados_p
+    (49) lista_predicados_p -> . LPAREN lista_ids_p RPAREN lista_predicados_p
     (50) lista_predicados_p -> . LPAREN AND lista_predicados_p RPAREN lista_predicados_p
     (51) lista_predicados_p -> . LPAREN NOT lista_predicados_p RPAREN lista_predicados_p
-    (52) lista_predicados_p -> . LPAREN COMP LPAREN lista_ids RPAREN NUM RPAREN lista_predicados_p
-    (53) lista_predicados_p -> . LPAREN COMP LPAREN lista_ids RPAREN ID RPAREN lista_predicados_p
+    (52) lista_predicados_p -> . LPAREN COMP LPAREN lista_ids_p RPAREN NUM RPAREN lista_predicados_p
+    (53) lista_predicados_p -> . LPAREN COMP LPAREN lista_ids_p RPAREN ID RPAREN lista_predicados_p
 
     RPAREN          reduce using rule 48 (lista_predicados_p -> .)
     LPAREN          shift and go to state 160
@@ -3079,16 +3079,16 @@ state 281
 
 state 282
 
-    (52) lista_predicados_p -> LPAREN COMP LPAREN lista_ids RPAREN NUM RPAREN lista_predicados_p .
+    (52) lista_predicados_p -> LPAREN COMP LPAREN lista_ids_p RPAREN NUM RPAREN lista_predicados_p .
 
-    RPAREN          reduce using rule 52 (lista_predicados_p -> LPAREN COMP LPAREN lista_ids RPAREN NUM RPAREN lista_predicados_p .)
+    RPAREN          reduce using rule 52 (lista_predicados_p -> LPAREN COMP LPAREN lista_ids_p RPAREN NUM RPAREN lista_predicados_p .)
 
 
 state 283
 
-    (53) lista_predicados_p -> LPAREN COMP LPAREN lista_ids RPAREN ID RPAREN lista_predicados_p .
+    (53) lista_predicados_p -> LPAREN COMP LPAREN lista_ids_p RPAREN ID RPAREN lista_predicados_p .
 
-    RPAREN          reduce using rule 53 (lista_predicados_p -> LPAREN COMP LPAREN lista_ids RPAREN ID RPAREN lista_predicados_p .)
+    RPAREN          reduce using rule 53 (lista_predicados_p -> LPAREN COMP LPAREN lista_ids_p RPAREN ID RPAREN lista_predicados_p .)
 
 
 state 284
