@@ -55,7 +55,10 @@ class ADLForm:
             print ("\t<PRED>",self.lista_predicados)
             print ("\t>>>>>>",self.lista_ids_sep)
 
-
+            if self.dealingwith % 2 == 0:
+                print("precond")
+            else:
+                print("effect")
 
 
 
