@@ -45,8 +45,8 @@ class PDDLProblem:
         self.cleanProblemListaIdsSep()
 
     def setProblemInitPredicates(self):
-        print (self.lista_ids_sep)
-        print ("\n\n")
+        # print (self.lista_ids_sep)
+        # print ("\n\n")
         for init_pred in self.lista_ids_sep:
             if init_pred[0] == "!":
                 ipred = PDDLInitPredicate(init_pred[1])

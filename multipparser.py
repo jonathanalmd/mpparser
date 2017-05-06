@@ -280,7 +280,7 @@ def p_lista_ids_p_2(p):
     objProblem.appendId(p[1])
 
 def p_lista_ids_p_3(p):
-    '''lista_ids_p : NOT LPAREN ID lista_ids_p RPAREN'''
+    '''lista_ids_p : NOT LPAREN ID lista_ids_p RPAREN '''
     # print(p[1],p[3])
     # print(objProblem.lista_ids)
     # objProblem.lista_ids.insert(0,"!")
@@ -301,7 +301,7 @@ def p_lista_ids_p_4(p):
     # print(objProblem.lista_ids)
 
 def p_lista_ids_p_5(p):
-    '''lista_ids_p : COMP LPAREN ID lista_ids_p RPAREN ID'''
+    '''lista_ids_p : COMP LPAREN ID lista_ids_p RPAREN  ID'''
     # print(objProblem.lista_ids)
     # print(p[1],p[3])
     # objProblem.lista_ids.insert(0,"=")
@@ -649,7 +649,9 @@ def p_lista_ids_2(p):
 def p_error(p):
     if p.value == "(":
         print("Syntax error in line",plex.lexer.lineno-1)
-        print("\tMissing or more ')' than expected")
+        print("\tMissing or more ')' than expected OR")
+        if run_mode == "pddlproblem":
+            print("\tUsing more than one predicate inside 'NOT' operator: please apply 'NOT' operator on each predicate individually")
     else:
         print("Syntax error in %s line %d"%(p.value,plex.lexer.lineno))
     sys.exit()
@@ -661,6 +663,7 @@ pparser = yacc.yacc()
 objDomain = pddldomain.PDDLDomain()
 objProblem = pddlproblem.PDDLProblem()
 
+run_mode = "pddlproblem"
 def parse(data):
     pparser.error = 0
     p = pparser.parse(data)
