@@ -17,6 +17,15 @@ class ADLInfo:
         self.initial_state = initial_state
         self.goal_state = goal_state
         self.actions = actions
+    
+    def getInitialState(self):
+        return self.initial_state
+
+    def getGoalState(self):
+        return self.goal_state
+
+    def getActions(self):
+        return self.actions
 
     def __str__(self):
         return "\nInitial State:\n\t" + str(self.initial_state) + "\nGoal State: \n\t" + str(self.goal_state) + "\nActions: \n\t" + str(self.actions) + "\n"
@@ -145,8 +154,12 @@ class ADLFormParse:
         paction_list = []
         for param_types, param_vars in zip(self.action_p_types_sep, self.action_params_sep):
             paction = {}
+            print(param_types)
             for utype, uvar in zip(param_types, param_vars):
-                paction[uvar] = utype
+                if utype in paction:
+                    paction[utype].append(uvar)
+                else:
+                    paction[utype] = [uvar]
             paction_list.append(paction)
         # print("\n<PARAMETERS:",paction_list)
 

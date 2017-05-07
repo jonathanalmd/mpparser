@@ -25,7 +25,7 @@ goal (
         at(c1,jfk) and at(c2,sfo)
 )
 action (
-        load(c:cargo),
+        load(c:cargo, c2:cargo, d:dargo),
         precond: at(c,a) and at(p,a)
         effect: at(c,a) and in(c,p)
 )

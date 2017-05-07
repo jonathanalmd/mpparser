@@ -18,11 +18,26 @@ class PDDLProblemInfo:
         self.init = init
         self.goal = goal
 
+    def getName(self):
+        return self.name
+
+    def getProblemDomain(self):
+        return self.domain_name
+
+    def getObjects(self):
+        return self.objects
+
+    def getInit(self):
+        return self.init
+
+    def getGoal(self):
+        return self.goal
+
     def __str__(self):
-        return "\nProblem Name:\n\t" + str(self.name) + "\nProblem Domain: \n\t" + str(self.domain_name) + "\nObjects: \n\t" + str(self.objects) + "\nInit: \n\t" + str(self.init) + "\nGoal: \n\t" + str(self.objects) +  "\n"
+        return "\nProblem Name:\n\t" + str(self.name) + "\nProblem Domain: \n\t" + str(self.domain_name) + "\nObjects: \n\t" + str(self.objects) + "\nInit: \n\t" + str(self.init) + "\nGoal: \n\t" + str(self.goal) +  "\n"
 
     def __repr__(self):
-        return "\nProblem Name:\n\t" + str(self.name) + "\nProblem Domain: \n\t" + str(self.domain_name) + "\nObjects: \n\t" + str(self.objects) + "\nInit: \n\t" + str(self.init) + "\nGoal: \n\t" + str(self.objects) +  "\n"
+        return "\nProblem Name:\n\t" + str(self.name) + "\nProblem Domain: \n\t" + str(self.domain_name) + "\nObjects: \n\t" + str(self.objects) + "\nInit: \n\t" + str(self.init) + "\nGoal: \n\t" + str(self.goal) +  "\n"
 
 
 

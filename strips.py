@@ -19,6 +19,15 @@ class StripsInfo:
         self.goal_state = goal_state
         self.actions = actions
 
+    def getInitialState(self):
+        return self.initial_state
+
+    def getGoalState(self):
+        return self.goal_state
+
+    def getActions(self):
+        return self.actions
+
     def __str__(self):
         return "\nInitial State:\n\t" + str(self.initial_state) + "\nGoal State: \n\t" + str(self.goal_state) + "\nActions: \n\t" + str(self.actions) + "\n"
 
