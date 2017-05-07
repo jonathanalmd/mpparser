@@ -186,29 +186,45 @@ def p_adl_lista_ids_2(p):
 
 def p_strips_formalization_1(p):
     '''strips_formalization : strips_initial_state strips_goal_state strips_actions_def'''
-
+    objStrips.printStripsInfo()
 def p_strips_initial_state_1(p):
     '''strips_initial_state : INITIAL STATE COLON strips_lista_predicados'''
 
 
 def p_strips_lista_predicados_1(p):
     '''strips_lista_predicados : strips_predicado'''
+    # print("<preds>:",objStrips.lista_pred_names)
+    # print("\t",objStrips.lista_ids_sep)
+    objStrips.dealWithPredicates()
 
 def p_strips_lista_predicados_2(p):
     '''strips_lista_predicados : strips_predicado COMMA strips_lista_predicados'''
-
+    
 
 def p_strips_predicado_1(p):
     '''strips_predicado : ID LPAREN strips_lista_ids RPAREN'''
+    # print("<pred>:",p[1])
+    objStrips.appendPredName(p[1])
+    # print("\t",objStrips.lista_ids_sep)
+    objStrips.appendListIds()
 
 def p_strips_predicado_2(p):
     '''strips_predicado : LNOT ID LPAREN strips_lista_ids RPAREN'''
+    # print("<!pred>:",p[2])
+    objStrips.appendPredName("!"+p[2])
+    # print("\t",objStrips.lista_ids_sep)
+    objStrips.appendListIds()
 
 def p_strips_lista_ids_1(p):
     '''strips_lista_ids : ID'''
+    # print(">",p[1])
+    objStrips.appendId(p[1])
 
 def p_strips_lista_ids_2(p):
     '''strips_lista_ids : ID COMMA strips_lista_ids'''
+    # print(p[1])
+    objStrips.appendId(p[1])
+
 
 
 def p_strips_goal_state_1(p):
