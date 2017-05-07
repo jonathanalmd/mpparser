@@ -2,8 +2,11 @@ Initial state: At(Tower1), BlockAt(A, Tower1), OnBottom(A), OnTop(A), BlockAt(B,
 Goal state:     BlockAt(A, Tower2), On(A, B)
 
 Actions:
+
+
+
         Go(From, To)
-        Preconditions: At(From), !At(To)
+        Preconditions: At(From), !At(To),
         Effect: At(To), !At(From)
 
         PlaceOn(Block1, Block2, Tower)

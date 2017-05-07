@@ -16,6 +16,7 @@ import pddldomain
 import pddlproblem
 import adl
 import strips
+import errorhandler
 
 # Get the token map
 tokens = plex.tokens
@@ -165,6 +166,7 @@ def p_strips_formalization_1(p):
 
 def p_strips_initial_state_1(p):
     '''strips_initial_state : INITIAL STATE COLON strips_lista_predicados'''
+    errorhandler.linestrips = plex.lexer.lineno
 
 
 def p_strips_lista_predicados_1(p):
@@ -175,7 +177,7 @@ def p_strips_lista_predicados_1(p):
 
 def p_strips_lista_predicados_2(p):
     '''strips_lista_predicados : strips_predicado COMMA strips_lista_predicados'''
-    
+    errorhandler.linestrips = plex.lexer.lineno
 
 def p_strips_predicado_1(p):
     '''strips_predicado : ID LPAREN strips_lista_ids RPAREN'''
@@ -708,24 +710,12 @@ def p_lista_ids_2(p):
 
 # =================================================================================================== #
 # =================================================================================================== #
-# ======================================== FIM PDDL ================================================ #
+# ============================================ FIM PDDL ============================================= #
 # =================================================================================================== #
 # =================================================================================================== #
-
-
 
 def p_error(p):
-    if p.value == "(":
-        print("Syntax error in line",plex.lexer.lineno-1)
-        print("\tMissing or more ')' than expected OR")
-        if run_mode == "pddlproblem":
-            print("\tUsing more than one predicate inside 'NOT' operator: please apply 'NOT' operator on each predicate individually")
-    elif p.value != "(":
-        print("Syntax error in %s line %d"%(p.value,plex.lexer.lineno))
-    else:
-        print("Syntax error at EOI")
-    sys.exit()
-
+    errorhandler.reportSyntaxError(p.value)
 
 
 pparser = yacc.yacc()
@@ -733,18 +723,20 @@ objDomain = pddldomain.PDDLDomain()
 objProblem = pddlproblem.PDDLProblem()
 objADL = adl.ADLForm()
 objStrips = strips.StripsForm()
-run_mode = ""
 
 def parse(pmode, filelist):
     if pmode == "pddl":
-        run_mode = "pddlproblem"
+        errorhandler.run_mode = "pddldomain"
 
         domain_f = open(filelist[0]).read()
         problem_f = open(filelist[1]).read()
         pparser.error = 0
+
         p = pparser.parse(domain_f)
         if pparser.error:
             return False
+
+        run_mode = "pddlproblem"
         p = pparser.parse(problem_f)
         if pparser.error:
             return False
@@ -754,8 +746,11 @@ def parse(pmode, filelist):
         return True
 
     elif pmode == "adl":
+        errorhandler.run_mode = "adl"
+
         adl_f = open(filelist[0]).read()
         pparser.error = 0
+
         p = pparser.parse(adl_f)
         if pparser.error:
             return False
@@ -764,8 +759,10 @@ def parse(pmode, filelist):
         return True
 
     else: # strips
+        errorhandler.run_mode = "strips"
         strips_f = open(filelist[0]).read()
         pparser.error = 0
+
         p = pparser.parse(strips_f)
         if pparser.error:
             return False
