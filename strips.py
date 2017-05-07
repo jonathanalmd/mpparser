@@ -84,6 +84,6 @@ class StripsForm:
         print ("Initial State:\n\t",self.strips_initial)
         print ("Goal State:\n\t",self.strips_goal)
         print ("Actions:\n\t",self.strips_actions)
-
+        print ("\n")
 
 

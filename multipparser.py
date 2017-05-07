@@ -113,34 +113,10 @@ def p_adl_params_2(p):
     # print("<VAR>",p[1])
     objADL.appendActionParam(p[1])
 
-# def p_adl_lista_parametros_1(p):
-#     '''adl_lista_parametros : adl_parametro '''
-   
-
-# def p_adl_lista_parametros_2(p):
-#     '''adl_lista_parametros : adl_parametro COMMA adl_lista_parametros'''
-#     # objADL.appendListActionParam()
-
 def p_adl_parametro_1(p):
     '''adl_parametro : ID'''
     # print("<TYPE>",p[1])
     objADL.appendActionParamType(p[1])
-
-# def p_adl_parametro_2(p):
-#     '''adl_parametro : ID COLON ID'''
-#     print("<TYPE>",p[1])
-#     print("\t<VAR>",p[3])
-
-#     objADL.appendActionParamType(p[1])
-#     objADL.appendActionParam(p[3])
-# def p_adl_lista_params_1(p):
-#     ''' adl_lista_params : ID '''
-#     print("\t<VAR>",p[1])
-
-# def p_adl_lista_params_2(p):
-#     '''adl_lista_params : ID COMMA adl_lista_params '''
-#     print("\t<VAR2>",p[1])
-
 
 
 
@@ -186,7 +162,7 @@ def p_adl_lista_ids_2(p):
 
 def p_strips_formalization_1(p):
     '''strips_formalization : strips_initial_state strips_goal_state strips_actions_def'''
-    objStrips.printStripsInfo()
+
 def p_strips_initial_state_1(p):
     '''strips_initial_state : INITIAL STATE COLON strips_lista_predicados'''
 
@@ -332,52 +308,6 @@ def p_lista_predicados_p_2(p):
     # objProblem.setProblemObjects()
     objProblem.cleanProblemIds()
 
-# def p_lista_predicados_p_3(p):
-#     '''lista_predicados_p : LPAREN lista_ids_p RPAREN lista_predicados_op'''
-
-# def p_lista_predicados_p_3(p):
-#     '''lista_predicados_p : LPAREN NOT LPAREN lista_ids_p RPAREN RPAREN lista_predicados_p'''
-#     print(objProblem.lista_ids_sep)
-# def p_lista_predicados_p_4(p):
-#     '''lista_predicados_p : LPAREN COMP LPAREN lista_ids_p RPAREN NUM RPAREN lista_predicados_p'''
-
-# def p_lista_predicados_p_3(p):
-#     '''lista_predicados_p : lista_predicados_op'''
-
-# def p_lista_predicados_p_2(p):
-#     '''lista_predicados_p : LPAREN AND lista_predicados_p RPAREN lista_predicados_p'''
-
-
-# def p_lista_predicados_op_1(p):
-#     '''lista_predicados_op : LPAREN COMP LPAREN lista_ids_p RPAREN NUM RPAREN lista_predicados_p'''
-#     if objProblem.lista_ids:
-#         objProblem.appendListIds()
-#         objProblem.cleanProblemIds()
-#     print("<EQUAL>",objProblem.lista_ids_sep)
-#     print(p[4])
-    
-# def p_lista_predicados_op_2(p):
-#     '''lista_predicados_op : LPAREN COMP LPAREN lista_ids_p RPAREN ID RPAREN lista_predicados_p'''
-#     # print(objProblem.lista_ids_sep)
-#     # objProblem.lista_ids_sep[-1].insert(len(objProblem.lista_ids)-1,"=")
-#     # objProblem.lista_ids_sep[-1].insert(0,(p[6]))
-#     # objProblem.appendListIds()
-#     # objProblem.cleanProblemIds()
-#     # print(p[4],p[5],p[6],p[7],plex.lexer.lineno)
-
-
-# def p_lista_predicados_op_3(p):
-#     '''lista_predicados_op : LPAREN NOT LPAREN lista_ids_p RPAREN lista_predicados_p RPAREN lista_predicados_p'''
-#     if objProblem.lista_ids:
-#         objProblem.appendListIds()
-#         objProblem.cleanProblemIds()
-#     print("<NOT>",objProblem.lista_ids_sep)
-#     print(p[4])
-    
-# # def p_lista_predicados_p_6(p):
-# #     '''lista_predicados_p : LPAREN AT NUM ID RPAREN lista_predicados_p'''
-# #     # {;}
-# # ()
 def p_lista_objids_p_1(p):
     '''lista_objids_p : '''
     # print(objProblem.lista_ids)
@@ -535,14 +465,6 @@ def p_lista_predicates_2(p):
     # print(objDomain.lista_predicados)
     # print(objDomain.dealing_with_types)
     # print(objDomain.lista_pddl_vars)
-
-# def p_p_def_1(p):
-#     '''p_def : lista_var MINUS ID'''
-#     # {;}
-#     if objDomain.pddl_vars:
-#         objDomain.appendListaPDDLvars()
-#     objDomain.cleanPDDLvars()
-#     objDomain.dealingWithType(p[3])
 
 def p_p_def_1(p):
     '''p_def : lista_var MINUS ID p_def'''
@@ -792,9 +714,6 @@ def p_lista_ids_2(p):
 
 
 
-
-
-
 def p_error(p):
     if p.value == "(":
         print("Syntax error in line",plex.lexer.lineno-1)
@@ -806,7 +725,6 @@ def p_error(p):
     else:
         print("Syntax error at EOI")
     sys.exit()
-
 
 
 
@@ -852,5 +770,5 @@ def parse(pmode, filelist):
         if pparser.error:
             return False
 
-        # objStrips.printStripsInfo()
+        objStrips.printStripsInfo()
         return True
