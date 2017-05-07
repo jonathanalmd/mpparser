@@ -9,6 +9,8 @@ import multipparser
 # If a filename has been specified, we try to run it.
 # If a runtime error occurs, we bail out and enter
 # interactive mode below
+
+
 if len(sys.argv) > 2:
     pmode = "pddl"
     run = multipparser.parse(pmode,[sys.argv[1], sys.argv[2]])
@@ -16,7 +18,9 @@ if len(sys.argv) > 2:
         print("Formalizacao %s sintaticamente correta!"%(sys.argv[1]))
 
 elif len(sys.argv) == 2:
-    pmode = "stripsadl"
+
+    in_type = sys.argv[1].split(".")
+    pmode = in_type[-1]
     prog = multipparser.parse(pmode, [sys.argv[1]])
     if prog:
         print("Formalizacao %s sintaticamente correta!"%(sys.argv[1]))

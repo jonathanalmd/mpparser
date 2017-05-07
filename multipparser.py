@@ -15,6 +15,8 @@ import plex
 import pddldomain
 import pddlproblem
 import adl
+import strips
+
 # Get the token map
 tokens = plex.tokens
 
@@ -760,11 +762,13 @@ pparser = yacc.yacc()
 objDomain = pddldomain.PDDLDomain()
 objProblem = pddlproblem.PDDLProblem()
 objADL = adl.ADLForm()
+objStrips = strips.StripsForm()
+run_mode = ""
 
-
-run_mode = "pddlproblem"
 def parse(pmode, filelist):
     if pmode == "pddl":
+        run_mode = "pddlproblem"
+
         domain_f = open(filelist[0]).read()
         problem_f = open(filelist[1]).read()
         pparser.error = 0
@@ -778,11 +782,23 @@ def parse(pmode, filelist):
         objDomain.printDomainInfo()
         objProblem.printProblemInfo()
         return True
-    else:
-        strips_adl = open(filelist[0]).read()
+
+    elif pmode == "adl":
+        adl_f = open(filelist[0]).read()
         pparser.error = 0
-        p = pparser.parse(strips_adl)
+        p = pparser.parse(adl_f)
+        if pparser.error:
+            return False
 
         objADL.printADLInfo()
+        return True
 
+    else: # strips
+        strips_f = open(filelist[0]).read()
+        pparser.error = 0
+        p = pparser.parse(strips_f)
+        if pparser.error:
+            return False
+
+        # objStrips.printStripsInfo()
         return True

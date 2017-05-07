@@ -128,14 +128,8 @@ class ADLForm:
                 self.action_effect.append(effect)
 
     def setADLActions(self):
-        # print ("\t<name>\n\t",self.action_names)
-        # print ("\t<precond>\n\t",self.action_precond)
-        # print ("\t<effect>\n\t",self.action_effect)
-        # print (len(self.action_names),len(self.action_precond),len(self.action_effect))
-        # print ("\t>>>>>>",self.lista_ids_sep)
-
-        print("<TYPES>:",self.action_p_types_sep)
-        print("<vars>:",self.action_params_sep)
+        # print("<TYPES>:",self.action_p_types_sep)
+        # print("<vars>:",self.action_params_sep)
         
         paction_list = []
         for param_types, param_vars in zip(self.action_p_types_sep, self.action_params_sep):
@@ -143,7 +137,7 @@ class ADLForm:
             for utype, uvar in zip(param_types, param_vars):
                 paction[uvar] = utype
             paction_list.append(paction)
-        print("\n<PARAMETERS:",paction_list)
+        # print("\n<PARAMETERS:",paction_list)
 
         for action_name, param, precond, effect in zip(self.action_names, paction_list, self.action_precond, self.action_effect):
             uaction = ADLAction(action_name,param,precond,effect)
