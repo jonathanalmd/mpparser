@@ -12,9 +12,20 @@ class ADLAction:
     def __repr__(self):
         return "\n\tAction Name: " + self.name + "\n\tParameters: " + str(self.param) + "\n\tPrecondition: " + str(self.precond) + "\n\tEffect: " + str(self.effect) + "\n"
 
+class ADLInfo:
+    def __init__(self, initial_state, goal_state, actions):
+        self.initial_state = initial_state
+        self.goal_state = goal_state
+        self.actions = actions
+
+    def __str__(self):
+        return "\nInitial State:\n\t" + str(self.initial_state) + "\nGoal State: \n\t" + str(self.goal_state) + "\nActions: \n\t" + str(self.actions) + "\n"
+
+    def __repr__(self):
+        return "\nInitial State:\n\t" + str(self.initial_state) + "\nGoal State: \n\t" + str(self.goal_state) + "\nActions: \n\t" + str(self.actions) + "\n"
 
 
-class ADLForm:
+class ADLFormParse:
     def __init__(self):
         self.lista_predicados = []
         self.lista_ids = []
@@ -152,4 +163,9 @@ class ADLForm:
         print ("Goal Predicates:\n\t",self.adl_goal)
         print ("\n")
         print ("Actions:\n\t",self.adl_actions)
+
+    def getADL(self):
+        return ADLInfo(self.adl_init, self.adl_goal, self.adl_actions)
+
+
 

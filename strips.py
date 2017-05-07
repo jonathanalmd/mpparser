@@ -1,4 +1,5 @@
 
+
 class StripsAction:
     def __init__(self):
         self.name = ""
@@ -12,8 +13,19 @@ class StripsAction:
     def __repr__(self):
         return "\n\tAction Name: " + self.name + "\n\tParameters: " + str(self.param) + "\n\tPrecondition: " + str(self.precond) + "\n\tEffect: " + str(self.effect) + "\n"
 
+class StripsInfo:
+    def __init__(self, initial_state, goal_state, actions):
+        self.initial_state = initial_state
+        self.goal_state = goal_state
+        self.actions = actions
 
-class StripsForm:
+    def __str__(self):
+        return "\nInitial State:\n\t" + str(self.initial_state) + "\nGoal State: \n\t" + str(self.goal_state) + "\nActions: \n\t" + str(self.actions) + "\n"
+
+    def __repr__(self):
+        return "\nInitial State:\n\t" + str(self.initial_state) + "\nGoal State: \n\t" + str(self.goal_state) + "\nActions: \n\t" + str(self.actions) + "\n"
+
+class StripsFormParse:
     def __init__(self):
         self.lista_ids = []
         self.lista_ids_sep = []
@@ -75,7 +87,7 @@ class StripsForm:
                 # print(self.strips_action)
                 self.strips_action = StripsAction()
 
-        self.c_section+=1
+        self.c_section += 1
         self.lista_pred_names = []
         self.cleanListIds()
 
@@ -85,5 +97,10 @@ class StripsForm:
         print ("Goal State:\n\t",self.strips_goal)
         print ("Actions:\n\t",self.strips_actions)
         print ("\n")
+
+    def getStrips(self):
+        return StripsInfo(self.strips_initial, self.strips_goal, self.strips_actions)
+
+
 
 

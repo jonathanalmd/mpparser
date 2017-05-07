@@ -10,8 +10,24 @@ class PDDLProblemPredicate:
     def __repr__(self):
         return "\n\t" + self.name + ":" + str(self.p_vars)
 
+class PDDLProblemInfo:
+    def __init__(self, problem_name, domain_name, objects, init, goal):
+        self.name = problem_name
+        self.domain_name = domain_name
+        self.objects = objects
+        self.init = init
+        self.goal = goal
 
-class PDDLProblem:
+    def __str__(self):
+        return "\nProblem Name:\n\t" + str(self.name) + "\nProblem Domain: \n\t" + str(self.domain_name) + "\nObjects: \n\t" + str(self.objects) + "\nInit: \n\t" + str(self.init) + "\nGoal: \n\t" + str(self.objects) +  "\n"
+
+    def __repr__(self):
+        return "\nProblem Name:\n\t" + str(self.name) + "\nProblem Domain: \n\t" + str(self.domain_name) + "\nObjects: \n\t" + str(self.objects) + "\nInit: \n\t" + str(self.init) + "\nGoal: \n\t" + str(self.objects) +  "\n"
+
+
+
+
+class PDDLProblemParse:
     def __init__(self):
         self.problem_name = ""
         self.problem_domain = ""
@@ -111,5 +127,9 @@ class PDDLProblem:
         print ("Objects:\n\t",self.problem_objects)
         print ("Init Predicates:\n\t",self.problem_init_pred)
         print ("Goal Predicates:\n\t",self.problem_goal_pred)
+
+    def getPDDLProblem(self):
+        return PDDLProblemInfo(self.problem_name, self.problem_domain, self.problem_objects, self.problem_init_pred, self.problem_goal_pred)
+
 
 

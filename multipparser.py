@@ -719,53 +719,42 @@ def p_error(p):
 
 
 pparser = yacc.yacc()
-objDomain = pddldomain.PDDLDomain()
-objProblem = pddlproblem.PDDLProblem()
-objADL = adl.ADLForm()
-objStrips = strips.StripsForm()
+objDomain = pddldomain.PDDLDomainParse()
+objProblem = pddlproblem.PDDLProblemParse()
+objADL = adl.ADLFormParse()
+objStrips = strips.StripsFormParse()
 
 def parse(pmode, filelist):
     if pmode == "pddl":
-        errorhandler.run_mode = "pddldomain"
 
         domain_f = open(filelist[0]).read()
         problem_f = open(filelist[1]).read()
-        pparser.error = 0
 
+        errorhandler.run_mode = "pddldomain"
         p = pparser.parse(domain_f)
-        if pparser.error:
-            return False
 
-        run_mode = "pddlproblem"
+        errorhandler.run_mode = "pddlproblem"
         p = pparser.parse(problem_f)
-        if pparser.error:
-            return False
 
-        objDomain.printDomainInfo()
-        objProblem.printProblemInfo()
-        return True
+        # objDomain.printDomainInfo()
+        # objProblem.printProblemInfo()
+
+        return objDomain.getPDDLDomain(), objProblem.getPDDLProblem()
 
     elif pmode == "adl":
-        errorhandler.run_mode = "adl"
-
         adl_f = open(filelist[0]).read()
-        pparser.error = 0
 
+        errorhandler.run_mode = "adl"
         p = pparser.parse(adl_f)
-        if pparser.error:
-            return False
-
-        objADL.printADLInfo()
-        return True
+       
+        # objADL.printADLInfo()
+        return objADL.getADL()
 
     else: # strips
-        errorhandler.run_mode = "strips"
         strips_f = open(filelist[0]).read()
-        pparser.error = 0
 
+        errorhandler.run_mode = "strips"
         p = pparser.parse(strips_f)
-        if pparser.error:
-            return False
 
-        objStrips.printStripsInfo()
-        return True
+        # objStrips.printStripsInfo()
+        return objStrips.getStrips() # return obj

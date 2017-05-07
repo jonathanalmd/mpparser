@@ -49,7 +49,23 @@ class PDDLAction:
     def __repr__(self):
         return "\tAction-Name: " + self.name + "\n\tAction-Parameters: " + str(self.parameters) + "\n\tAction-Preconditions: " + str(self.preconditions) + "\n\tAction-Effects: " + str(self.effects) + "\n\n"
 
-class PDDLDomain:
+class PDDLDomainInfo:
+    def __init__(self, domain_name, predicates, types, constants, functions, actions):
+        self.name = domain_name
+        self.predicates = predicates
+        self.types = types
+        self.constants = constants
+        self.functions = functions
+        self.actions = actions
+    def __str__(self):
+        return "\nDomain Name:\n\t" + str(self.name) + "\nPredicates: \n\t" + str(self.predicates) + "\nTypes: \n\t" + str(self.types) + "\nConstants: \n\t" + str(self.constants) + "\nFunctions: \n\t" + str(self.functions) + "\nActions: \n\t" + str(self.actions) + "\n"
+
+    def __repr__(self):
+        return "\nDomain Name:\n\t" + str(self.name) + "\nPredicates: \n\t" + str(self.predicates) + "\nTypes: \n\t" + str(self.types) + "\nConstants: \n\t" + str(self.constants) + "\nFunctions: \n\t" + str(self.functions) + "\nActions: \n\t" + str(self.actions) + "\n"
+
+
+
+class PDDLDomainParse:
     def __init__(self, domain_name="", lista_predicados=[], 
                 lista_types=[], dict_constants={}, pddl_ids=[], 
                 dealing_with_types=[], lista_pddl_ids=[]):
@@ -420,5 +436,8 @@ class PDDLDomain:
         # print(self.pddl_vars)
 
         print(self.domain_actions)
+
+    def getPDDLDomain(self):
+        return PDDLDomainInfo(self.domain_name, self.domain_predicates, self.domain_types, self.dict_constants, self.domain_functions, self.domain_actions)
 
 

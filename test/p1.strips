@@ -6,7 +6,7 @@ Actions:
 
 
         Go(From, To)
-        Preconditions: At(From), !At(To),
+        Preconditions: At(From), !At(To)
         Effect: At(To), !At(From)
 
         PlaceOn(Block1, Block2, Tower)
