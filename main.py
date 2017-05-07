@@ -43,3 +43,6 @@ elif len(sys.argv) == 2:
         prog = multipparser.parse(pmode, [sys.argv[1]])
         if prog:
             print("Formalizacao %s sintaticamente correta!"%(sys.argv[1]))
+
+
+            

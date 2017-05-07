@@ -4,7 +4,7 @@ Unused terminals:
 
     INCREASE
     ASSIGN
-    INITIAL
+    INITS
     OPERATOR
     TYPEID
     ICONST
@@ -21,7 +21,6 @@ Unused terminals:
     RSHIFT
     LOR
     LAND
-    LNOT
     LT
     LE
     GT
@@ -78,11 +77,11 @@ Rule 22    adl_predicado -> AND ID LPAREN adl_lista_ids RPAREN
 Rule 23    adl_lista_ids -> ID
 Rule 24    adl_lista_ids -> ID COMMA adl_lista_ids
 Rule 25    strips_formalization -> strips_initial_state strips_goal_state strips_actions_def
-Rule 26    strips_initial_state -> INITS STATE COLON strips_lista_predicados
+Rule 26    strips_initial_state -> INITIAL STATE COLON strips_lista_predicados
 Rule 27    strips_lista_predicados -> strips_predicado
 Rule 28    strips_lista_predicados -> strips_predicado COMMA strips_lista_predicados
 Rule 29    strips_predicado -> ID LPAREN strips_lista_ids RPAREN
-Rule 30    strips_predicado -> AND ID LPAREN strips_lista_ids RPAREN
+Rule 30    strips_predicado -> LNOT ID LPAREN strips_lista_ids RPAREN
 Rule 31    strips_lista_ids -> ID
 Rule 32    strips_lista_ids -> ID COMMA strips_lista_ids
 Rule 33    strips_goal_state -> GOAL STATE COLON strips_lista_predicados
@@ -184,7 +183,7 @@ Terminals, with rules where they appear
 ACTION               : 15 94 95
 ACTIONS              : 35
 AGENT                : 50 95
-AND                  : 11 22 30 48 109
+AND                  : 11 22 48 109
 ANDEQUAL             : 
 ARROW                : 
 ASSIGN               : 
@@ -215,13 +214,13 @@ ID                   : 15 16 17 18 21 22 23 24 29 30 31 32 40 41 44 55 57 58 59 
 IMPLY                : 113
 INCREASE             : 
 INIT                 : 8 9 46
-INITIAL              : 
-INITS                : 26
+INITIAL              : 26
+INITS                : 
 LAND                 : 
 LBRACE               : 
 LBRACKET             : 
 LE                   : 
-LNOT                 : 
+LNOT                 : 30
 LOR                  : 
 LPAREN               : 1 2 5 8 12 15 15 21 22 29 30 40 41 42 46 48 48 49 49 50 51 53 58 59 60 66 68 72 73 77 81 83 87 89 90 91 92 94 95 100 109 110 111 112 113 114 115 116 117 118 119 120 120
 LSHIFT               : 
@@ -341,13 +340,13 @@ state 0
     (5) programa -> . LPAREN DOMAIN RPAREN
     (25) strips_formalization -> . strips_initial_state strips_goal_state strips_actions_def
     (6) adl_formalization -> . adl_initial_state adl_goal_state adl_actions_def
-    (26) strips_initial_state -> . INITS STATE COLON strips_lista_predicados
+    (26) strips_initial_state -> . INITIAL STATE COLON strips_lista_predicados
     (7) adl_initial_state -> . error adl_goal_state adl_actions_def
     (8) adl_initial_state -> . INIT LPAREN adl_lista_predicados RPAREN
     (9) adl_initial_state -> . INIT error adl_lista_predicados RPAREN
 
     LPAREN          shift and go to state 2
-    INITS           shift and go to state 7
+    INITIAL         shift and go to state 7
     error           shift and go to state 8
     INIT            shift and go to state 9
 
@@ -407,7 +406,7 @@ state 6
 
 state 7
 
-    (26) strips_initial_state -> INITS . STATE COLON strips_lista_predicados
+    (26) strips_initial_state -> INITIAL . STATE COLON strips_lista_predicados
 
     STATE           shift and go to state 16
 
@@ -496,7 +495,7 @@ state 15
 
 state 16
 
-    (26) strips_initial_state -> INITS STATE . COLON strips_lista_predicados
+    (26) strips_initial_state -> INITIAL STATE . COLON strips_lista_predicados
 
     COLON           shift and go to state 33
 
@@ -664,14 +663,14 @@ state 32
 
 state 33
 
-    (26) strips_initial_state -> INITS STATE COLON . strips_lista_predicados
+    (26) strips_initial_state -> INITIAL STATE COLON . strips_lista_predicados
     (27) strips_lista_predicados -> . strips_predicado
     (28) strips_lista_predicados -> . strips_predicado COMMA strips_lista_predicados
     (29) strips_predicado -> . ID LPAREN strips_lista_ids RPAREN
-    (30) strips_predicado -> . AND ID LPAREN strips_lista_ids RPAREN
+    (30) strips_predicado -> . LNOT ID LPAREN strips_lista_ids RPAREN
 
     ID              shift and go to state 55
-    AND             shift and go to state 56
+    LNOT            shift and go to state 56
 
     strips_lista_predicados        shift and go to state 53
     strips_predicado               shift and go to state 54
@@ -805,10 +804,10 @@ state 48
     (37) strips_lista_actions -> . strips_action strips_lista_actions
     (38) strips_action -> . strips_predicado PRECONDITIONS COLON strips_lista_predicados EFFECT COLON strips_lista_predicados
     (29) strips_predicado -> . ID LPAREN strips_lista_ids RPAREN
-    (30) strips_predicado -> . AND ID LPAREN strips_lista_ids RPAREN
+    (30) strips_predicado -> . LNOT ID LPAREN strips_lista_ids RPAREN
 
     ID              shift and go to state 55
-    AND             shift and go to state 56
+    LNOT            shift and go to state 56
 
     strips_lista_actions           shift and go to state 71
     strips_action                  shift and go to state 72
@@ -820,10 +819,10 @@ state 49
     (27) strips_lista_predicados -> . strips_predicado
     (28) strips_lista_predicados -> . strips_predicado COMMA strips_lista_predicados
     (29) strips_predicado -> . ID LPAREN strips_lista_ids RPAREN
-    (30) strips_predicado -> . AND ID LPAREN strips_lista_ids RPAREN
+    (30) strips_predicado -> . LNOT ID LPAREN strips_lista_ids RPAREN
 
     ID              shift and go to state 55
-    AND             shift and go to state 56
+    LNOT            shift and go to state 56
 
     strips_lista_predicados        shift and go to state 74
     strips_predicado               shift and go to state 54
@@ -852,9 +851,9 @@ state 52
 
 state 53
 
-    (26) strips_initial_state -> INITS STATE COLON strips_lista_predicados .
+    (26) strips_initial_state -> INITIAL STATE COLON strips_lista_predicados .
 
-    GOAL            reduce using rule 26 (strips_initial_state -> INITS STATE COLON strips_lista_predicados .)
+    GOAL            reduce using rule 26 (strips_initial_state -> INITIAL STATE COLON strips_lista_predicados .)
 
 
 state 54
@@ -867,7 +866,7 @@ state 54
     $end            reduce using rule 27 (strips_lista_predicados -> strips_predicado .)
     EFFECT          reduce using rule 27 (strips_lista_predicados -> strips_predicado .)
     ID              reduce using rule 27 (strips_lista_predicados -> strips_predicado .)
-    AND             reduce using rule 27 (strips_lista_predicados -> strips_predicado .)
+    LNOT            reduce using rule 27 (strips_lista_predicados -> strips_predicado .)
     COMMA           shift and go to state 77
 
 
@@ -880,7 +879,7 @@ state 55
 
 state 56
 
-    (30) strips_predicado -> AND . ID LPAREN strips_lista_ids RPAREN
+    (30) strips_predicado -> LNOT . ID LPAREN strips_lista_ids RPAREN
 
     ID              shift and go to state 79
 
@@ -1034,11 +1033,11 @@ state 72
     (37) strips_lista_actions -> . strips_action strips_lista_actions
     (38) strips_action -> . strips_predicado PRECONDITIONS COLON strips_lista_predicados EFFECT COLON strips_lista_predicados
     (29) strips_predicado -> . ID LPAREN strips_lista_ids RPAREN
-    (30) strips_predicado -> . AND ID LPAREN strips_lista_ids RPAREN
+    (30) strips_predicado -> . LNOT ID LPAREN strips_lista_ids RPAREN
 
     $end            reduce using rule 36 (strips_lista_actions -> strips_action .)
     ID              shift and go to state 55
-    AND             shift and go to state 56
+    LNOT            shift and go to state 56
 
     strips_action                  shift and go to state 72
     strips_lista_actions           shift and go to state 97
@@ -1079,10 +1078,10 @@ state 77
     (27) strips_lista_predicados -> . strips_predicado
     (28) strips_lista_predicados -> . strips_predicado COMMA strips_lista_predicados
     (29) strips_predicado -> . ID LPAREN strips_lista_ids RPAREN
-    (30) strips_predicado -> . AND ID LPAREN strips_lista_ids RPAREN
+    (30) strips_predicado -> . LNOT ID LPAREN strips_lista_ids RPAREN
 
     ID              shift and go to state 55
-    AND             shift and go to state 56
+    LNOT            shift and go to state 56
 
     strips_predicado               shift and go to state 54
     strips_lista_predicados        shift and go to state 100
@@ -1099,7 +1098,7 @@ state 78
 
 state 79
 
-    (30) strips_predicado -> AND ID . LPAREN strips_lista_ids RPAREN
+    (30) strips_predicado -> LNOT ID . LPAREN strips_lista_ids RPAREN
 
     LPAREN          shift and go to state 103
 
@@ -1301,7 +1300,7 @@ state 100
     $end            reduce using rule 28 (strips_lista_predicados -> strips_predicado COMMA strips_lista_predicados .)
     EFFECT          reduce using rule 28 (strips_lista_predicados -> strips_predicado COMMA strips_lista_predicados .)
     ID              reduce using rule 28 (strips_lista_predicados -> strips_predicado COMMA strips_lista_predicados .)
-    AND             reduce using rule 28 (strips_lista_predicados -> strips_predicado COMMA strips_lista_predicados .)
+    LNOT            reduce using rule 28 (strips_lista_predicados -> strips_predicado COMMA strips_lista_predicados .)
 
 
 state 101
@@ -1322,7 +1321,7 @@ state 102
 
 state 103
 
-    (30) strips_predicado -> AND ID LPAREN . strips_lista_ids RPAREN
+    (30) strips_predicado -> LNOT ID LPAREN . strips_lista_ids RPAREN
     (31) strips_lista_ids -> . ID
     (32) strips_lista_ids -> . ID COMMA strips_lista_ids
 
@@ -1523,10 +1522,10 @@ state 123
     (27) strips_lista_predicados -> . strips_predicado
     (28) strips_lista_predicados -> . strips_predicado COMMA strips_lista_predicados
     (29) strips_predicado -> . ID LPAREN strips_lista_ids RPAREN
-    (30) strips_predicado -> . AND ID LPAREN strips_lista_ids RPAREN
+    (30) strips_predicado -> . LNOT ID LPAREN strips_lista_ids RPAREN
 
     ID              shift and go to state 55
-    AND             shift and go to state 56
+    LNOT            shift and go to state 56
 
     strips_predicado               shift and go to state 54
     strips_lista_predicados        shift and go to state 151
@@ -1567,12 +1566,12 @@ state 127
     $end            reduce using rule 29 (strips_predicado -> ID LPAREN strips_lista_ids RPAREN .)
     EFFECT          reduce using rule 29 (strips_predicado -> ID LPAREN strips_lista_ids RPAREN .)
     ID              reduce using rule 29 (strips_predicado -> ID LPAREN strips_lista_ids RPAREN .)
-    AND             reduce using rule 29 (strips_predicado -> ID LPAREN strips_lista_ids RPAREN .)
+    LNOT            reduce using rule 29 (strips_predicado -> ID LPAREN strips_lista_ids RPAREN .)
 
 
 state 128
 
-    (30) strips_predicado -> AND ID LPAREN strips_lista_ids . RPAREN
+    (30) strips_predicado -> LNOT ID LPAREN strips_lista_ids . RPAREN
 
     RPAREN          shift and go to state 155
 
@@ -1811,16 +1810,16 @@ state 154
 
 state 155
 
-    (30) strips_predicado -> AND ID LPAREN strips_lista_ids RPAREN .
+    (30) strips_predicado -> LNOT ID LPAREN strips_lista_ids RPAREN .
 
-    COMMA           reduce using rule 30 (strips_predicado -> AND ID LPAREN strips_lista_ids RPAREN .)
-    GOAL            reduce using rule 30 (strips_predicado -> AND ID LPAREN strips_lista_ids RPAREN .)
-    PRECONDITIONS   reduce using rule 30 (strips_predicado -> AND ID LPAREN strips_lista_ids RPAREN .)
-    ACTIONS         reduce using rule 30 (strips_predicado -> AND ID LPAREN strips_lista_ids RPAREN .)
-    $end            reduce using rule 30 (strips_predicado -> AND ID LPAREN strips_lista_ids RPAREN .)
-    EFFECT          reduce using rule 30 (strips_predicado -> AND ID LPAREN strips_lista_ids RPAREN .)
-    ID              reduce using rule 30 (strips_predicado -> AND ID LPAREN strips_lista_ids RPAREN .)
-    AND             reduce using rule 30 (strips_predicado -> AND ID LPAREN strips_lista_ids RPAREN .)
+    COMMA           reduce using rule 30 (strips_predicado -> LNOT ID LPAREN strips_lista_ids RPAREN .)
+    GOAL            reduce using rule 30 (strips_predicado -> LNOT ID LPAREN strips_lista_ids RPAREN .)
+    PRECONDITIONS   reduce using rule 30 (strips_predicado -> LNOT ID LPAREN strips_lista_ids RPAREN .)
+    ACTIONS         reduce using rule 30 (strips_predicado -> LNOT ID LPAREN strips_lista_ids RPAREN .)
+    $end            reduce using rule 30 (strips_predicado -> LNOT ID LPAREN strips_lista_ids RPAREN .)
+    EFFECT          reduce using rule 30 (strips_predicado -> LNOT ID LPAREN strips_lista_ids RPAREN .)
+    ID              reduce using rule 30 (strips_predicado -> LNOT ID LPAREN strips_lista_ids RPAREN .)
+    LNOT            reduce using rule 30 (strips_predicado -> LNOT ID LPAREN strips_lista_ids RPAREN .)
 
 
 state 156
@@ -2229,10 +2228,10 @@ state 200
     (27) strips_lista_predicados -> . strips_predicado
     (28) strips_lista_predicados -> . strips_predicado COMMA strips_lista_predicados
     (29) strips_predicado -> . ID LPAREN strips_lista_ids RPAREN
-    (30) strips_predicado -> . AND ID LPAREN strips_lista_ids RPAREN
+    (30) strips_predicado -> . LNOT ID LPAREN strips_lista_ids RPAREN
 
     ID              shift and go to state 55
-    AND             shift and go to state 56
+    LNOT            shift and go to state 56
 
     strips_predicado               shift and go to state 54
     strips_lista_predicados        shift and go to state 223
@@ -2461,7 +2460,7 @@ state 223
     (38) strips_action -> strips_predicado PRECONDITIONS COLON strips_lista_predicados EFFECT COLON strips_lista_predicados .
 
     ID              reduce using rule 38 (strips_action -> strips_predicado PRECONDITIONS COLON strips_lista_predicados EFFECT COLON strips_lista_predicados .)
-    AND             reduce using rule 38 (strips_action -> strips_predicado PRECONDITIONS COLON strips_lista_predicados EFFECT COLON strips_lista_predicados .)
+    LNOT            reduce using rule 38 (strips_action -> strips_predicado PRECONDITIONS COLON strips_lista_predicados EFFECT COLON strips_lista_predicados .)
     $end            reduce using rule 38 (strips_action -> strips_predicado PRECONDITIONS COLON strips_lista_predicados EFFECT COLON strips_lista_predicados .)
 
 
