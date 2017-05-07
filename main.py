@@ -12,15 +12,34 @@ import multipparser
 
 
 if len(sys.argv) > 2:
-    pmode = "pddl"
-    run = multipparser.parse(pmode,[sys.argv[1], sys.argv[2]])
-    if run:
-        print("Formalizacao %s sintaticamente correta!"%(sys.argv[1]))
+    run_parser = True
+    in_type = sys.argv[1].split(".")
+    if in_type[-1] not in ["pddl","PDDL"]:
+        print("Invalid input for PDDL DOMAIN formalization")
+        print("Correct use: python mlpparser.py input.{strips,adl} or python mlpparser.py domain.pddl problem.pddl")
+        run_parser = False
+    in_type = sys.argv[2].split(".")
+    if in_type[-1] not in ["pddl","PDDL"]:
+        print("Invalid input for PDDL PROBLEM formalization")
+        print("Correct use: python mlpparser.py input.{strips,adl} or python mlpparser.py domain.pddl problem.pddl")
+        run_parser = False
+    if run_parser:
+        pmode = "pddl"
+        run = multipparser.parse(pmode,[sys.argv[1], sys.argv[2]])
+        if run:
+            print("Formalizacao %s sintaticamente correta!"%(sys.argv[1]))
+    else:
+        sys.exit()
 
 elif len(sys.argv) == 2:
-
     in_type = sys.argv[1].split(".")
     pmode = in_type[-1]
-    prog = multipparser.parse(pmode, [sys.argv[1]])
-    if prog:
-        print("Formalizacao %s sintaticamente correta!"%(sys.argv[1]))
+
+    if pmode not in ["adl","strips","ADL","STRIPS"]:
+        print(">Invalid input file:",sys.argv[1])
+        print("Correct use: python mlpparser.py input.{strips,adl} or python mlpparser.py domain.pddl problem.pddl")
+        sys.exit()
+    else:
+        prog = multipparser.parse(pmode, [sys.argv[1]])
+        if prog:
+            print("Formalizacao %s sintaticamente correta!"%(sys.argv[1]))
