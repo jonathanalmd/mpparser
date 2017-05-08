@@ -1,15 +1,22 @@
 
 (define (domain dinner) 
   (:requirements :strips)
-  	(:types room ball gripper) 
+  	(:types room ball gripper)cd
 
 
-  	(:constants left right - typed a b c - bola)
 
   (:predicates
 		(free ?d1 ?d2)
 		(free ?f)
 		(free)
+  )
+   (:functions
+
+     (road-length ?l1 ?l2 - location)
+         (total-cost2)
+
+     (total-cost ?ds - loc) - number3
+
   )
   (:action cook
     :parameters ()

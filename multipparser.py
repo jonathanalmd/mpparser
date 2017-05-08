@@ -397,6 +397,8 @@ def p_domain_formalization_4(p):
 def p_domain_formalization_5(p):
     '''domain_formalization : def_domain def_requirements def_predicates def_actions'''
 
+
+
 def p_def_domain_1(p):
     '''def_domain : LPAREN DOMAIN ID RPAREN'''
     objDomain.setDomainName(p[3])
@@ -429,6 +431,8 @@ def p_def_constants_1(p):
     '''def_constants : LPAREN COLON CONSTANTS lista_constants RPAREN'''
     objDomain.appendConstants()
 
+
+
 # def p_lista_constants_1(p):
 #     '''lista_constants : lista_ids MINUS ID'''
 #     if objDomain.pddl_ids:
@@ -445,9 +449,9 @@ def p_def_constants_1(p):
 #     objDomain.cleanPDDLids()
 #     objDomain.dealingWithType(p[3])
 #     objDomain.dealWithConstants()
+
 def p_lista_constants_1(p):
     '''lista_constants : '''
-    objDomain.dealWithConstants()
 
 
 def p_lista_constants_2(p):
@@ -459,10 +463,12 @@ def p_lista_constants_2(p):
     objDomain.dealingWithType(p[3])
 
 
-def p_lista_constants_3(p):
-    '''lista_constants : lista_ids MINUS ID lista_ids'''
+def p_lista_constants_3(p): # catch error dsd
+    '''lista_constants : lista_ids MINUS ID lista_ids
+                        | lista_ids'''
     # {;}
     errorhandler.reportSyntaxError("const-typed")
+
 
 def p_def_predicates_1(p):
     '''def_predicates : '''
@@ -737,6 +743,7 @@ def p_lista_ids_2(p):
 # =================================================================================================== #
 
 def p_error(p):
+    # print("Syntax error in %s line %d"%(p.value,plex.lexer.lineno))
     errorhandler.reportSyntaxError(p.value)
 
 

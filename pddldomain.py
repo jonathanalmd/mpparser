@@ -141,8 +141,8 @@ class PDDLDomainParse:
         if self.dealing_with_types_sep == []:
             for pddl_vars in self.lista_pddl_vars_sep:
                 self.dealing_with_types_sep.append(["(NOTYPE)"])
-        print("\n>>>",self.lista_pddl_vars_sep)
-        print("\n>>",self.dealing_with_types_sep)
+        # print("\n>>>",self.lista_pddl_vars_sep)
+        # print("\n>>",self.dealing_with_types_sep)
         
         if len(self.dealing_with_types_sep) != len(self.lista_pddl_vars_sep):
             print("ERRO: predicates must be all typed or all not typed")
@@ -228,14 +228,10 @@ class PDDLDomainParse:
         self.dealing_with_types_sep.append(self.dealing_with_types)
         self.dealing_with_types = []
         self.lista_types = []
-    def dealWithConstants(self):
-        print("1PDDL_ids:",self.lista_pddl_ids)
-        print("1PDDL_types:",self.dealing_with_types)
-
 
     def appendConstants(self):
-        print("PDDL_ids:",self.lista_pddl_ids)
-        print("PDDL_types:",self.dealing_with_types)
+        # print("PDDL_ids:",self.lista_pddl_ids)
+        # print("PDDL_types:",self.dealing_with_types)
 
         if self.lista_pddl_ids:
             len_pddl_ids = len(self.lista_pddl_ids)
