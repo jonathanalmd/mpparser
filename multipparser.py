@@ -245,7 +245,9 @@ def p_strips_action_1(p):
 # =================================================================================================== #
 
 def p_problem_formalization_1(p):
-    '''problem_formalization : def_problem def_domain_p def_objects def_init def_goal'''
+    '''problem_formalization : def_problem def_domain_p def_objects def_init def_goal
+                                | def_problem def_domain_p def_init def_goal
+    '''
 
 def p_def_problem_1(p):
     '''def_problem : LPAREN PROBLEM ID RPAREN'''
@@ -399,10 +401,8 @@ def p_def_domain_1(p):
     '''def_domain : LPAREN DOMAIN ID RPAREN'''
     objDomain.setDomainName(p[3])
 
-def p_def_requirements_1(p):
-    '''def_requirements : '''
 
-def p_def_requirements_2(p):
+def p_def_requirements_1(p):
     '''def_requirements : LPAREN COLON REQUIREMENTS lista_requirements RPAREN'''
 
 def p_lista_requirements_1(p):
@@ -412,9 +412,6 @@ def p_lista_requirements_2(p):
     '''lista_requirements : COLON ID lista_requirements'''
 
 def p_def_types_1(p):
-    '''def_types : '''
-
-def p_def_types_2(p):
     '''def_types : LPAREN COLON TYPES lista_types RPAREN'''
 
 # CHECK TALVEZ TIRE
@@ -429,13 +426,29 @@ def p_lista_types_2(p):
     objDomain.appendType(p[1])
 
 def p_def_constants_1(p):
-    '''def_constants : '''
-
-def p_def_constants_2(p):
     '''def_constants : LPAREN COLON CONSTANTS lista_constants RPAREN'''
+    objDomain.appendConstants()
 
+# def p_lista_constants_1(p):
+#     '''lista_constants : lista_ids MINUS ID'''
+#     if objDomain.pddl_ids:
+#         objDomain.appendListaPDDLids()
+#     objDomain.cleanPDDLids()
+#     objDomain.dealingWithType(p[3])
+#     objDomain.appendConstants()
+
+# def p_lista_constants_2(p):
+#     '''lista_constants : lista_ids MINUS ID lista_constants'''
+#     # {;}
+#     if objDomain.pddl_ids:
+#         objDomain.appendListaPDDLids()
+#     objDomain.cleanPDDLids()
+#     objDomain.dealingWithType(p[3])
+#     objDomain.dealWithConstants()
 def p_lista_constants_1(p):
     '''lista_constants : '''
+    objDomain.dealWithConstants()
+
 
 def p_lista_constants_2(p):
     '''lista_constants : lista_ids MINUS ID lista_constants'''
@@ -444,7 +457,12 @@ def p_lista_constants_2(p):
         objDomain.appendListaPDDLids()
     objDomain.cleanPDDLids()
     objDomain.dealingWithType(p[3])
-    objDomain.appendConstants()
+
+
+def p_lista_constants_3(p):
+    '''lista_constants : lista_ids MINUS ID lista_ids'''
+    # {;}
+    errorhandler.reportSyntaxError("const-typed")
 
 def p_def_predicates_1(p):
     '''def_predicates : '''
@@ -482,15 +500,16 @@ def p_p_def_2(p):
     '''p_def : lista_var'''
 
     objDomain.appendListaPDDLvars()
+    objDomain.cleanPDDLvars()
 
     objDomain.dealingWithTypeSep()
     objDomain.appendListaPDDLPredVars()
     objDomain.cleanListaPDDLvars()
 
-def p_def_functions_1(p):
-    '''def_functions : '''
 
-def p_def_functions_(p):
+
+
+def p_def_functions_1(p):
     '''def_functions : LPAREN COLON FUNCTIONS lista_functions_def RPAREN'''
     objDomain.dealWithFunctionDef()
     objDomain.cleanPDDLvars() # clean antes de dealWithActions    
@@ -559,7 +578,10 @@ def p_a_def_1(p):
     '''a_def : '''
 
 def p_a_def_2(p):
-    '''a_def : COLON PARAMETERS LPAREN lista_parameters RPAREN COLON PRECONDITION pddl_preconditions COLON EFFECT pddl_effects'''
+    '''a_def : COLON PARAMETERS LPAREN lista_parameters RPAREN COLON PRECONDITION pddl_preconditions COLON EFFECT pddl_effects
+            | COLON PARAMETERS LPAREN RPAREN COLON PRECONDITION pddl_preconditions COLON EFFECT pddl_effects
+    '''
+
 
 def p_pddl_preconditions_1(p):
     '''pddl_preconditions : lista_preds_op'''
@@ -724,6 +746,7 @@ objProblem = pddlproblem.PDDLProblemParse()
 objADL = adl.ADLFormParse()
 objStrips = strips.StripsFormParse()
 
+
 def parse(pmode, filelist):
     if pmode == "pddl":
 
@@ -732,7 +755,7 @@ def parse(pmode, filelist):
 
         errorhandler.run_mode = "pddldomain"
         p = pparser.parse(domain_f)
-
+        plex.lexer.lineno = 0
         errorhandler.run_mode = "pddlproblem"
         p = pparser.parse(problem_f)
 

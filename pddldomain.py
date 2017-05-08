@@ -133,12 +133,16 @@ class PDDLDomainParse:
             self.lista_pddl_vars_sep[i] = [x for x in self.lista_pddl_vars_sep[i] if x != []]
             i = i + 1
         self.dealing_with_types_sep = [x for x in self.dealing_with_types_sep if x != []]
-        
+        i = 0
+        for var in self.lista_pddl_vars_sep:
+            if not var: # var == []
+                self.lista_pddl_vars_sep[i].append(["(NOVARS)"])
+            i += 1
         if self.dealing_with_types_sep == []:
             for pddl_vars in self.lista_pddl_vars_sep:
                 self.dealing_with_types_sep.append(["(NOTYPE)"])
-        # print("\n>>>",self.lista_pddl_vars_sep)
-        # print("\n>>",self.dealing_with_types_sep)
+        print("\n>>>",self.lista_pddl_vars_sep)
+        print("\n>>",self.dealing_with_types_sep)
         
         if len(self.dealing_with_types_sep) != len(self.lista_pddl_vars_sep):
             print("ERRO: predicates must be all typed or all not typed")
@@ -212,6 +216,7 @@ class PDDLDomainParse:
 
     def appendListaPDDLPredVars(self):
         self.lista_pddl_vars_sep.append(self.lista_pddl_vars)
+        self.lista_pddl_vars = []
 
     def appendType(self,utype):
         self.lista_types.append(utype)
@@ -222,10 +227,16 @@ class PDDLDomainParse:
     def dealingWithTypeSep(self):
         self.dealing_with_types_sep.append(self.dealing_with_types)
         self.dealing_with_types = []
+        self.lista_types = []
+    def dealWithConstants(self):
+        print("1PDDL_ids:",self.lista_pddl_ids)
+        print("1PDDL_types:",self.dealing_with_types)
+
 
     def appendConstants(self):
-        # print(self.lista_pddl_ids)
-        # print(self.dealing_with_types)
+        print("PDDL_ids:",self.lista_pddl_ids)
+        print("PDDL_types:",self.dealing_with_types)
+
         if self.lista_pddl_ids:
             len_pddl_ids = len(self.lista_pddl_ids)
             self.lista_pddl_ids.reverse()
@@ -235,9 +246,13 @@ class PDDLDomainParse:
         else:
             print("Erro sintatico: decalracao de constante ausente (só colocou o tipo)")
         self.domain_types = self.lista_types
-        
+
+        self.lista_pddl_vars_sep = []
+        self.dealing_with_types_sep = []
+        self.dealing_with_types = []
         self.cleanListaPDDLids()
         self.cleanTypes()
+        
 
     def cleanTypes(self):
         self.lista_types = []
@@ -312,6 +327,11 @@ class PDDLDomainParse:
             self.lista_action_predicados[0].reverse()
             self.lista_action_predicados[1].reverse()
             self.dealWithActionLogicPredicate()
+            i = 0
+            for var in self.lista_pddl_vars:
+                if not var: # var == []
+                    self.lista_pddl_vars[i].append(["(NOVARS)"])
+                i += 1
             i = 0
             for predicate in self.lista_action_predicados[0]:
                 self.lista_pddl_vars[1][i].reverse()
