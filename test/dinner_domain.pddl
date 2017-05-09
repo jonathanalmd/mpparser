@@ -32,8 +32,8 @@
       (garbage)
     )
     :effect (and
-      (not (garbage)
-      (clean))
+      (not (garbage))
+      (not (clean))
     )
   )
   (:action dolly
