@@ -312,6 +312,43 @@ def p_lista_predicados_p_2(p):
     # objProblem.setProblemObjects()
     objProblem.cleanProblemIds()
 
+def p_lista_predicados_p_3(p):
+    '''lista_predicados_p : LPAREN NOT lista_not_preds_p RPAREN lista_predicados_p'''
+    # {;}
+    # if objProblem.lista_ids:
+    #     objProblem.appendListIds()
+    # # print(objProblem.lista_obj_type)
+    # print(objProblem.lista_ids_sep)
+    # # objProblem.setProblemObjects()
+    # objProblem.cleanProblemIds()
+
+def p_lista_not_preds_p_1(p):
+    ''' lista_not_preds_p : '''
+    
+
+def p_lista_not_preds_p_2(p):
+    ''' lista_not_preds_p : LPAREN lista_ids_not_p RPAREN lista_not_preds_p'''
+    
+def p_lista_ids_not_p_1(p):
+    ''' lista_ids_not_p :  '''
+    print("aa")
+    print(objProblem.lista_ids)
+    if objProblem.lista_ids:
+        objProblem.appendListIds()
+    # print(objProblem.lista_obj_type)
+    print(objProblem.lista_ids_sep)
+    # objProblem.setProblemObjects()
+    objProblem.cleanProblemIds()
+   
+def p_lista_ids_not_p_2(p):
+    ''' lista_ids_not_p : ID lista_ids_not_p'''
+    print(" >>>>:", p[1])
+    # objProblem.appendId("!")
+    objProblem.appendId("!"+p[1])
+    # objProblem.appendId("!")
+
+    
+
 def p_lista_objids_p_1(p):
     '''lista_objids_p : '''
     # print(objProblem.lista_ids)
@@ -323,7 +360,6 @@ def p_lista_objids_p_2(p):
     '''lista_objids_p : ID lista_objids_p'''
     # print(p[1])
     objProblem.appendId(p[1])
-
 
 
 
@@ -339,25 +375,25 @@ def p_lista_ids_p_2(p):
     # print(p[1])
     objProblem.appendId(p[1])
 
-def p_lista_ids_p_3(p):
-    '''lista_ids_p : NOT LPAREN ID lista_ids_p RPAREN '''
-    # print(p[1],p[3])
-    # print(objProblem.lista_ids)
-    # objProblem.lista_ids.insert(0,"!")
-    # objProblem.lista_ids.insert(1,p[3])
-    objProblem.appendId(p[3])
-    objProblem.appendId("!")
-    # print(objProblem.lista_ids)
+# def p_lista_ids_p_3(p):
+#     '''lista_ids_p : NOT LPAREN ID lista_ids_p RPAREN '''
+#     # print(p[1],p[3])
+#     # print(objProblem.lista_ids)
+#     # objProblem.lista_ids.insert(0,"!")
+#     # objProblem.lista_ids.insert(1,p[3])
+#     objProblem.appendId(p[3])
+#     objProblem.appendId("!")
+#     # print(objProblem.lista_ids)
 
-def p_lista_ids_p_4(p):
-    '''lista_ids_p : NOT lista_predicados_p '''
-    # print(p[1],p[3])
-    # print(objProblem.lista_ids)
-    # objProblem.lista_ids.insert(0,"!")
-    # objProblem.lista_ids.insert(1,p[3])
-    objProblem.appendId(p[3])
-    objProblem.appendId("!")
-    # print(objProblem.lista_ids)
+# def p_lista_ids_p_4(p):
+#     '''lista_ids_p : NOT lista_predicados_p '''
+#     # print(p[1],p[3])
+#     # print(objProblem.lista_ids)
+#     # objProblem.lista_ids.insert(0,"!")
+#     # objProblem.lista_ids.insert(1,p[3])
+#     objProblem.appendId(p[3])
+#     objProblem.appendId("!")
+#     # print(objProblem.lista_ids)
 
 def p_lista_ids_p_5(p):
     '''lista_ids_p : COMP LPAREN ID lista_ids_p RPAREN NUM'''

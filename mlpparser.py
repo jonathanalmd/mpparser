@@ -218,7 +218,7 @@ class Propositional_Planner:
                 state.append([name])
 
             if pred_name.p_vars != []:
-                init_preds.append(effect.p_vars)
+                init_preds.append(pred_name.p_vars)
 
         # state.append(init_preds)
 
@@ -244,7 +244,7 @@ class Propositional_Planner:
                 state.append([name])
 
             if pred_name.p_vars != []:
-                init_preds.append(effect.p_vars)
+                init_preds.append(pred_name.p_vars)
 
         # state.append(init_preds)
 

@@ -1,3 +1,4 @@
+import re
 
 class PDDLProblemPredicate:
     def __init__(self, pred_name):
@@ -92,9 +93,13 @@ class PDDLProblemParse:
                     # ipred_p_vars = ipred.p_vars.append(init_pred[-1])
                     ipred.name = "=" + ipred.name 
                 else:
-                    ipred = PDDLProblemPredicate(init_pred[0])       
-                    ipred.p_vars = init_pred[1:]
-
+                    ipred = PDDLProblemPredicate(init_pred[0])
+                    ipred_vars = []
+                    for var in init_pred[1:]:
+                        var = re.sub('[!&]', '', var)
+                        ipred_vars.append(var)
+                    # ipred.p_vars = init_pred[1:]
+                    ipred.p_vars = ipred_vars
                 self.problem_init_pred.append(ipred)
         else:
             for goal_pred in self.lista_ids_sep:
@@ -103,11 +108,11 @@ class PDDLProblemParse:
                     gpred.p_vars = goal_pred[2:]
                     gpred.name = "!" + gpred.name 
                 elif goal_pred[0] == "=":
-                    print("GOALPred",goal_pred)
+                    # print("GOALPred",goal_pred)
                     gpred = PDDLProblemPredicate(goal_pred[1])
                     gpred.p_vars = goal_pred[2:len(goal_pred)]
                     # gpred.p_vars.append(goal_pred[-1])
-                    print (gpred.p_vars)
+                    # print (gpred.p_vars)
                     gpred.name = "=" + gpred.name 
                 else:
                     gpred = PDDLProblemPredicate(goal_pred[0])       
