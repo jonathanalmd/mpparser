@@ -5,9 +5,12 @@
     (clean)
     (quiet)
   )
-  (:goal (and
-    (dinner)
-    (present)
-    (not (garbage))
-  ))
+  (:goal 
+  	(and
+    	(dinner)
+    	(present)
+   			(garbage)
+   			(not(quiet))
+    )
+  )
 )

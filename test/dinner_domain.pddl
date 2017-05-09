@@ -32,8 +32,9 @@
       (garbage)
     )
     :effect (and
-      (not (garbage))
-      (not (clean))
+      (not (garbage)
+      (clean)
+      )
     )
   )
   (:action dolly
@@ -45,5 +46,18 @@
       (not (garbage)
       (quiet))
     )
+  )
+  (:action dirty
+    :parameters()
+    :precondition
+      (and
+      (not (garbage))
+      (quiet)
+      )
+    :effect
+      (and
+      (garbage)
+      (not (quiet))
+      )
   )
 )

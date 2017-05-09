@@ -259,8 +259,8 @@ class Propositional_Planner:
         goal_pos = self.getProblemGoalPos(planning)
         goal_not = self.getProblemGoalNeg(planning)
 
-        # for act in actions:
-        #     print(act)
+        for act in actions:
+            print(act)
         # print(state)
         # print(goal_pos)
         # print(goal_not)
