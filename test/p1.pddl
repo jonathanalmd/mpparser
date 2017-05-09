@@ -11,7 +11,7 @@
 	(CLEAR A) 
 	(CLEAR B) 
 	(CLEAR D) 
-		(NOT(HANDEMPTY))
+		(NOT(HANDEMPTY)(HANDEMPTY2))
 
 	(ONTABLE C) 
 	(= (ondblock C A B D) 1)
