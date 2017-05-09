@@ -1,32 +1,49 @@
-
-(define (domain dinner) 
+; This is a comment line
+(define (domain dinner) ; There is no block comment like
   (:requirements :strips)
-  	(:types room ball gripper)cd
-
-
-
   (:predicates
-		(free ?d1 ?d2)
-		(free ?f)
-		(free)
-  )
-   (:functions
-
-     (road-length ?l1 ?l2 - location)
-         (total-cost2)
-
-     (total-cost ?ds - loc) - number3
-
+    (clean)
+    (dinner)
+    (quiet)
+    (present)
+    (garbage)
   )
   (:action cook
     :parameters ()
-    :precondition 
-    	(and
-      	(clean)
-      	)
-    :effect 
-    	(and
-      	(dinner ?f)
-    	)
-	)
+    :precondition (and
+      (clean)
+    )
+    :effect (and
+      (dinner)
+    )
+  )
+  (:action wrap
+    :parameters ()
+    :precondition (and
+      (quiet)
+    )
+    :effect (and
+      (present)
+    )
+  )
+  (:action carry
+    :parameters (?frlom ?to)
+    :precondition (and
+      (garbage)
+
+      (clean ?d1 ?d2)
+      (quiet)
+      (cleaner ?d)
+    )
+    :effect (and
+            (quiet)
+
+      (clean ?d1 ?d2)
+        (garbage)
+      (cleaner ?d)
+        (garbage)
+      (cldsdsdsdeaner ?sd)
+
+    )
+  )
 )

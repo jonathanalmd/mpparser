@@ -641,7 +641,7 @@ def p_lista_preds_op_1(p):
     '''lista_preds_op : '''
 
 def p_lista_preds_op_2(p):
-    '''lista_preds_op : lista_predicados'''
+    '''lista_preds_op : lista_predicados lista_preds_op'''
     # print("<<<<<<<<<FINAL_LOGIC>>>>",objDomain.curLogicalOperator)
 
 def p_lista_preds_op_3(p):
@@ -652,6 +652,7 @@ def p_lista_preds_op_3(p):
     objDomain.curLogicalOperator = "AND"
     # objDomain.lista_predicados.append("AND")
     # print("\t\tAND>>>>",objDomain.lista_predicados)
+    # print("\tvars:",objDomain.lista_pddl_vars)
     objDomain.lista_predicados[0] = "&" + str(len(objDomain.lista_predicados)) + "*" + objDomain.lista_predicados[0]
 
 def p_lista_preds_op_9(p):
@@ -676,17 +677,23 @@ def p_lista_preds_op_7(p):
 def p_lista_preds_op_8(p):
     '''lista_preds_op : LPAREN WHEN lista_preds_op RPAREN'''
 
+
+def p_lista_predicados_0(p):
+    ''' lista_predicados : '''
+
 def p_lista_predicados_1(p):
-    '''lista_predicados : LPAREN ID lista_var RPAREN lista_preds_op'''
+    '''lista_predicados : LPAREN ID lista_var RPAREN lista_predicados lista_preds_op'''
     # print(p[2])
     # print(objDomain.lista_pddl_vars)
     # print(">>>",objDomain.pddl_vars)
 
-    # if objDomain.pddl_vars:
-    objDomain.appendListaPDDLvars()
+    if objDomain.pddl_vars:
+        objDomain.appendListaPDDLvars()
+    # else:
+    #     # objDomain.pddl_vars = ["(NOVdAR)"]
+    #     objDomain.appendListaPDDLvars()
+
     objDomain.cleanPDDLvars()
-
-
     objDomain.appendPredicado(p[2])
     # if objDomain.dealing_with_types:
     #     objDomain.dealingWithTypeSep()
@@ -703,12 +710,24 @@ def p_lista_predicados_4(p):
 def p_lista_predicados_5(p):
     '''lista_predicados : LPAREN DECREASE LPAREN ID RPAREN NUM RPAREN'''
 
+def p_lista_predicados_6(p):
+    '''lista_predicados : LPAREN ID RPAREN lista_predicados lista_preds_op '''
+    print(">>ID",p[2])
+    objDomain.appendListaPDDLvars()
+    objDomain.cleanPDDLvars()
+    objDomain.appendVar(p[2])
+    # objDomain.appendVar("(NOVAR)")
+    objDomain.appendListaPDDLvars()
+    objDomain.appendPredicado(p[2])
+    objDomain.cleanPDDLvars()
+    print(objDomain.lista_predicados)
+    print(objDomain.lista_pddl_vars)
 def p_lista_var_1(p):
     '''lista_var : '''
     # print(">>kekekekekekeke>",objDomain.pddl_vars)
-    # if objDomain.pddl_vars:
-    objDomain.appendListaPDDLvars()
-    objDomain.cleanPDDLvars()
+    if objDomain.pddl_vars:
+        objDomain.appendListaPDDLvars()
+        objDomain.cleanPDDLvars()
 
 def p_lista_var_2(p):
     '''lista_var : VAR ID lista_var'''

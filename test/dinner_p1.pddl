@@ -1,14 +1,13 @@
 (define (problem pb1)
   (:domain dinner)
-
   (:init
-    (garbage f)
-    (clean f)
-    (quiet f)
+    (garbage)
+    (clean)
+    (quiet)
   )
   (:goal (and
-    (dinner f)
-    (present f)
+    (dinner)
+    (present)
     (not (garbage))
   ))
 )

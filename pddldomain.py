@@ -12,7 +12,7 @@ import sys
 import yacc 
 import lex
 import plex
-
+import re
 class PDDLPredicate:
     def __init__(self, pred_name):
         self.name = pred_name
@@ -303,8 +303,8 @@ class PDDLDomainParse:
             print("\tType(s)",self.lista_types)
             print("\tVar(s)",self.lista_pddl_vars[0])
             print("\tExpecting " + str(len(self.lista_pddl_vars[0])) + " type(s) and received only " + str(len(self.lista_types)) + " type(s)")
-            
             sys.exit()
+
         else:
             action = PDDLAction()
             i = 0
@@ -323,21 +323,44 @@ class PDDLDomainParse:
             self.lista_action_predicados[0].reverse()
             self.lista_action_predicados[1].reverse()
             self.dealWithActionLogicPredicate()
+            print("b4:",self.lista_pddl_vars)
             i = 0
-            for var in self.lista_pddl_vars:
-                if not var: # var == []
-                    self.lista_pddl_vars[i].append(["(NOVARS)"])
-                i += 1
+            # for var in self.lista_pddl_vars:
+            #     if not var: # var == []
+            #         self.lista_pddl_vars[i].append(["(NOVARS)"])
+            #     i += 1
+
+            print("PRED>",self.lista_action_predicados)
+            print("VARS>",self.lista_pddl_vars)
+            #precondition
+            var_list = []
+            for var in self.lista_pddl_vars[1]:
+                for ivar in var:
+                    var_list.append(ivar)
+            print("VARLIST!!!!",var_list)
             i = 0
+            self.lista_pddl_vars[1][i].reverse()
             for predicate in self.lista_action_predicados[0]:
-                self.lista_pddl_vars[1][i].reverse()
-                action.preconditions[predicate] = self.lista_pddl_vars[1][i]
-                i = i + 1
+                predicate = re.sub('[!&]', '', predicate)
+                if predicate in var_list:
+                    action.preconditions[predicate] = ['(NOVARS!)']
+                else:
+                    action.preconditions[predicate] = self.lista_pddl_vars[1][i]
+                    i = i + 1
+            #effect
+            var_list = []
+            for var in self.lista_pddl_vars[2]:
+                for ivar in var:
+                    var_list.append(ivar)
             i = 0
+            self.lista_pddl_vars[2][i].reverse()
             for predicate in self.lista_action_predicados[1]:
-                self.lista_pddl_vars[2][i].reverse()
-                action.effects[predicate] = self.lista_pddl_vars[2][i]
-                i = i + 1
+                predicate = re.sub('[!&]', '', predicate)
+                if predicate in var_list:
+                    action.effects[predicate] = ['(NOVARS!)']
+                else:
+                    action.effects[predicate] = self.lista_pddl_vars[2][i]
+                    i = i + 1
             self.domain_actions.append(action)
             # print("\n\n\n\n")
             # print(action)
@@ -350,7 +373,6 @@ class PDDLDomainParse:
 
 
             self.lista_action_predicados = []
-
             self.cleanPDDLvars()
             self.cleanListaPDDLvars()
             self.cleanTypes()
@@ -414,9 +436,9 @@ class PDDLDomainParse:
         # print(self.lista_pddl_vars)
         # self.lista_pddl_vars = []
         # self.lista_pddl_vars.append(lista)
-        # print(self.lista_pddl_vars)
+        # print("AAAAAAAAA",self.lista_pddl_vars)
         lista2 = []
-        lista2.append(self.lista_pddl_vars[0])
+        lista2.append(self.lista_pddl_vars[:1])
         lista2.append(lista)
         self.lista_pddl_vars = lista2
         # print("LOGIC>>",self.curLogicalOperator)
