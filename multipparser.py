@@ -352,7 +352,7 @@ def p_lista_ids_p_3(p):
 def p_lista_ids_p_4(p):
     '''lista_ids_p : COMP LPAREN ID lista_ids_p RPAREN NUM'''
     # print(objProblem.lista_ids)
-    # print(p[1],p[3])
+    print(p[1],p[3])
     # objProblem.lista_ids.insert(0,"=")
     # objProblem.lista_ids.insert(1,p[3])
     objProblem.appendId(p[3])
@@ -361,7 +361,7 @@ def p_lista_ids_p_4(p):
     # print(objProblem.lista_ids)
 
 def p_lista_ids_p_5(p):
-    '''lista_ids_p : COMP LPAREN ID lista_ids_p RPAREN  ID'''
+    '''lista_ids_p : COMP LPAREN ID lista_ids_p RPAREN ID'''
     # print(objProblem.lista_ids)
     # print(p[1],p[3])
     # objProblem.lista_ids.insert(0,"=")
@@ -369,7 +369,7 @@ def p_lista_ids_p_5(p):
     objProblem.appendId(p[3])
     objProblem.appendId("=")
     objProblem.lista_ids.insert(0,p[6])
-    # print(objProblem.lista_ids)
+    print(objProblem.lista_ids)
 
 # =================================================================================================== #
 # ========================================== END PROBLEM ============================================ #
@@ -599,26 +599,26 @@ def p_pddl_effects_1(p):
 
 def p_lista_parameters_1(p):
     '''lista_parameters : '''
-    # print("<<<############",objDomain.lista_pddl_vars)
+    print("<<<############",objDomain.lista_pddl_vars)
     objDomain.dealWithParameters()
 
     # objDomain.cleanListaPDDLvars()
+
+# def p_lista_parameters_2(p):
+#     '''lista_parameters : VAR ID MINUS ID lista_parameters'''
+#     # objDomain.lista_pddl_vars.append(p[2])
+#     # print(objDomain.pddl_vars)
+#     # print(objDomain.lista_pddl_vars)
+#     # objDomain.cleanListaPDDLvars()
+
+#     objDomain.appendType(p[4])
+#     # print("<<<############",objDomain.lista_pddl_vars)
+
+#     objDomain.appendVar(p[2])
+
+#     objDomain.dealWithParameters()
 
 def p_lista_parameters_2(p):
-    '''lista_parameters : VAR ID MINUS ID lista_parameters'''
-    # objDomain.lista_pddl_vars.append(p[2])
-    # print(objDomain.pddl_vars)
-    # print(objDomain.lista_pddl_vars)
-    # objDomain.cleanListaPDDLvars()
-
-    objDomain.appendType(p[4])
-    # print("<<<############",objDomain.lista_pddl_vars)
-
-    objDomain.appendVar(p[2])
-
-    objDomain.dealWithParameters()
-
-def p_lista_parameters_3(p):
     '''lista_parameters : lista_var MINUS ID lista_parameters'''
     # print(objDomain.pddl_vars)
     # print(objDomain.lista_pddl_vars)
@@ -626,7 +626,7 @@ def p_lista_parameters_3(p):
     objDomain.appendType(p[3])
     # print("<<<############",objDomain.lista_pddl_vars)
 
-def p_lista_parameters_4(p):
+def p_lista_parameters_3(p):
     '''lista_parameters : lista_var '''
     # print(objDomain.pddl_vars)
     # print(objDomain.lista_pddl_vars)
@@ -656,7 +656,7 @@ def p_lista_preds_op_3(p):
     objDomain.lista_predicados[0] = "&" + str(len(objDomain.lista_predicados)) + "*" + objDomain.lista_predicados[0]
 
 def p_lista_preds_op_9(p):
-    '''lista_preds_op : LPAREN NOT lista_predicados RPAREN '''
+    '''lista_preds_op : LPAREN NOT lista_preds_op RPAREN lista_preds_op'''
     objDomain.curLogicalOperator = "NOT"
     # objDomain.lista_predicados.append("AND")
     # print("\t\tNOT>>>>",objDomain.lista_predicados)
@@ -682,7 +682,7 @@ def p_lista_predicados_0(p):
     ''' lista_predicados : '''
 
 def p_lista_predicados_1(p):
-    '''lista_predicados : LPAREN ID lista_var RPAREN lista_predicados lista_preds_op'''
+    '''lista_predicados : LPAREN ID lista_var RPAREN lista_preds_op'''
     # print(p[2])
     # print(objDomain.lista_pddl_vars)
     # print(">>>",objDomain.pddl_vars)

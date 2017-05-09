@@ -12,12 +12,12 @@
 	(CLEAR B) 
 	(CLEAR D) 
 	(ONTABLE C) 
-	(= (ondblock C) 1)
+	(= (ondblock C A B D) 1)
 	(NOT(on AAA))
 	(ONTABLE A)
 	(ONTABLE B) 
 	(ONTABLE D) 
-	(HANDEMPTY)
+	(NOT(HANDEMPTY))
 	
 )
 
@@ -29,7 +29,7 @@
 		(CLEAR D) 
 		(ONTABLE C) 
 		(ONTABLE A)
-		(= (onblock Cdsd) D)
+		(= (onblock Cds dsd dsd ) D)
 		(NOT
 				(CLEAR B) 
 			

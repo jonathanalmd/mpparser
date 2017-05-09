@@ -42,8 +42,8 @@
       (garbage)
     )
     :effect (and
-      (not (garbage)
-      (quiet))
+      (not (garbage))
+      (not (quiet))
     )
   )
 )

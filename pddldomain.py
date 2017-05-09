@@ -303,17 +303,17 @@ class PDDLDomainParse:
         self.lista_pddl_vars[0] = [x for x in self.lista_pddl_vars[0] if x != []]
         self.lista_pddl_vars[1] = [x for x in self.lista_pddl_vars[1] if x != []]
         self.lista_pddl_vars[2] = [x for x in self.lista_pddl_vars[2] if x != []]
-        # print("ACTION1>>",self.lista_pddl_vars)
-        # print("<TYPE>>>>>",self.lista_types)
+        print("ACTION1>>",self.lista_pddl_vars)
+        print("<TYPE>>>>>",self.lista_types)
 
         if self.lista_types == []:
             for pddl_vars in self.lista_pddl_vars[0]:
                 self.lista_types.append("(NOTYPE)")
 
-        if (len(self.lista_types) != len(self.lista_pddl_vars[0])) and all(isinstance(n, list) for n in self.lista_pddl_vars[0]):
+        if (len(self.lista_types) != len(self.lista_pddl_vars[0]) ) and all(isinstance(n, list) for n in self.lista_pddl_vars[0]):
             print("ERRO: action parameters variables in line %d must be all typed or all not typed"%(self.curLineAction))
             print("\tType(s)",self.lista_types)
-            print("\tVar(s)",self.lista_pddl_vars[0])
+            print("\tVar(s)",self.lista_pddl_vars)
             print("\tExpecting " + str(len(self.lista_pddl_vars[0])) + " type(s) and received only " + str(len(self.lista_types)) + " type(s)")
             sys.exit()
 
@@ -422,7 +422,7 @@ class PDDLDomainParse:
 
 
     def dealWithParameters(self):
-        # print (self.pddl_vars)
+        print ("EEEE",self.pddl_vars)
         if self.pddl_vars:
             self.lista_pddl_vars = [x for x in self.lista_pddl_vars if x != []]
 
@@ -431,17 +431,19 @@ class PDDLDomainParse:
             lista.append(self.pddl_vars)
             # print(lista)
             # lista = self.lista_pddl_vars.append(self.pddl_vars)
-            # print(">>>>>>.",lista)
+            print(">>>>>>.",lista)
+            print(">",self.lista_pddl_vars)
             if len(lista) == 1:
                 self.lista_pddl_vars = []
                 self.lista_pddl_vars.append(lista[0])
-                # print(">>BBBB>>>:",self.lista_pddl_vars)
+                print(">>BBBB>>>:",self.lista_pddl_vars)
 
             else:
                 self.lista_pddl_vars = []
                 self.lista_pddl_vars.append(lista)
                 # print(">>AAAAA>>>:",self.lista_pddl_vars)
             self.cleanPDDLvars()
+
 
     def dealWithActionPredicates(self):
         # print("PRED>>",self.lista_predicados)
@@ -458,11 +460,15 @@ class PDDLDomainParse:
         # print(self.lista_pddl_vars)
         # self.lista_pddl_vars = []
         # self.lista_pddl_vars.append(lista)
-        # print("AAAAAAAAA",self.lista_pddl_vars)
+        print("AAAAAAAAA",self.lista_pddl_vars)
         lista2 = []
-        lista2.append(self.lista_pddl_vars[:1])
+        lista2.append(self.lista_pddl_vars[0])
+        print(lista2)
         lista2.append(lista)
+        print(lista)
         self.lista_pddl_vars = lista2
+        print("@!!!!!!!!!!",self.lista_pddl_vars)
+
         # print("LOGIC>>",self.curLogicalOperator)
         self.dealWithActionPredicates()
 
@@ -480,6 +486,7 @@ class PDDLDomainParse:
         self.lista_types.reverse()
 
         self.dealWithActionPredicates()
+
         self.dealWithAction()
 
     def getDomainName(self):

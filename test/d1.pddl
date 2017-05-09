@@ -20,7 +20,7 @@
 
   )
 	(:action move
-		:parameters  (?from1 ?to22)
+		:parameters  (?from1 ?from2 - t ?to22 - re ?t2 - teste3)
 		:precondition 
 		(and
 			(at-robby1 ?from11 ?from11)
@@ -46,18 +46,29 @@
 			(carry ?obj ?gripper)
 			(IRRA ?i ?i2)
 
-			(not(free ?gripperd)
-			 (at ?obj ?room))
+
+
+
+
+
 		)
 	)
 
 	(:action drop
 		:parameters (?room ?room2 - room)
 		:precondition (and (ball ?obj) (room ?room) (gripper ?gripper) (carry ?obj ?gripper) (at-robby ?room))
-		:effect (and (at ?obj ?room) (free ?gripper) (not (carry ?obj ?gripper))))
+		:effect 
+			(and 
+
+
+				(at ?obj ?room) 
+				(free ?gripper) 
+								(not (carry ?obj ?gripper)
+								(carry ?oddddbj ?grisddpper))
+
+			)
+	)
 )
-
-
 
 
 
