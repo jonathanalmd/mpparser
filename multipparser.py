@@ -140,6 +140,36 @@ def p_adl_predicado_2(p):
     '''adl_predicado : AND ID LPAREN adl_lista_ids RPAREN'''
     objADL.appendPredicado(p[2])
 
+def p_adl_predicado_3(p):
+    ''' adl_predicado : ID LPAREN RPAREN'''
+    objADL.appendPredicado(p[1])
+    objADL.appendListIds()
+
+def p_adl_predicado_4(p):
+    ''' adl_predicado : AND ID LPAREN RPAREN'''
+    objADL.appendPredicado("!"+p[2])
+    objADL.appendListIds()
+
+def p_adl_predicado_5(p):
+    '''adl_predicado : LNOT ID LPAREN adl_lista_ids RPAREN'''
+    objADL.appendPredicado("!"+p[2])
+    objADL.appendListIds()
+    # print (objADL.lista_ids_sep)
+
+def p_adl_predicado_6(p):
+    '''adl_predicado : AND LNOT ID LPAREN adl_lista_ids RPAREN'''
+    objADL.appendPredicado("!"+p[3])
+
+def p_adl_predicado_7(p):
+    ''' adl_predicado : LNOT ID LPAREN RPAREN'''
+    objADL.appendPredicado("!"+p[2])
+    objADL.appendListIds()
+
+def p_adl_predicado_8(p):
+    ''' adl_predicado : AND LNOT ID LPAREN RPAREN'''
+    objADL.appendPredicado("!"+p[3])
+    objADL.appendListIds()
+
 
 def p_adl_lista_ids_1(p):
     '''adl_lista_ids : ID'''
