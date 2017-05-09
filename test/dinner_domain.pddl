@@ -32,8 +32,9 @@
       (garbage)
     )
     :effect (and
-      (not (garbage))
-      (not (clean))
+      (not 
+      (garbage)
+      (clean))
     )
   )
   (:action dolly
@@ -42,8 +43,10 @@
       (garbage)
     )
     :effect (and
-      (not (garbage))
-      (not (quiet))
+    (garbage1)
+      (not (garbage)
+      (garbage44))
+
     )
   )
 )

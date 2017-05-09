@@ -362,7 +362,7 @@ def p_lista_ids_p_4(p):
 def p_lista_ids_p_5(p):
     '''lista_ids_p : COMP LPAREN ID lista_ids_p RPAREN NUM'''
     # print(objProblem.lista_ids)
-    print(p[1],p[3])
+    # print(p[1],p[3])
     # objProblem.lista_ids.insert(0,"=")
     # objProblem.lista_ids.insert(1,p[3])
     objProblem.appendId(p[3])
@@ -379,7 +379,7 @@ def p_lista_ids_p_6(p):
     objProblem.appendId(p[3])
     objProblem.appendId("=")
     objProblem.lista_ids.insert(0,p[6])
-    print(objProblem.lista_ids)
+    # print(objProblem.lista_ids)
 
 # =================================================================================================== #
 # ========================================== END PROBLEM ============================================ #
@@ -609,7 +609,7 @@ def p_pddl_effects_1(p):
 
 def p_lista_parameters_1(p):
     '''lista_parameters : '''
-    print("<<<############",objDomain.lista_pddl_vars)
+    # print("<<<############",objDomain.lista_pddl_vars)
     objDomain.dealWithParameters()
 
     # objDomain.cleanListaPDDLvars()
@@ -665,12 +665,6 @@ def p_lista_preds_op_3(p):
     # print("\tvars:",objDomain.lista_pddl_vars)
     objDomain.lista_predicados[0] = "&" + str(len(objDomain.lista_predicados)) + "*" + objDomain.lista_predicados[0]
 
-def p_lista_preds_op_9(p):
-    '''lista_preds_op : LPAREN NOT lista_preds_op RPAREN lista_preds_op'''
-    objDomain.curLogicalOperator = "NOT"
-    # objDomain.lista_predicados.append("AND")
-    # print("\t\tNOT>>>>",objDomain.lista_predicados)
-    objDomain.lista_predicados[0] = "!" + str(len(objDomain.lista_predicados)) + "*" +objDomain.lista_predicados[0]
 
 def p_lista_preds_op_4(p):
     '''lista_preds_op : LPAREN FORALL lista_preds_op RPAREN '''
@@ -721,8 +715,8 @@ def p_lista_predicados_5(p):
     '''lista_predicados : LPAREN DECREASE LPAREN ID RPAREN NUM RPAREN'''
 
 def p_lista_predicados_6(p):
-    '''lista_predicados : LPAREN ID RPAREN lista_predicados lista_preds_op '''
-    print(">>ID",p[2])
+    '''lista_predicados : LPAREN ID RPAREN lista_predicados '''
+    # print(">>ID",p[2])
     objDomain.appendListaPDDLvars()
     objDomain.cleanPDDLvars()
     objDomain.appendVar(p[2])
@@ -730,8 +724,48 @@ def p_lista_predicados_6(p):
     objDomain.appendListaPDDLvars()
     objDomain.appendPredicado(p[2])
     objDomain.cleanPDDLvars()
-    print(objDomain.lista_predicados)
-    print(objDomain.lista_pddl_vars)
+    # print(objDomain.lista_predicados)
+    # print(objDomain.lista_pddl_vars)
+
+def p_lista_predicados_7(p):
+    '''lista_predicados : LPAREN NOT lista_predicados_not RPAREN ''' 
+    objDomain.curLogicalOperator = "NOT"
+    # objDomain.lista_predicados.append("AND")
+    # print("\t\tNOT>>>>",objDomain.lista_predicados)
+    # objDomain.lista_predicados[0] = "!" + str(len(objDomain.lista_predicados)) + "*" +objDomain.lista_predicados[0]
+
+
+def p_lista_predicados_not_1(p):
+    ''' lista_predicados_not : '''
+
+def p_lista_predicados_not_2(p):
+    ''' lista_predicados_not : LPAREN ID RPAREN lista_predicados_not'''
+    objDomain.appendListaPDDLvars()
+    objDomain.cleanPDDLvars()
+    objDomain.appendVar(p[2])
+    # objDomain.appendVar("(NOVAR)")
+    objDomain.appendListaPDDLvars()
+    objDomain.appendPredicado("!"+p[2])
+    objDomain.cleanPDDLvars()
+    # print(objDomain.lista_predicados)
+    # print(objDomain.lista_pddl_vars)
+def p_lista_predicados_not_3(p):
+    '''lista_predicados_not : LPAREN ID lista_var RPAREN lista_predicados_not'''
+    # print(p[2])
+    # print(objDomain.lista_pddl_vars)
+    # print(">>>",objDomain.pddl_vars)
+
+    if objDomain.pddl_vars:
+        objDomain.appendListaPDDLvars()
+    # else:
+    #     # objDomain.pddl_vars = ["(NOVdAR)"]
+    #     objDomain.appendListaPDDLvars()
+
+    objDomain.cleanPDDLvars()
+    objDomain.appendPredicado("!"+p[2])
+    # if objDomain.dealing_with_types:
+    #     objDomain.dealingWithTypeSep()
+
 def p_lista_var_1(p):
     '''lista_var : '''
     # print(">>kekekekekekeke>",objDomain.pddl_vars)

@@ -132,6 +132,8 @@ class PDDLDomainParse:
 
         self.curDealingWith = ""
 
+        self.not_counter = 0
+
     def setDomainName(self,domain_name):
         self.domain_name = domain_name
 
@@ -278,11 +280,12 @@ class PDDLDomainParse:
                 num = int(logic_operator[1:])
                 # print("pre",op,num)
                 for i in range(0,num):
-                    if op == "!" and self.lista_action_predicados[indx_action_predicado][len_action_pred - i][0] == "!":
-                        print("WARNING: junte os predicados em uma unica operacao logica: ",self.lista_action_predicados[indx_action_predicado][len_action_pred - i][2:], "e", self.lista_action_predicados[indx_action_predicado][len_action_pred - i - 1][2:])
-                        break
-                    else:
-                        self.lista_action_predicados[indx_action_predicado][len_action_pred - i] = op + self.lista_action_predicados[indx_action_predicado][len_action_pred - i]
+                    # if op == "!" and self.lista_action_predicados[indx_action_predicado][len_action_pred - i][0] == "!":
+                    #     print("WARNING: junte os predicados em uma unica operacao logica: ",self.lista_action_predicados[indx_action_predicado][len_action_pred - i][2:], "e", self.lista_action_predicados[indx_action_predicado][len_action_pred - i - 1][2:])
+                    #     break
+                    # else:
+                    #     self.lista_action_predicados[indx_action_predicado][len_action_pred - i] = op + self.lista_action_predicados[indx_action_predicado][len_action_pred - i]
+                    self.lista_action_predicados[indx_action_predicado][len_action_pred - i] = op + self.lista_action_predicados[indx_action_predicado][len_action_pred - i]
             # print("pre_predicados:",self.lista_action_predicados[indx_action_predicado])
 
         # last_predicado = self.lista_action_predicados[1][-1]
@@ -303,8 +306,8 @@ class PDDLDomainParse:
         self.lista_pddl_vars[0] = [x for x in self.lista_pddl_vars[0] if x != []]
         self.lista_pddl_vars[1] = [x for x in self.lista_pddl_vars[1] if x != []]
         self.lista_pddl_vars[2] = [x for x in self.lista_pddl_vars[2] if x != []]
-        print("ACTION1>>",self.lista_pddl_vars)
-        print("<TYPE>>>>>",self.lista_types)
+        # print("ACTION1>>",self.lista_pddl_vars)
+        # print("<TYPE>>>>>",self.lista_types)
 
         if self.lista_types == []:
             for pddl_vars in self.lista_pddl_vars[0]:
@@ -335,22 +338,22 @@ class PDDLDomainParse:
             self.lista_action_predicados[0].reverse()
             self.lista_action_predicados[1].reverse()
             self.dealWithActionLogicPredicate()
-            print("b4:",self.lista_pddl_vars)
+            # print("b4:",self.lista_pddl_vars)
             i = 0
             # for var in self.lista_pddl_vars:
             #     if not var: # var == []
             #         self.lista_pddl_vars[i].append(["(NOVARS)"])
             #     i += 1
 
-            print("PRED>",self.lista_action_predicados)
-            print("VARS>",self.lista_pddl_vars)
+            # print("PRED>",self.lista_action_predicados)
+            # print("VARS>",self.lista_pddl_vars)
 
             #precondition
             var_list = []
             for var in self.lista_pddl_vars[1]:
                 for ivar in var:
                     var_list.append(ivar)
-            print("VARLIST!!!!",var_list)
+            # print("VARLIST!!!!",var_list)
             i = 0
             self.lista_pddl_vars[1][i].reverse()
             for predicate in self.lista_action_predicados[0]:
@@ -422,7 +425,7 @@ class PDDLDomainParse:
 
 
     def dealWithParameters(self):
-        print ("EEEE",self.pddl_vars)
+        # print ("EEEE",self.pddl_vars)
         if self.pddl_vars:
             self.lista_pddl_vars = [x for x in self.lista_pddl_vars if x != []]
 
@@ -431,12 +434,12 @@ class PDDLDomainParse:
             lista.append(self.pddl_vars)
             # print(lista)
             # lista = self.lista_pddl_vars.append(self.pddl_vars)
-            print(">>>>>>.",lista)
-            print(">",self.lista_pddl_vars)
+            # print(">>>>>>.",lista)
+            # print(">",self.lista_pddl_vars)
             if len(lista) == 1:
                 self.lista_pddl_vars = []
                 self.lista_pddl_vars.append(lista[0])
-                print(">>BBBB>>>:",self.lista_pddl_vars)
+                # print(">>BBBB>>>:",self.lista_pddl_vars)
 
             else:
                 self.lista_pddl_vars = []
@@ -460,14 +463,14 @@ class PDDLDomainParse:
         # print(self.lista_pddl_vars)
         # self.lista_pddl_vars = []
         # self.lista_pddl_vars.append(lista)
-        print("AAAAAAAAA",self.lista_pddl_vars)
+        # print("AAAAAAAAA",self.lista_pddl_vars)
         lista2 = []
         lista2.append(self.lista_pddl_vars[0])
-        print(lista2)
+        # print(lista2)
         lista2.append(lista)
-        print(lista)
+        # print(lista)
         self.lista_pddl_vars = lista2
-        print("@!!!!!!!!!!",self.lista_pddl_vars)
+        # print("@!!!!!!!!!!",self.lista_pddl_vars)
 
         # print("LOGIC>>",self.curLogicalOperator)
         self.dealWithActionPredicates()

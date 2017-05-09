@@ -259,11 +259,12 @@ class Propositional_Planner:
         goal_pos = self.getProblemGoalPos(planning)
         goal_not = self.getProblemGoalNeg(planning)
 
-        for act in actions:
-            print(act)
-        print(state)
-        print(goal_pos)
-        print(goal_not)
+        # for act in actions:
+        #     print(act)
+        # print(state)
+        # print(goal_pos)
+        # print(goal_not)
+        
         # state = parser.state
         # goal_pos = parser.positive_goals
         # goal_not = parser.negative_goals
