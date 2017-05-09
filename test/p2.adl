@@ -8,16 +8,46 @@ INIT(
 )
 
 goal (
-        at(c1,jfk) and at(c2,sfo)
-)
-action (
-        load(c:cargo, c2:cargo, d:dargo),
-        precond: at(c,a) and at(p,a)
-        effect: at(c,a) and in(c,p)
+    dinner() and present() and !garbage()
 )
 
 action (
-        unload(c:cargo,p:plane,a:air-port),
-        precond: in(c,p) and at(p,a)
-        effect: at(c,a) and in(c,p)
+    cook(),
+    precond: clean()
+    effect: dinner()
 )
+
+action (
+    wrap(),
+    precond: quiet()
+    effect: present()
+)
+
+action (
+    carry(),
+    precond: garbage()
+    effect: !garbage() and !clean()
+
+)
+
+action (
+    dolly(),
+    precond: garbage()
+    effect: !garbage() and !quiet()
+
+)
+
+
+action (
+    dirty(),
+    precond: !garbage() and quiet()
+    effect: garbage() and !quiet()
+
+)
+
+
+
+
+
+
+

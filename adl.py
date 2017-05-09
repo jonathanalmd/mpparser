@@ -154,7 +154,7 @@ class ADLFormParse:
         paction_list = []
         for param_types, param_vars in zip(self.action_p_types_sep, self.action_params_sep):
             paction = {}
-            print(param_types)
+            # print(param_types)
             for utype, uvar in zip(param_types, param_vars):
                 if utype in paction:
                     paction[utype].append(uvar)

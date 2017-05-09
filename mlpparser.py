@@ -36,231 +36,362 @@ class Action:
 
 
 class Propositional_Planner:
-    def __init__(self):
+    def __init__(self, rmode):
         self.actions = []
+
+        self.rmode = rmode 
     #-----------------------------------------------
     # Solve
     #-----------------------------------------------
     def getDomainActions(self,planning_domain):
-        act = planning_domain.getPDDLDomainActions()
-        action = []
-        for single_action in act:
-            # print (single_action)
-            action.append(":action")
-            action.append(single_action.name)
-            action.append(":parameters")
-            action.append(list(single_action.parameters.values()))
-            action.append(":precondition")
-            action_pred = ['and']
-            for precond in single_action.preconditions:
-                if "!" in precond.name:
-                    aux = []
-                    aux.append('not')
-                    precond.name = re.sub('[&!]', '', precond.name)
-                    aux.append([precond.name])
-                    action_pred.append(aux)
-                else:
-                    precond.name = re.sub('[&!]', '', precond.name)
-                    action_pred.append([precond.name])
 
-                if precond.p_vars[0][0] != '(':
-                    action.append(precond.p_vars)
-            action.append(action_pred)
-            action_pred = ['and']
-            action.append(":effects")
-            for effect in single_action.effects:
-                if "!" in effect.name:
-                    aux = []
-                    aux.append('not')
-                    effect.name = re.sub('[&!]', '', effect.name)
-                    aux.append([effect.name])
-                    action_pred.append(aux)
-                else:
-                    effect.name = re.sub('[&!]', '', effect.name)
-                    action_pred.append([effect.name])
+        if self.rmode == "pddl":
+            act = planning_domain.getPDDLDomainActions()
+            action = []
+            for single_action in act:
+                # print (single_action)
+                action.append(":action")
+                action.append(single_action.name)
+                action.append(":parameters")
+                action.append(list(single_action.parameters.values()))
+                action.append(":precondition")
+                action_pred = ['and']
+                for precond in single_action.preconditions:
+                    if "!" in precond.name:
+                        aux = []
+                        aux.append('not')
+                        precond.name = re.sub('[&!]', '', precond.name)
+                        aux.append([precond.name])
+                        action_pred.append(aux)
+                    else:
+                        precond.name = re.sub('[&!]', '', precond.name)
+                        action_pred.append([precond.name])
 
-                if effect.p_vars[0][0] != '(':
-                    action.append(effect.p_vars)
-            action.append(action_pred)
-        # print (action)
+                    if precond.p_vars[0][0] != '(':
+                        action.append(precond.p_vars)
+                action.append(action_pred)
+                action_pred = ['and']
+                action.append(":effects")
+                for effect in single_action.effects:
+                    if "!" in effect.name:
+                        aux = []
+                        aux.append('not')
+                        effect.name = re.sub('[&!]', '', effect.name)
+                        aux.append([effect.name])
+                        action_pred.append(aux)
+                    else:
+                        effect.name = re.sub('[&!]', '', effect.name)
+                        action_pred.append([effect.name])
+
+                    if effect.p_vars[0][0] != '(':
+                        action.append(effect.p_vars)
+                action.append(action_pred)
+            # print (action)
+        elif self.rmode == "adl":
+            pass
         return action
 
     def getDomainActionsFormated(self,planning_domain):
-        act = planning_domain.getPDDLDomainActions()
-        actions = []
-        for single_action in act:
-            # print (single_action)
-            # action.append(":action")
-            aname = single_action.name
-            # action.append(":parameters")
-            # action.append(list(single_action.parameters.values()))
-            parameters = list(single_action.parameters.values())
-            # action.append(":precondition")
-            negative_preconditions = []
-            positive_preconditions = []
-            for precond in single_action.preconditions:
-                if "!" in precond.name:
-                    negative_preconditions.append([re.sub('[&!]', '', precond.name)])
-                else:
-                    positive_preconditions.append([re.sub('[&!]', '', precond.name)])
 
-            # action.append(":effects")
-            add_effects = []
-            del_effects = []
-            for effect in single_action.effects:
-                if "!" in effect.name:
-                    del_effects.append([re.sub('[&!]', '', effect.name)])
-                else:
-                    add_effects.append([re.sub('[&!]', '', effect.name)])
+        if self.rmode == "pddl":
+            act = planning_domain.getPDDLDomainActions()
+            actions = []
+            for single_action in act:
+                # print (single_action)
+                # action.append(":action")
+                aname = single_action.name
+                # action.append(":parameters")
+                # action.append(list(single_action.parameters.values()))
+                parameters = list(single_action.parameters.values())
+                # action.append(":precondition")
+                negative_preconditions = []
+                positive_preconditions = []
+                for precond in single_action.preconditions:
+                    if "!" in precond.name:
+                        negative_preconditions.append([re.sub('[&!]', '', precond.name)])
+                    else:
+                        positive_preconditions.append([re.sub('[&!]', '', precond.name)])
+
+                # action.append(":effects")
+                add_effects = []
+                del_effects = []
+                for effect in single_action.effects:
+                    if "!" in effect.name:
+                        del_effects.append([re.sub('[&!]', '', effect.name)])
+                    else:
+                        add_effects.append([re.sub('[&!]', '', effect.name)])
 
 
-            actions.append(Action(aname, parameters, positive_preconditions, negative_preconditions, add_effects, del_effects))
-        # print (action)
+                actions.append(Action(aname, parameters, positive_preconditions, negative_preconditions, add_effects, del_effects))
+            # print (action)
+        elif self.rmode == "adl":
+            act = planning_domain.getADLActions()
+            actions = []
+            for single_action in act:
+                # print (single_action)
+                # action.append(":action")
+                aname = single_action.name
+                # action.append(":parameters")
+                # action.append(list(single_action.parameters.values()))
+                parameters = list(single_action.param.values())
+                # action.append(":precondition")
+                negative_preconditions = []
+                positive_preconditions = []
+                for i in range (0, len(single_action.precond),2):
+                    if "!" in single_action.precond[i]:
+                        negative_preconditions.append([re.sub('[&!]', '', single_action.precond[i])])
+                    else:
+                        positive_preconditions.append([re.sub('[&!]', '', single_action.precond[i])])
+
+                # action.append(":effects")
+                add_effects = []
+                del_effects = []
+                for i in range(0, len(single_action.effect), 2):
+                    if "!" in single_action.effect[i]:
+                        del_effects.append([re.sub('[&!]', '', single_action.effect[i])])
+                    else:
+                        add_effects.append([re.sub('[&!]', '', single_action.effect[i])])
+
+
+                actions.append(Action(aname, parameters, positive_preconditions, negative_preconditions, add_effects, del_effects))
+            # print (action)
+
         return actions
 
     def getProblemInit(self,planning_problem):
-        init = planning_problem.getPDDLProblemInit()
-        # print (init)
-        state = []
+        
+        if self.rmode == "pddl":
+            init = planning_problem.getPDDLProblemInit()
+            # print (init)
+            state = []
 
-        init_preds = []
-        state.append(":init")
-        for pred_name in init:
-            if "!" in pred_name.name:
-                aux = []
-                aux.append('not')
-                pred_name.name = re.sub('[&!]', '', pred_name.name)
-                aux.append([pred_name.name])
-                init_preds.append(aux)
-            else:
-                pred_name.name = re.sub('[&!]', '', pred_name.name)
-                init_preds.append([pred_name.name])
+            init_preds = []
+            state.append(":init")
+            for pred_name in init:
+                if "!" in pred_name.name:
+                    aux = []
+                    aux.append('not')
+                    pred_name.name = re.sub('[&!]', '', pred_name.name)
+                    aux.append([pred_name.name])
+                    init_preds.append(aux)
+                else:
+                    pred_name.name = re.sub('[&!]', '', pred_name.name)
+                    init_preds.append([pred_name.name])
 
-            if pred_name.p_vars != []:
-                init_preds.append(effect.p_vars)
+                if pred_name.p_vars != []:
+                    init_preds.append(effect.p_vars)
 
-        state.append(init_preds)
+            state.append(init_preds)
 
+        elif self.rmode == "adl":
+            pass
 
-        # print (state)
         return state
 
     def getProblemInitFormated(self,planning_problem):
-        init = planning_problem.getPDDLProblemInit()
-        # print (init)
-        state = []
+        if self.rmode == "pddl":
+            init = planning_problem.getPDDLProblemInit()
+            # print (init)
+            state = []
 
-        init_preds = []
-        # state.append(":init")
-        for pred_name in init:
-            # if "!" in pred_name.name:
-            #     aux = []
-            #     aux.append('not')
-            #     pred_name.name = re.sub('[&!]', '', pred_name.name)
-            #     aux.append([pred_name.name])
-            #     init_preds.append(aux)
-            # else:
-            #     pred_name.name = re.sub('[&!]', '', pred_name.name)
-            #     init_preds.append([pred_name.name])
+            init_preds = []
+            # state.append(":init")
+            for pred_name in init:
+                # if "!" in pred_name.name:
+                #     aux = []
+                #     aux.append('not')
+                #     pred_name.name = re.sub('[&!]', '', pred_name.name)
+                #     aux.append([pred_name.name])
+                #     init_preds.append(aux)
+                # else:
+                #     pred_name.name = re.sub('[&!]', '', pred_name.name)
+                #     init_preds.append([pred_name.name])
 
-            # if pred_name.p_vars != []:
-            #     init_preds.append(effect.p_vars)
-            init_preds.append([pred_name.name])
-        state = init_preds
+                # if pred_name.p_vars != []:
+                #     init_preds.append(effect.p_vars)
+                init_preds.append([pred_name.name])
+            state = init_preds
 
+        elif self.rmode == "adl":
+            init = planning_problem.getADLInitialState()
+            # print ("INIT>",init)
+            state = []
+
+            init_preds = []
+            # state.append(":init")
+            for i in range(0,len(init)-1,2):
+                init_preds.append([init[i]])
+
+            state = init_preds
 
         # print (state)
         return state
 
     def getProblemGoal(self,planning_problem):
-        goal = planning_problem.getPDDLProblemGoal()
-        state = []
+        if self.rmode == "pddl":
+            goal = planning_problem.getPDDLProblemGoal()
+            state = []
 
-        init_preds = []
-        init_preds.append('and')
-        state.append(":goal")
-        for pred_name in goal:
-            if "!" in pred_name.name:
-                aux = []
-                aux.append('not')
-                name = re.sub('[&!]', '', pred_name.name)
-                aux.append([name])
-                init_preds.append(aux)
-            else:
-                name = re.sub('[&!]', '', pred_name.name)
-                init_preds.append([name])
+            init_preds = []
+            init_preds.append('and')
+            state.append(":goal")
+            for pred_name in goal:
+                if "!" in pred_name.name:
+                    aux = []
+                    aux.append('not')
+                    name = re.sub('[&!]', '', pred_name.name)
+                    aux.append([name])
+                    init_preds.append(aux)
+                else:
+                    name = re.sub('[&!]', '', pred_name.name)
+                    init_preds.append([name])
 
-            if pred_name.p_vars != []:
-                init_preds.append(effect.p_vars)
+                if pred_name.p_vars != []:
+                    init_preds.append(effect.p_vars)
 
-        state.append(init_preds)
+            state.append(init_preds)
 
-        # print (state)
+        elif self.rmode == "adl":
+            pass
+
+        # print ("STATE>",state)
         return state
 
 
     def getProblemGoalPos(self,planning_problem):
-        goal = planning_problem.getPDDLProblemGoal()
-        state = []
+        if self.rmode == "pddl":
+            goal = planning_problem.getPDDLProblemGoal()
+            state = []
 
-        init_preds = []
-        for pred_name in goal:
-            # if "!" in pred_name.name:
-            #     aux = []
-            #     aux.append('not')
-            #     pred_name.name = re.sub('[&!]', '', pred_name.name)
-            #     aux.append([pred_name.name])
-            #     init_preds.append(aux)
-            # else:
-            # print(pred_name)
-            if "!" not in pred_name.name:
-                name = re.sub('[&!]', '', pred_name.name)
-                state.append([name])
+            init_preds = []
+            for pred_name in goal:
+                # if "!" in pred_name.name:
+                #     aux = []
+                #     aux.append('not')
+                #     pred_name.name = re.sub('[&!]', '', pred_name.name)
+                #     aux.append([pred_name.name])
+                #     init_preds.append(aux)
+                # else:
+                # print(pred_name)
+                if "!" not in pred_name.name:
+                    name = re.sub('[&!]', '', pred_name.name)
+                    state.append([name])
 
-            if pred_name.p_vars != []:
-                init_preds.append(pred_name.p_vars)
+                if pred_name.p_vars != []:
+                    init_preds.append(pred_name.p_vars)
+            # if init_preds:
+            #     state.append(init_preds)
+        
+        elif self.rmode == "adl":
+            goal = planning_problem.getADLGoalState()
+            state = []
+            # print(goal)
+            init_preds = []
+            for i in range(0,len(goal)-1,2):
+                # print(i)
+                if "!" not in goal[i]:
+                    name = re.sub('[&!]', '', goal[i])
+                    state.append([name])
+                if goal[i+1]:
+                    init_preds.append(goal[i+1])
+                # if "!" in pred_name.name:
+                #     aux = []
+                #     aux.append('not')
+                #     pred_name.name = re.sub('[&!]', '', pred_name.name)
+                #     aux.append([pred_name.name])
+                #     init_preds.append(aux)
+                # else:
+                # print(pred_name)
+                # if "!" not in pred_name.name:
+                #     name = re.sub('[&!]', '', pred_name.name)
+                #     state.append([name])
 
-        # state.append(init_preds)
+                # if pred_name.p_vars != []:
+                #     init_preds.append(pred_name.p_vars)
+    
+
+        if init_preds:
+            state.append(init_preds)
 
         # print (state)
         return state
 
     def getProblemGoalNeg(self,planning_problem):
-        goal = planning_problem.getPDDLProblemGoal()
-        state = []
+        if self.rmode == "pddl":
+            goal = planning_problem.getPDDLProblemGoal()
+            state = []
 
-        init_preds = []
-        for pred_name in goal:
-            # if "!" in pred_name.name:
-            #     aux = []
-            #     aux.append('not')
-            #     pred_name.name = re.sub('[&!]', '', pred_name.name)
-            #     aux.append([pred_name.name])
-            #     init_preds.append(aux)
-            # else:
-            # print(pred_name)
-            if "!" in pred_name.name:
-                name = re.sub('[&!]', '', pred_name.name)
-                state.append([name])
+            init_preds = []
+            for pred_name in goal:
+                # if "!" in pred_name.name:
+                #     aux = []
+                #     aux.append('not')
+                #     pred_name.name = re.sub('[&!]', '', pred_name.name)
+                #     aux.append([pred_name.name])
+                #     init_preds.append(aux)
+                # else:
+                # print(pred_name)
+                if "!" in pred_name.name:
+                    name = re.sub('[&!]', '', pred_name.name)
+                    state.append([name])
 
-            if pred_name.p_vars != []:
-                init_preds.append(pred_name.p_vars)
+                if pred_name.p_vars != []:
+                    init_preds.append(pred_name.p_vars)
 
-        # state.append(init_preds)
+            # state.append(init_preds)
+        elif self.rmode == "adl":
+            goal = planning_problem.getADLGoalState()
+            state = []
+            # print(goal)
+            init_preds = []
+            for i in range(0,len(goal)-1,2):
+                # print(i)
+                if "!" in goal[i]:
+                    name = re.sub('[&!]', '', goal[i])
+                    state.append([name])
+                if goal[i+1]:
+                    init_preds.append(goal[i+1])
+                # if "!" in pred_name.name:
+                #     aux = []
+                #     aux.append('not')
+                #     pred_name.name = re.sub('[&!]', '', pred_name.name)
+                #     aux.append([pred_name.name])
+                #     init_preds.append(aux)
+                # else:
+                # print(pred_name)
+                # if "!" not in pred_name.name:
+                #     name = re.sub('[&!]', '', pred_name.name)
+                #     state.append([name])
 
+                # if pred_name.p_vars != []:
+                #     init_preds.append(pred_name.p_vars)
+    
+
+
+        if init_preds:
+            state.append(init_preds)
+                
         # print (state)
         return state
 
-    def solve(self, planning):
-        # Parsed data
+    def setParsedData(self):
+
         actions = self.getDomainActionsFormated(planning)
         state = self.getProblemInitFormated(planning)
         # goal = self.getProblemGoal(planning)
         goal_pos = self.getProblemGoalPos(planning)
         goal_not = self.getProblemGoalNeg(planning)
 
-        for act in actions:
-            print(act)
+        return actions, state, goal_pos, goal_not
+
+    def solve(self, planning):
+        print("RUN_MODE>",self.rmode)
+
+        # Parsed data
+        actions, state, goal_pos, goal_not = self.setParsedData()
+
+        # for act in actions:
+        #     print(act)
         # print(state)
         # print(goal_pos)
         # print(goal_not)
@@ -539,7 +670,7 @@ def runMlp():
             # print(domain)
             # print(problem)
             planning.setPDDL(domain, problem)
-
+            return "pddl"
         else:
             sys.exit()
 
@@ -559,16 +690,17 @@ def runMlp():
                 in_type = sys.argv[1].split(".")
                 if in_type[-1] in ["strips","STRIPS"]:
                     planning.setSTRIPS(strips_adl)
+                    return "strips"
                 else: # adl
                     planning.setADL(strips_adl)
-
+                    return "adl"
 
 planning = mlpParser()
-runMlp()
+rmode = runMlp()
 print(planning)
 
 
-planner = Propositional_Planner()
+planner = Propositional_Planner(rmode)
 plan = planner.solve(planning)
 
 if plan:

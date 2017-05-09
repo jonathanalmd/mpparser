@@ -104,6 +104,13 @@ def p_adl_action_1(p):
     objADL.appendListActionParam()
     objADL.appendActionName(p[3])
 
+def p_adl_action_2(p):
+    '''adl_action : ACTION LPAREN ID LPAREN RPAREN COMMA adl_precond adl_effect RPAREN'''
+    # print(objADL.action_params)
+    # print(objADL.action_p_types)
+    objADL.appendListActionParam()
+    objADL.appendActionName(p[3])
+
 def p_adl_params_1(p):
     '''adl_params : ID COLON adl_parametro COMMA adl_params'''
     # print("<VAR>",p[1])
@@ -361,7 +368,7 @@ def p_lista_not_preds_p_2(p):
     
 def p_lista_ids_not_p_1(p):
     ''' lista_ids_not_p :  '''
-    print("aa")
+    # print("aa")
     print(objProblem.lista_ids)
     if objProblem.lista_ids:
         objProblem.appendListIds()
@@ -372,7 +379,7 @@ def p_lista_ids_not_p_1(p):
    
 def p_lista_ids_not_p_2(p):
     ''' lista_ids_not_p : ID lista_ids_not_p'''
-    print(" >>>>:", p[1])
+    # print(" >>>>:", p[1])
     # objProblem.appendId("!")
     objProblem.appendId("!"+p[1])
     # objProblem.appendId("!")
