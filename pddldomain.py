@@ -24,6 +24,18 @@ class PDDLPredicate:
     def __repr__(self):
         return self.name + " " + str(self.p_vars)
 
+class PDDLActionPredicate:
+    def __init__(self, pred_name):
+        self.name = pred_name
+        self.p_vars = [] 
+
+    def __str__(self):
+        return self.name + " " + str(self.p_vars)
+
+    def __repr__(self):
+        return self.name + " " + str(self.p_vars)
+
+
 class PDDLFunction:
     def __init__(self):
         self.name = ""
@@ -40,8 +52,8 @@ class PDDLAction:
     def __init__(self):
         self.name = ""
         self.parameters = {}
-        self.preconditions = {}
-        self.effects = {}
+        self.preconditions = [] # class PDDLActionPredicate
+        self.effects = [] # class PDDLActionPredicate
     
     def __str__(self):
         return "\n\tAction-Name: " + self.name + "\n\tAction-Parameters: " + str(self.parameters) + "\n\tAction-Preconditions: " + str(self.preconditions) + "\n\tAction-Effects: " + str(self.effects) + "\n\n"
@@ -332,6 +344,7 @@ class PDDLDomainParse:
 
             print("PRED>",self.lista_action_predicados)
             print("VARS>",self.lista_pddl_vars)
+
             #precondition
             var_list = []
             for var in self.lista_pddl_vars[1]:
@@ -341,12 +354,16 @@ class PDDLDomainParse:
             i = 0
             self.lista_pddl_vars[1][i].reverse()
             for predicate in self.lista_action_predicados[0]:
-                predicate = re.sub('[!&]', '', predicate)
-                if predicate in var_list:
-                    action.preconditions[predicate] = ['(NOVARS!)']
+                pddl_predicate = PDDLPredicate(predicate)
+                predicate_aux = re.sub('[!&]', '', predicate)
+                if predicate_aux in var_list:
+                    # action.preconditions[predicate] = ['(NOVARS!)']
+                    pddl_predicate.p_vars = ['(NOVARS!)']
                 else:
-                    action.preconditions[predicate] = self.lista_pddl_vars[1][i]
+                    # action.preconditions[predicate] = self.lista_pddl_vars[1][i]
+                    pddl_predicate.p_vars = self.lista_pddl_vars[1][i]
                     i = i + 1
+                action.preconditions.append(pddl_predicate)
             #effect
             var_list = []
             for var in self.lista_pddl_vars[2]:
@@ -355,12 +372,17 @@ class PDDLDomainParse:
             i = 0
             self.lista_pddl_vars[2][i].reverse()
             for predicate in self.lista_action_predicados[1]:
-                predicate = re.sub('[!&]', '', predicate)
-                if predicate in var_list:
-                    action.effects[predicate] = ['(NOVARS!)']
+                pddl_predicate = PDDLPredicate(predicate)
+                predicate_aux = re.sub('[!&]', '', predicate)
+                if predicate_aux in var_list:
+                    # action.effects[predicate] = ['(NOVARS!)']
+                    pddl_predicate.p_vars = ['(NOVARS!)']
                 else:
-                    action.effects[predicate] = self.lista_pddl_vars[2][i]
+                    # action.effects[predicate] = self.lista_pddl_vars[2][i]
+                    pddl_predicate.p_vars = self.lista_pddl_vars[2][i]
                     i = i + 1
+                action.effects.append(pddl_predicate)
+
             self.domain_actions.append(action)
             # print("\n\n\n\n")
             # print(action)

@@ -27,23 +27,23 @@
     )
   )
   (:action carry
-    :parameters (?frlom ?to)
+    :parameters ()
     :precondition (and
       (garbage)
-
-      (clean ?d1 ?d2)
-      (quiet)
-      (cleaner ?d)
     )
     :effect (and
-            (quiet)
-
-      (clean ?d1 ?d2)
-        (garbage)
-      (cleaner ?d)
-        (garbage)
-      (cldsdsdsdeaner ?sd)
-
+      (not (garbage)
+      (clean))
+    )
+  )
+  (:action dolly
+    :parameters ()
+    :precondition (and
+      (garbage)
+    )
+    :effect (and
+      (not (garbage)
+      (quiet))
     )
   )
 )
