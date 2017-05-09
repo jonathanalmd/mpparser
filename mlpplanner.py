@@ -20,13 +20,76 @@ class Action:
         '\n  del_effects: ' + str(self.del_effects) + \
         '\n  cost: ' + str(self.cost) + '\n'
 
+    def __repr__(self):
+        return 'action: ' + self.name + \
+        '\n  parameters: ' + str(self.parameters) + \
+        '\n  positive_preconditions: ' + str(self.positive_preconditions) + \
+        '\n  negative_preconditions: ' + str(self.negative_preconditions) + \
+        '\n  add_effects: ' + str(self.add_effects) + \
+        '\n  del_effects: ' + str(self.del_effects) + \
+        '\n  cost: ' + str(self.cost) + '\n'
+
     def __eq__(self, other): 
         return self.__dict__ == other.__dict__
 
+class ActionStar:
+    """
+    An action schema
+    """
+    def __init__(self, name, parameters=(), preconditions=(), effects=(),
+                 unique=False, no_permute=False):
+        """
+        A PDDL-like action schema
+        @arg name : action name for display purposes
+        @arg parameters : tuple of ('type', 'param_name') tuples indicating
+                          action parameters
+        @arg precondtions : tuple of preconditions for the action
+        @arg effects : tuple of effects of the action
+        @arg unique : if True, only ground with unique arguments (no duplicates)
+        @arg no_permute : if True, do not ground an action twice with the same
+                          set of (permuted) arguments
+        """
+        self.name = name
+        if len(parameters) > 0:
+            self.types, self.arg_names = zip(*parameters)
+        else:
+            self.types = tuple()
+            self.arg_names = tuple()
+        self.preconditions = preconditions
+        self.effects = effects
+        self.unique = unique
+        self.no_permute = no_permute
 
-class BFSPlanner:
+class DomainStar:
+
+    def __init__(self, actions=()):
+        """
+        Represents a PDDL-like Problem Domain
+        @arg actions : list of Action objects
+        """
+        self.actions = tuple(actions)
+
+    def ground(self, objects):
+        """
+        Ground all action schemas given a dictionary
+        of objects keyed by type
+        """
+        grounded_actions = list()
+        for action in self.actions:
+            param_lists = [objects[t] for t in action.types]
+            param_combos = set()
+            for params in product(*param_lists):
+                param_set = frozenset(params)
+                if action.unique and len(param_set) != len(params):
+                    continue
+                if action.no_permute and param_set in param_combos:
+                    continue
+                param_combos.add(param_set)
+                grounded_actions.append(action.ground(*params))
+        return grounded_actions
+
+class MLPlanner:
     def __init__(self, rmode):
-        self.actions = []
         self.rmode = rmode 
 
     def getDomainActions(self,planning_domain):
@@ -368,9 +431,49 @@ class BFSPlanner:
         goal_pos = self.getProblemGoalPos(planning)
         goal_not = self.getProblemGoalNeg(planning)
 
+        print(actions,state,goal_pos,goal_not, sep="\n\n")
         return actions, state, goal_pos, goal_not
 
-    def solve(self, planning):
+    def aStarPlanner(self, planning):
+        actions, state, goal_pos, goal_not = self.setParsedData(planning)
+
+        actions = planning.getPDDLDomainActions()
+
+        for action in actions:
+            print (action)
+            #get parameters
+            param_tuples = []
+            for key, value in action.parameters.items():
+                param_tuple = [key]
+                for var in value:
+                    param_tuple.append(var)
+                param_tuples.append(tuple(param_tuple))
+
+            param_tuples = tuple(param_tuples)
+            print(param_tuples)
+
+            #get preconditions
+            precond_tuples = []
+            for precond in action.preconditions:
+                precond_tuple = []
+                if "!" in precond.name:
+                    name = re.sub('[&!]', '', precond.name)
+                    precond_tuple.append(name)
+                for var in precond.p_vars:
+                    # deal with '='
+                    precond_tuple.append(var)
+                precond_tuples.append(tuple(precond_tuple))
+
+            precond_tuples = tuple(precond_tuples)
+            print(precond_tuples)
+
+            # action_star = ActionStar(action.name)
+            domain = []
+            domain.append(action)
+
+
+        
+    def bfsPlanner(self, planning):
         print("RUN_MODE>",self.rmode)
 
         # Parsed data

@@ -125,9 +125,11 @@ def main():
 
         print(parsed_data)
 
-        planner = mlpplanner.BFSPlanner(rmode)
-        plan = planner.solve(parsed_data)
+        planner = mlpplanner.MLPlanner(rmode)
 
+        # plan = planner.bfsPlanner(parsed_data)
+        plan = planner.aStarPlanner(parsed_data)
+        
         if plan:
             print('Plan:')
             for act in plan:

@@ -828,16 +828,16 @@ def p_a_def_2(p):
 def p_pddl_preconditions_1(p):
     '''pddl_preconditions : lista_preds_op'''
     objDomain.dealWithPreconditions()
-
+    objDomain.reversed_preds = True
 def p_pddl_effects_1(p):
     '''pddl_effects : lista_preds_op '''
     objDomain.dealWithEffects()
-
+    objDomain.reversed_preds = True
 def p_lista_parameters_1(p):
     '''lista_parameters : '''
     # print("<<<############",objDomain.lista_pddl_vars)
     objDomain.dealWithParameters()
-
+    objDomain.reversed_preds = True
     # objDomain.cleanListaPDDLvars()
 
 # def p_lista_parameters_2(p):
@@ -872,12 +872,13 @@ def p_lista_parameters_3(p):
     objDomain.curLineAction = plex.lexer.lineno - 1
 
     objDomain.dealWithParameters()
+    objDomain.reversed_preds = True
 
 def p_lista_preds_op_1(p):
     '''lista_preds_op : '''
 
 def p_lista_preds_op_2(p):
-    '''lista_preds_op : lista_predicados lista_preds_op'''
+    '''lista_preds_op : lista_predicados lista_preds_op '''
     # print("<<<<<<<<<FINAL_LOGIC>>>>",objDomain.curLogicalOperator)
 
 def p_lista_preds_op_3(p):
@@ -912,11 +913,9 @@ def p_lista_predicados_0(p):
     ''' lista_predicados : '''
 
 def p_lista_predicados_1(p):
-    '''lista_predicados : LPAREN ID lista_var RPAREN lista_preds_op'''
+    '''lista_predicados : LPAREN ID lista_var RPAREN lista_predicados'''
     # print(p[2])
     # print(objDomain.lista_pddl_vars)
-    # print(">>>",objDomain.pddl_vars)
-
     if objDomain.pddl_vars:
         objDomain.appendListaPDDLvars()
     # else:
@@ -925,6 +924,9 @@ def p_lista_predicados_1(p):
 
     objDomain.cleanPDDLvars()
     objDomain.appendPredicado(p[2])
+
+    print("\tPRED>",objDomain.lista_predicados)
+    print("\tDEAL>",objDomain.lista_pddl_vars[1:])
     # if objDomain.dealing_with_types:
     #     objDomain.dealingWithTypeSep()
 
@@ -954,18 +956,58 @@ def p_lista_predicados_6(p):
     # print(objDomain.lista_pddl_vars)
 
 def p_lista_predicados_7(p):
-    '''lista_predicados : LPAREN NOT lista_predicados_not RPAREN ''' 
+    '''lista_predicados : lista_notpredicados '''
+    
+    # print(objDomain.reversed_preds)
+    # if objDomain.reversed_preds:
+    #     objDomain.lista_predicados.reverse()
+    #     # print("\t\tNOT>>>>",objDomain.lista_predicados)
+    #     print("\t>",objDomain.lista_pddl_vars)
+    #     objDomain.reversed_preds = False
+
+
+def p_lista_notpredicados_1(p):
+    '''lista_notpredicados : LPAREN NOT LPAREN ID lista_var RPAREN RPAREN ''' 
+    objDomain.curLogicalOperator = "NOT"
+    # objDomain.lista_predicados.append("AND")
+    print("\t\tNOT>>>>",objDomain.lista_predicados)
+    print("\t>",objDomain.lista_pddl_vars)
+    if objDomain.pddl_vars:
+        objDomain.appendListaPDDLvars()
+    # else:
+    #     # objDomain.pddl_vars = ["(NOVdAR)"]
+    #     objDomain.appendListaPDDLvars()
+
+    objDomain.cleanPDDLvars()
+    objDomain.lista_predicados.insert(0,"!"+p[4])
+    # objDomain.lista_predicados.reverse()
+
+    # objDomain.lista_predicados[0] = "!" + str(len(objDomain.lista_predicados)) + "*" +objDomain.lista_predicados[0]
+
+def p_lista_notpredicados_2(p):
+    '''lista_notpredicados : LPAREN NOT lista_predicados_not RPAREN ''' 
     objDomain.curLogicalOperator = "NOT"
     # objDomain.lista_predicados.append("AND")
     # print("\t\tNOT>>>>",objDomain.lista_predicados)
+    # print("\t>",objDomain.lista_pddl_vars)
+
+    # objDomain.lista_predicados.reverse()
+
     # objDomain.lista_predicados[0] = "!" + str(len(objDomain.lista_predicados)) + "*" +objDomain.lista_predicados[0]
+
 
 
 def p_lista_predicados_not_1(p):
     ''' lista_predicados_not : '''
+    # if objDomain.pddl_vars:
+    #     objDomain.appendListaPDDLvars()
+    # objDomain.cleanPDDLvars()
+    # objDomain.lista_predicados.reverse()
+
 
 def p_lista_predicados_not_2(p):
     ''' lista_predicados_not : LPAREN ID RPAREN lista_predicados_not'''
+
     objDomain.appendListaPDDLvars()
     objDomain.cleanPDDLvars()
     objDomain.appendVar(p[2])
@@ -975,6 +1017,8 @@ def p_lista_predicados_not_2(p):
     objDomain.cleanPDDLvars()
     # print(objDomain.lista_predicados)
     # print(objDomain.lista_pddl_vars)
+
+
 def p_lista_predicados_not_3(p):
     '''lista_predicados_not : LPAREN ID lista_var RPAREN lista_predicados_not'''
     # print(p[2])
@@ -1033,9 +1077,10 @@ def p_lista_ids_2(p):
 
 def p_error(p):
     # print("Syntax error in %s line %d"%(p.value,plex.lexer.lineno))
-    errorhandler.reportSyntaxError(p.value)
-
-
+    if p:
+        errorhandler.reportSyntaxError(p.value)
+    else:
+        errorhandler.reportSyntaxError("(")
 pparser = yacc.yacc()
 objDomain = pddldomain.PDDLDomainParse()
 objProblem = pddlproblem.PDDLProblemParse()

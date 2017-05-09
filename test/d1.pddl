@@ -40,7 +40,8 @@
 		:precondition  (and 
 			(at ?obj11 ?room11)
 			(at-robby ?room)
-			(free ?gripper)
+			(not(frede ?gripper))
+
 		)
 		:effect (and 
 			(carry ?obj ?gripper)
@@ -61,10 +62,15 @@
 			(and 
 
 
-				(at ?obj ?room) 
-				(free ?gripper) 
-								(not (carry ?obj ?gripper)
-								(carry ?oddddbj ?grisddpper))
+			(at ?obj ?room)
+						(at2 ?obj ?room) 
+
+			(not (carry1 ?obj1 ?gripper1)
+
+			(carry2 ?obj2 ?gripper2))
+			(not (carry3 ?obj3 ?gripper3))
+			(not (carry4 ?obj4 ?gripper4))
+
 
 			)
 	)

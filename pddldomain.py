@@ -13,6 +13,8 @@ import yacc
 import lex
 import plex
 import re
+
+
 class PDDLPredicate:
     def __init__(self, pred_name):
         self.name = pred_name
@@ -132,6 +134,7 @@ class PDDLDomainParse:
 
         self.curDealingWith = ""
 
+        self.reversed_preds = True
         self.not_counter = 0
 
     def setDomainName(self,domain_name):
@@ -382,7 +385,9 @@ class PDDLDomainParse:
                     pddl_predicate.p_vars = ['(NOVARS!)']
                 else:
                     # action.effects[predicate] = self.lista_pddl_vars[2][i]
-                    pddl_predicate.p_vars = self.lista_pddl_vars[2][i]
+                    add_p = self.lista_pddl_vars[2][i]
+                    add_p.reverse()
+                    pddl_predicate.p_vars = add_p
                     i = i + 1
                 action.effects.append(pddl_predicate)
 
