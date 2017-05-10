@@ -20,6 +20,15 @@ class Action:
         '\n  del_effects: ' + str(self.del_effects) + \
         '\n  cost: ' + str(self.cost) + '\n'
 
+    def __repr__(self):
+        return 'action: ' + self.name + \
+        '\n  parameters: ' + str(self.parameters) + \
+        '\n  positive_preconditions: ' + str(self.positive_preconditions) + \
+        '\n  negative_preconditions: ' + str(self.negative_preconditions) + \
+        '\n  add_effects: ' + str(self.add_effects) + \
+        '\n  del_effects: ' + str(self.del_effects) + \
+        '\n  cost: ' + str(self.cost) + '\n'
+
     def __eq__(self, other): 
         return self.__dict__ == other.__dict__
 
@@ -141,7 +150,39 @@ class BFSPlanner:
 
                 actions.append(Action(aname, parameters, positive_preconditions, negative_preconditions, add_effects, del_effects))
             # print (action)
+        else: #strips
+            act = planning_domain.getSTRIPSActions()
+            actions = []
+            for single_action in act:
+                # print (single_action)
+                # action.append(":action")
+                aname = single_action.name
+                # action.append(":parameters")
+                # action.append(list(single_action.parameters.values()))
+                parameters = single_action.param
 
+                # action.append(":precondition")
+                negative_preconditions = []
+                positive_preconditions = []
+                for i in range (0, len(single_action.precond),2):
+                    if "!" in single_action.precond[i]:
+                        negative_preconditions.append([re.sub('[&!]', '', single_action.precond[i])])
+                    else:
+                        positive_preconditions.append([re.sub('[&!]', '', single_action.precond[i])])
+
+                # action.append(":effects")
+                add_effects = []
+                del_effects = []
+                for i in range(0, len(single_action.effect), 2):
+                    if "!" in single_action.effect[i]:
+                        del_effects.append([re.sub('[&!]', '', single_action.effect[i])])
+                    else:
+                        add_effects.append([re.sub('[&!]', '', single_action.effect[i])])
+
+
+                actions.append(Action(aname, parameters, positive_preconditions, negative_preconditions, add_effects, del_effects))
+            # print (action)
+        print(actions)
         return actions
 
     def getProblemInit(self,planning_problem):
@@ -209,8 +250,18 @@ class BFSPlanner:
                 init_preds.append([init[i]])
 
             state = init_preds
-
+        else: #strips
         # print (state)
+            init = planning_problem.getSTRIPSInitialState()
+            # print ("INIT>",init)
+            state = []
+
+            init_preds = []
+            # state.append(":init")
+            for i in range(0,len(init)-1,2):
+                init_preds.append([init[i]])
+
+            state = init_preds
         return state
 
     def getProblemGoal(self,planning_problem):
@@ -295,7 +346,32 @@ class BFSPlanner:
                 # if pred_name.p_vars != []:
                 #     init_preds.append(pred_name.p_vars)
     
+        else:#strips
+            goal = planning_problem.getSTRIPSGoalState()
+            state = []
+            # print(goal)
+            init_preds = []
+            for i in range(0,len(goal)-1,2):
+                # print(i)
+                if "!" not in goal[i]:
+                    name = re.sub('[&!]', '', goal[i])
+                    state.append([name])
+                if goal[i+1]:
+                    init_preds.append(goal[i+1])
+                # if "!" in pred_name.name:
+                #     aux = []
+                #     aux.append('not')
+                #     pred_name.name = re.sub('[&!]', '', pred_name.name)
+                #     aux.append([pred_name.name])
+                #     init_preds.append(aux)
+                # else:
+                # print(pred_name)
+                # if "!" not in pred_name.name:
+                #     name = re.sub('[&!]', '', pred_name.name)
+                #     state.append([name])
 
+                # if pred_name.p_vars != []:
+                #     init_preds.append(pred_name.p_vars)
         if init_preds:
             state.append(init_preds)
 
@@ -351,8 +427,18 @@ class BFSPlanner:
 
                 # if pred_name.p_vars != []:
                 #     init_preds.append(pred_name.p_vars)
-    
-
+        else: #strips
+            goal = planning_problem.getSTRIPSGoalState()
+            state = []
+            # print(goal)
+            init_preds = []
+            for i in range(0,len(goal)-1,2):
+                # print(i)
+                if "!" in goal[i]:
+                    name = re.sub('[&!]', '', goal[i])
+                    state.append([name])
+                if goal[i+1]:
+                    init_preds.append(goal[i+1])
 
         if init_preds:
             state.append(init_preds)
