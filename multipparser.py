@@ -897,7 +897,7 @@ def p_lista_preds_op_2(p):
     # print("<<<<<<<<<FINAL_LOGIC>>>>",objDomain.curLogicalOperator)
 
 def p_lista_preds_op_3(p):
-    '''lista_preds_op : LPAREN AND lista_preds_op RPAREN lista_preds_op'''
+    '''lista_preds_op : LPAREN AND lista_preds_op RPAREN '''
     # objDomain.appendPredicado(p[2])
     # if objDomain.dealing_with_types:
     #     objDomain.dealingWithTypeSep()
@@ -976,6 +976,14 @@ def p_lista_predicados_7(p):
     # print("\t\tNOT>>>>",objDomain.lista_predicados)
     # objDomain.lista_predicados[0] = "!" + str(len(objDomain.lista_predicados)) + "*" +objDomain.lista_predicados[0]
 
+def p_lista_predicados_8(p):
+    '''lista_predicados : LPAREN NOT lista_predicados_not RPAREN LPAREN''' 
+    objDomain.curLogicalOperator = "NOT"
+    # objDomain.lista_predicados.append("AND")
+    # print("\t\tNOT>>>>",objDomain.lista_predicados)
+    # objDomain.lista_predicados[0] = "!" + str(len(objDomain.lista_predicados)) + "*" +objDomain.lista_predicados[0]
+    print("ERRO")
+    sys.exit()
 
 def p_lista_predicados_not_1(p):
     ''' lista_predicados_not : '''
@@ -1048,8 +1056,10 @@ def p_lista_ids_2(p):
 
 def p_error(p):
     # print("Syntax error in %s line %d"%(p.value,plex.lexer.lineno))
-    errorhandler.reportSyntaxError(p.value)
-
+    if p != None:
+        errorhandler.reportSyntaxError(p.value)
+    else:
+        errorhandler.reportSyntaxError("(")
 
 pparser = yacc.yacc()
 objDomain = pddldomain.PDDLDomainParse()

@@ -140,7 +140,7 @@ Rule 117   lista_parameters -> lista_var MINUS ID lista_parameters
 Rule 118   lista_parameters -> lista_var
 Rule 119   lista_preds_op -> <empty>
 Rule 120   lista_preds_op -> lista_predicados lista_preds_op
-Rule 121   lista_preds_op -> LPAREN AND lista_preds_op RPAREN lista_preds_op
+Rule 121   lista_preds_op -> LPAREN AND lista_preds_op RPAREN
 Rule 122   lista_preds_op -> LPAREN FORALL lista_preds_op RPAREN
 Rule 123   lista_preds_op -> LPAREN EXISTS lista_preds_op RPAREN
 Rule 124   lista_preds_op -> LPAREN IMPLY lista_preds_op RPAREN
@@ -154,14 +154,15 @@ Rule 131   lista_predicados -> LPAREN VAR ID COMP ID RPAREN lista_preds_op
 Rule 132   lista_predicados -> LPAREN DECREASE LPAREN ID RPAREN NUM RPAREN
 Rule 133   lista_predicados -> LPAREN ID RPAREN lista_predicados
 Rule 134   lista_predicados -> LPAREN NOT lista_predicados_not RPAREN
-Rule 135   lista_predicados_not -> <empty>
-Rule 136   lista_predicados_not -> LPAREN ID RPAREN lista_predicados_not
-Rule 137   lista_predicados_not -> LPAREN ID lista_var RPAREN lista_predicados_not
-Rule 138   lista_var -> <empty>
-Rule 139   lista_var -> VAR ID lista_var
-Rule 140   lista_var -> ID lista_var
-Rule 141   lista_ids -> <empty>
-Rule 142   lista_ids -> ID lista_ids
+Rule 135   lista_predicados -> LPAREN NOT lista_predicados_not RPAREN LPAREN
+Rule 136   lista_predicados_not -> <empty>
+Rule 137   lista_predicados_not -> LPAREN ID RPAREN lista_predicados_not
+Rule 138   lista_predicados_not -> LPAREN ID lista_var RPAREN lista_predicados_not
+Rule 139   lista_var -> <empty>
+Rule 140   lista_var -> VAR ID lista_var
+Rule 141   lista_var -> ID lista_var
+Rule 142   lista_ids -> <empty>
+Rule 143   lista_ids -> ID lista_ids
 
 Terminals, with rules where they appear
 
@@ -186,7 +187,7 @@ FUNCTIONS            : 99
 GE                   : 
 GOAL                 : 12 42 58 59 60 61
 GT                   : 
-ID                   : 15 16 17 18 19 22 23 24 25 26 27 28 29 30 31 36 37 38 39 40 41 50 51 54 68 70 72 73 74 74 80 83 85 87 90 91 96 97 101 101 102 103 103 103 104 104 106 107 108 109 110 110 117 125 128 129 131 131 132 133 136 137 139 140 142
+ID                   : 15 16 17 18 19 22 23 24 25 26 27 28 29 30 31 36 37 38 39 40 41 50 51 54 68 70 72 73 74 74 80 83 85 87 90 91 96 97 101 101 102 103 103 103 104 104 106 107 108 109 110 110 117 125 128 129 131 131 132 133 137 138 140 141 143
 IMPLY                : 124
 INCREASE             : 
 INIT                 : 8 9 56
@@ -196,11 +197,11 @@ LBRACKET             :
 LE                   : 
 LNOT                 : 26 27 28 29 37 39
 LOR                  : 
-LPAREN               : 1 2 5 8 12 15 15 16 16 22 23 24 25 26 27 28 29 36 37 38 39 50 51 52 56 58 58 59 59 60 61 63 64 66 73 74 80 81 84 85 88 94 96 99 101 102 103 104 106 107 112 113 121 122 123 124 125 126 128 129 130 131 132 132 133 134 136 137
+LPAREN               : 1 2 5 8 12 15 15 16 16 22 23 24 25 26 27 28 29 36 37 38 39 50 51 52 56 58 58 59 59 60 61 63 64 66 73 74 80 81 84 85 88 94 96 99 101 102 103 104 106 107 112 113 121 122 123 124 125 126 128 129 130 131 132 132 133 134 135 135 137 138
 LT                   : 
 MINUS                : 54 85 90 91 97 101 103 103 104 110 117 129
 NE                   : 
-NOT                  : 59 64 134
+NOT                  : 59 64 134 135
 NUM                  : 73 132
 OBJECTS              : 52
 OPERATOR             : 
@@ -214,10 +215,10 @@ PREFERENCE           : 125
 PROBLEM              : 50
 RBRACKET             : 
 REQUIREMENTS         : 81
-RPAREN               : 1 2 5 8 9 12 15 15 16 16 22 23 24 25 26 27 28 29 36 37 38 39 50 51 52 56 58 58 59 59 60 61 63 64 66 73 74 80 81 84 85 88 94 96 99 101 102 103 104 106 107 112 113 121 122 123 124 125 126 128 129 130 131 132 132 133 134 136 137
+RPAREN               : 1 2 5 8 9 12 15 15 16 16 22 23 24 25 26 27 28 29 36 37 38 39 50 51 52 56 58 58 59 59 60 61 63 64 66 73 74 80 81 84 85 88 94 96 99 101 102 103 104 106 107 112 113 121 122 123 124 125 126 128 129 130 131 132 132 133 134 135 137 138
 STATE                : 33 42
 TYPES                : 84 85
-VAR                  : 109 110 131 139
+VAR                  : 109 110 131 140
 WHEN                 : 126
 [                    : 125
 ]                    : 125
@@ -254,7 +255,7 @@ def_types            : 75 76 77 78
 domain_formalization : 1
 lista_constants      : 88 90
 lista_functions_def  : 99 101 102 103 104
-lista_ids            : 90 91 91 92 142
+lista_ids            : 90 91 91 92 143
 lista_ids_not_p      : 66 68
 lista_ids_p          : 63 72 73 74
 lista_not_preds_p    : 64 66
@@ -262,13 +263,13 @@ lista_objects        : 52 54
 lista_objids_p       : 54 55 70
 lista_parameters     : 112 117
 lista_predicados     : 120 133
-lista_predicados_not : 134 136 137
+lista_predicados_not : 134 135 137 138
 lista_predicados_p   : 56 58 59 60 63 64
 lista_predicates     : 94 96
-lista_preds_op       : 114 115 120 121 121 122 123 124 126 128 129 130 131
+lista_preds_op       : 114 115 120 121 122 123 124 126 128 129 130 131
 lista_requirements   : 81 83
 lista_types          : 84 85 87
-lista_var            : 97 98 101 103 117 118 128 129 130 137 139 140
+lista_var            : 97 98 101 103 117 118 128 129 130 138 140 141
 p_def                : 96 97
 pddl_effects         : 112 113
 pddl_preconditions   : 112 113
@@ -1845,15 +1846,15 @@ state 157
     (90) lista_constants -> . lista_ids MINUS ID lista_constants
     (91) lista_constants -> . lista_ids MINUS ID lista_ids
     (92) lista_constants -> . lista_ids
-    (141) lista_ids -> .
-    (142) lista_ids -> . ID lista_ids
+    (142) lista_ids -> .
+    (143) lista_ids -> . ID lista_ids
 
   ! reduce/reduce conflict for RPAREN resolved using rule 89 (lista_constants -> .)
     RPAREN          reduce using rule 89 (lista_constants -> .)
-    MINUS           reduce using rule 141 (lista_ids -> .)
+    MINUS           reduce using rule 142 (lista_ids -> .)
     ID              shift and go to state 184
 
-  ! RPAREN          [ reduce using rule 141 (lista_ids -> .) ]
+  ! RPAREN          [ reduce using rule 142 (lista_ids -> .) ]
 
     lista_constants                shift and go to state 182
     lista_ids                      shift and go to state 183
@@ -2103,12 +2104,12 @@ state 183
 
 state 184
 
-    (142) lista_ids -> ID . lista_ids
-    (141) lista_ids -> .
-    (142) lista_ids -> . ID lista_ids
+    (143) lista_ids -> ID . lista_ids
+    (142) lista_ids -> .
+    (143) lista_ids -> . ID lista_ids
 
-    MINUS           reduce using rule 141 (lista_ids -> .)
-    RPAREN          reduce using rule 141 (lista_ids -> .)
+    MINUS           reduce using rule 142 (lista_ids -> .)
+    RPAREN          reduce using rule 142 (lista_ids -> .)
     ID              shift and go to state 184
 
     lista_ids                      shift and go to state 213
@@ -2154,12 +2155,12 @@ state 189
     (96) lista_predicates -> LPAREN ID . p_def RPAREN lista_predicates
     (97) p_def -> . lista_var MINUS ID p_def
     (98) p_def -> . lista_var
-    (138) lista_var -> .
-    (139) lista_var -> . VAR ID lista_var
-    (140) lista_var -> . ID lista_var
+    (139) lista_var -> .
+    (140) lista_var -> . VAR ID lista_var
+    (141) lista_var -> . ID lista_var
 
-    MINUS           reduce using rule 138 (lista_var -> .)
-    RPAREN          reduce using rule 138 (lista_var -> .)
+    MINUS           reduce using rule 139 (lista_var -> .)
+    RPAREN          reduce using rule 139 (lista_var -> .)
     VAR             shift and go to state 220
     ID              shift and go to state 217
 
@@ -2358,10 +2359,10 @@ state 212
 
 state 213
 
-    (142) lista_ids -> ID lista_ids .
+    (143) lista_ids -> ID lista_ids .
 
-    MINUS           reduce using rule 142 (lista_ids -> ID lista_ids .)
-    RPAREN          reduce using rule 142 (lista_ids -> ID lista_ids .)
+    MINUS           reduce using rule 143 (lista_ids -> ID lista_ids .)
+    RPAREN          reduce using rule 143 (lista_ids -> ID lista_ids .)
 
 
 state 214
@@ -2390,13 +2391,13 @@ state 216
 
 state 217
 
-    (140) lista_var -> ID . lista_var
-    (138) lista_var -> .
-    (139) lista_var -> . VAR ID lista_var
-    (140) lista_var -> . ID lista_var
+    (141) lista_var -> ID . lista_var
+    (139) lista_var -> .
+    (140) lista_var -> . VAR ID lista_var
+    (141) lista_var -> . ID lista_var
 
-    MINUS           reduce using rule 138 (lista_var -> .)
-    RPAREN          reduce using rule 138 (lista_var -> .)
+    MINUS           reduce using rule 139 (lista_var -> .)
+    RPAREN          reduce using rule 139 (lista_var -> .)
     VAR             shift and go to state 220
     ID              shift and go to state 217
 
@@ -2420,7 +2421,7 @@ state 219
 
 state 220
 
-    (139) lista_var -> VAR . ID lista_var
+    (140) lista_var -> VAR . ID lista_var
 
     ID              shift and go to state 246
 
@@ -2601,12 +2602,12 @@ state 236
     (102) lista_functions_def -> LPAREN ID . RPAREN lista_functions_def
     (103) lista_functions_def -> LPAREN ID . lista_var MINUS ID RPAREN MINUS ID lista_functions_def
     (104) lista_functions_def -> LPAREN ID . RPAREN MINUS ID lista_functions_def
-    (138) lista_var -> .
-    (139) lista_var -> . VAR ID lista_var
-    (140) lista_var -> . ID lista_var
+    (139) lista_var -> .
+    (140) lista_var -> . VAR ID lista_var
+    (141) lista_var -> . ID lista_var
 
     RPAREN          shift and go to state 265
-    MINUS           reduce using rule 138 (lista_var -> .)
+    MINUS           reduce using rule 139 (lista_var -> .)
     VAR             shift and go to state 220
     ID              shift and go to state 217
 
@@ -2628,15 +2629,15 @@ state 238
     (90) lista_constants -> . lista_ids MINUS ID lista_constants
     (91) lista_constants -> . lista_ids MINUS ID lista_ids
     (92) lista_constants -> . lista_ids
-    (141) lista_ids -> .
-    (142) lista_ids -> . ID lista_ids
+    (142) lista_ids -> .
+    (143) lista_ids -> . ID lista_ids
 
   ! reduce/reduce conflict for RPAREN resolved using rule 89 (lista_constants -> .)
     RPAREN          reduce using rule 89 (lista_constants -> .)
-    MINUS           reduce using rule 141 (lista_ids -> .)
+    MINUS           reduce using rule 142 (lista_ids -> .)
     ID              shift and go to state 184
 
-  ! RPAREN          [ reduce using rule 141 (lista_ids -> .) ]
+  ! RPAREN          [ reduce using rule 142 (lista_ids -> .) ]
 
     lista_ids                      shift and go to state 266
     lista_constants                shift and go to state 267
@@ -2683,10 +2684,10 @@ state 242
 
 state 243
 
-    (140) lista_var -> ID lista_var .
+    (141) lista_var -> ID lista_var .
 
-    MINUS           reduce using rule 140 (lista_var -> ID lista_var .)
-    RPAREN          reduce using rule 140 (lista_var -> ID lista_var .)
+    MINUS           reduce using rule 141 (lista_var -> ID lista_var .)
+    RPAREN          reduce using rule 141 (lista_var -> ID lista_var .)
 
 
 state 244
@@ -2709,13 +2710,13 @@ state 245
 
 state 246
 
-    (139) lista_var -> VAR ID . lista_var
-    (138) lista_var -> .
-    (139) lista_var -> . VAR ID lista_var
-    (140) lista_var -> . ID lista_var
+    (140) lista_var -> VAR ID . lista_var
+    (139) lista_var -> .
+    (140) lista_var -> . VAR ID lista_var
+    (141) lista_var -> . ID lista_var
 
-    MINUS           reduce using rule 138 (lista_var -> .)
-    RPAREN          reduce using rule 138 (lista_var -> .)
+    MINUS           reduce using rule 139 (lista_var -> .)
+    RPAREN          reduce using rule 139 (lista_var -> .)
     VAR             shift and go to state 220
     ID              shift and go to state 217
 
@@ -2941,19 +2942,19 @@ state 269
     (116) lista_parameters -> .
     (117) lista_parameters -> . lista_var MINUS ID lista_parameters
     (118) lista_parameters -> . lista_var
-    (138) lista_var -> .
-    (139) lista_var -> . VAR ID lista_var
-    (140) lista_var -> . ID lista_var
+    (139) lista_var -> .
+    (140) lista_var -> . VAR ID lista_var
+    (141) lista_var -> . ID lista_var
 
   ! shift/reduce conflict for RPAREN resolved as shift
   ! shift/reduce conflict for RPAREN resolved as shift
     RPAREN          shift and go to state 290
-    MINUS           reduce using rule 138 (lista_var -> .)
+    MINUS           reduce using rule 139 (lista_var -> .)
     VAR             shift and go to state 220
     ID              shift and go to state 217
 
   ! RPAREN          [ reduce using rule 116 (lista_parameters -> .) ]
-  ! RPAREN          [ reduce using rule 138 (lista_var -> .) ]
+  ! RPAREN          [ reduce using rule 139 (lista_var -> .) ]
 
     lista_parameters               shift and go to state 289
     lista_var                      shift and go to state 291
@@ -2977,12 +2978,12 @@ state 272
     (97) p_def -> lista_var MINUS ID . p_def
     (97) p_def -> . lista_var MINUS ID p_def
     (98) p_def -> . lista_var
-    (138) lista_var -> .
-    (139) lista_var -> . VAR ID lista_var
-    (140) lista_var -> . ID lista_var
+    (139) lista_var -> .
+    (140) lista_var -> . VAR ID lista_var
+    (141) lista_var -> . ID lista_var
 
-    MINUS           reduce using rule 138 (lista_var -> .)
-    RPAREN          reduce using rule 138 (lista_var -> .)
+    MINUS           reduce using rule 139 (lista_var -> .)
+    RPAREN          reduce using rule 139 (lista_var -> .)
     VAR             shift and go to state 220
     ID              shift and go to state 217
 
@@ -2991,10 +2992,10 @@ state 272
 
 state 273
 
-    (139) lista_var -> VAR ID lista_var .
+    (140) lista_var -> VAR ID lista_var .
 
-    MINUS           reduce using rule 139 (lista_var -> VAR ID lista_var .)
-    RPAREN          reduce using rule 139 (lista_var -> VAR ID lista_var .)
+    MINUS           reduce using rule 140 (lista_var -> VAR ID lista_var .)
+    RPAREN          reduce using rule 140 (lista_var -> VAR ID lista_var .)
 
 
 state 274
@@ -3320,7 +3321,7 @@ state 313
     (114) pddl_preconditions -> . lista_preds_op
     (119) lista_preds_op -> .
     (120) lista_preds_op -> . lista_predicados lista_preds_op
-    (121) lista_preds_op -> . LPAREN AND lista_preds_op RPAREN lista_preds_op
+    (121) lista_preds_op -> . LPAREN AND lista_preds_op RPAREN
     (122) lista_preds_op -> . LPAREN FORALL lista_preds_op RPAREN
     (123) lista_preds_op -> . LPAREN EXISTS lista_preds_op RPAREN
     (124) lista_preds_op -> . LPAREN IMPLY lista_preds_op RPAREN
@@ -3334,6 +3335,7 @@ state 313
     (132) lista_predicados -> . LPAREN DECREASE LPAREN ID RPAREN NUM RPAREN
     (133) lista_predicados -> . LPAREN ID RPAREN lista_predicados
     (134) lista_predicados -> . LPAREN NOT lista_predicados_not RPAREN
+    (135) lista_predicados -> . LPAREN NOT lista_predicados_not RPAREN LPAREN
 
   ! shift/reduce conflict for LPAREN resolved as shift
   ! reduce/reduce conflict for COLON resolved using rule 119 (lista_preds_op -> .)
@@ -3353,17 +3355,17 @@ state 314
     (116) lista_parameters -> .
     (117) lista_parameters -> . lista_var MINUS ID lista_parameters
     (118) lista_parameters -> . lista_var
-    (138) lista_var -> .
-    (139) lista_var -> . VAR ID lista_var
-    (140) lista_var -> . ID lista_var
+    (139) lista_var -> .
+    (140) lista_var -> . VAR ID lista_var
+    (141) lista_var -> . ID lista_var
 
   ! reduce/reduce conflict for RPAREN resolved using rule 116 (lista_parameters -> .)
     RPAREN          reduce using rule 116 (lista_parameters -> .)
-    MINUS           reduce using rule 138 (lista_var -> .)
+    MINUS           reduce using rule 139 (lista_var -> .)
     VAR             shift and go to state 220
     ID              shift and go to state 217
 
-  ! RPAREN          [ reduce using rule 138 (lista_var -> .) ]
+  ! RPAREN          [ reduce using rule 139 (lista_var -> .) ]
 
     lista_var                      shift and go to state 291
     lista_parameters               shift and go to state 323
@@ -3395,7 +3397,7 @@ state 318
     (114) pddl_preconditions -> . lista_preds_op
     (119) lista_preds_op -> .
     (120) lista_preds_op -> . lista_predicados lista_preds_op
-    (121) lista_preds_op -> . LPAREN AND lista_preds_op RPAREN lista_preds_op
+    (121) lista_preds_op -> . LPAREN AND lista_preds_op RPAREN
     (122) lista_preds_op -> . LPAREN FORALL lista_preds_op RPAREN
     (123) lista_preds_op -> . LPAREN EXISTS lista_preds_op RPAREN
     (124) lista_preds_op -> . LPAREN IMPLY lista_preds_op RPAREN
@@ -3409,6 +3411,7 @@ state 318
     (132) lista_predicados -> . LPAREN DECREASE LPAREN ID RPAREN NUM RPAREN
     (133) lista_predicados -> . LPAREN ID RPAREN lista_predicados
     (134) lista_predicados -> . LPAREN NOT lista_predicados_not RPAREN
+    (135) lista_predicados -> . LPAREN NOT lista_predicados_not RPAREN LPAREN
 
   ! shift/reduce conflict for LPAREN resolved as shift
   ! reduce/reduce conflict for COLON resolved using rule 119 (lista_preds_op -> .)
@@ -3424,7 +3427,7 @@ state 318
 
 state 319
 
-    (121) lista_preds_op -> LPAREN . AND lista_preds_op RPAREN lista_preds_op
+    (121) lista_preds_op -> LPAREN . AND lista_preds_op RPAREN
     (122) lista_preds_op -> LPAREN . FORALL lista_preds_op RPAREN
     (123) lista_preds_op -> LPAREN . EXISTS lista_preds_op RPAREN
     (124) lista_preds_op -> LPAREN . IMPLY lista_preds_op RPAREN
@@ -3437,9 +3440,10 @@ state 319
     (132) lista_predicados -> LPAREN . DECREASE LPAREN ID RPAREN NUM RPAREN
     (133) lista_predicados -> LPAREN . ID RPAREN lista_predicados
     (134) lista_predicados -> LPAREN . NOT lista_predicados_not RPAREN
-    (138) lista_var -> .
-    (139) lista_var -> . VAR ID lista_var
-    (140) lista_var -> . ID lista_var
+    (135) lista_predicados -> LPAREN . NOT lista_predicados_not RPAREN LPAREN
+    (139) lista_var -> .
+    (140) lista_var -> . VAR ID lista_var
+    (141) lista_var -> . ID lista_var
 
     AND             shift and go to state 326
     FORALL          shift and go to state 327
@@ -3452,7 +3456,7 @@ state 319
     VAR             shift and go to state 335
     DECREASE        shift and go to state 336
     NOT             shift and go to state 337
-    MINUS           reduce using rule 138 (lista_var -> .)
+    MINUS           reduce using rule 139 (lista_var -> .)
 
     lista_var                      shift and go to state 333
 
@@ -3475,7 +3479,7 @@ state 322
     (120) lista_preds_op -> lista_predicados . lista_preds_op
     (119) lista_preds_op -> .
     (120) lista_preds_op -> . lista_predicados lista_preds_op
-    (121) lista_preds_op -> . LPAREN AND lista_preds_op RPAREN lista_preds_op
+    (121) lista_preds_op -> . LPAREN AND lista_preds_op RPAREN
     (122) lista_preds_op -> . LPAREN FORALL lista_preds_op RPAREN
     (123) lista_preds_op -> . LPAREN EXISTS lista_preds_op RPAREN
     (124) lista_preds_op -> . LPAREN IMPLY lista_preds_op RPAREN
@@ -3489,6 +3493,7 @@ state 322
     (132) lista_predicados -> . LPAREN DECREASE LPAREN ID RPAREN NUM RPAREN
     (133) lista_predicados -> . LPAREN ID RPAREN lista_predicados
     (134) lista_predicados -> . LPAREN NOT lista_predicados_not RPAREN
+    (135) lista_predicados -> . LPAREN NOT lista_predicados_not RPAREN LPAREN
 
   ! shift/reduce conflict for LPAREN resolved as shift
   ! reduce/reduce conflict for COLON resolved using rule 119 (lista_preds_op -> .)
@@ -3536,10 +3541,10 @@ state 325
 
 state 326
 
-    (121) lista_preds_op -> LPAREN AND . lista_preds_op RPAREN lista_preds_op
+    (121) lista_preds_op -> LPAREN AND . lista_preds_op RPAREN
     (119) lista_preds_op -> .
     (120) lista_preds_op -> . lista_predicados lista_preds_op
-    (121) lista_preds_op -> . LPAREN AND lista_preds_op RPAREN lista_preds_op
+    (121) lista_preds_op -> . LPAREN AND lista_preds_op RPAREN
     (122) lista_preds_op -> . LPAREN FORALL lista_preds_op RPAREN
     (123) lista_preds_op -> . LPAREN EXISTS lista_preds_op RPAREN
     (124) lista_preds_op -> . LPAREN IMPLY lista_preds_op RPAREN
@@ -3553,6 +3558,7 @@ state 326
     (132) lista_predicados -> . LPAREN DECREASE LPAREN ID RPAREN NUM RPAREN
     (133) lista_predicados -> . LPAREN ID RPAREN lista_predicados
     (134) lista_predicados -> . LPAREN NOT lista_predicados_not RPAREN
+    (135) lista_predicados -> . LPAREN NOT lista_predicados_not RPAREN LPAREN
 
   ! shift/reduce conflict for LPAREN resolved as shift
   ! reduce/reduce conflict for RPAREN resolved using rule 119 (lista_preds_op -> .)
@@ -3570,7 +3576,7 @@ state 327
     (122) lista_preds_op -> LPAREN FORALL . lista_preds_op RPAREN
     (119) lista_preds_op -> .
     (120) lista_preds_op -> . lista_predicados lista_preds_op
-    (121) lista_preds_op -> . LPAREN AND lista_preds_op RPAREN lista_preds_op
+    (121) lista_preds_op -> . LPAREN AND lista_preds_op RPAREN
     (122) lista_preds_op -> . LPAREN FORALL lista_preds_op RPAREN
     (123) lista_preds_op -> . LPAREN EXISTS lista_preds_op RPAREN
     (124) lista_preds_op -> . LPAREN IMPLY lista_preds_op RPAREN
@@ -3584,6 +3590,7 @@ state 327
     (132) lista_predicados -> . LPAREN DECREASE LPAREN ID RPAREN NUM RPAREN
     (133) lista_predicados -> . LPAREN ID RPAREN lista_predicados
     (134) lista_predicados -> . LPAREN NOT lista_predicados_not RPAREN
+    (135) lista_predicados -> . LPAREN NOT lista_predicados_not RPAREN LPAREN
 
   ! shift/reduce conflict for LPAREN resolved as shift
   ! reduce/reduce conflict for RPAREN resolved using rule 119 (lista_preds_op -> .)
@@ -3601,7 +3608,7 @@ state 328
     (123) lista_preds_op -> LPAREN EXISTS . lista_preds_op RPAREN
     (119) lista_preds_op -> .
     (120) lista_preds_op -> . lista_predicados lista_preds_op
-    (121) lista_preds_op -> . LPAREN AND lista_preds_op RPAREN lista_preds_op
+    (121) lista_preds_op -> . LPAREN AND lista_preds_op RPAREN
     (122) lista_preds_op -> . LPAREN FORALL lista_preds_op RPAREN
     (123) lista_preds_op -> . LPAREN EXISTS lista_preds_op RPAREN
     (124) lista_preds_op -> . LPAREN IMPLY lista_preds_op RPAREN
@@ -3615,6 +3622,7 @@ state 328
     (132) lista_predicados -> . LPAREN DECREASE LPAREN ID RPAREN NUM RPAREN
     (133) lista_predicados -> . LPAREN ID RPAREN lista_predicados
     (134) lista_predicados -> . LPAREN NOT lista_predicados_not RPAREN
+    (135) lista_predicados -> . LPAREN NOT lista_predicados_not RPAREN LPAREN
 
   ! shift/reduce conflict for LPAREN resolved as shift
   ! reduce/reduce conflict for RPAREN resolved using rule 119 (lista_preds_op -> .)
@@ -3632,7 +3640,7 @@ state 329
     (124) lista_preds_op -> LPAREN IMPLY . lista_preds_op RPAREN
     (119) lista_preds_op -> .
     (120) lista_preds_op -> . lista_predicados lista_preds_op
-    (121) lista_preds_op -> . LPAREN AND lista_preds_op RPAREN lista_preds_op
+    (121) lista_preds_op -> . LPAREN AND lista_preds_op RPAREN
     (122) lista_preds_op -> . LPAREN FORALL lista_preds_op RPAREN
     (123) lista_preds_op -> . LPAREN EXISTS lista_preds_op RPAREN
     (124) lista_preds_op -> . LPAREN IMPLY lista_preds_op RPAREN
@@ -3646,6 +3654,7 @@ state 329
     (132) lista_predicados -> . LPAREN DECREASE LPAREN ID RPAREN NUM RPAREN
     (133) lista_predicados -> . LPAREN ID RPAREN lista_predicados
     (134) lista_predicados -> . LPAREN NOT lista_predicados_not RPAREN
+    (135) lista_predicados -> . LPAREN NOT lista_predicados_not RPAREN LPAREN
 
   ! shift/reduce conflict for LPAREN resolved as shift
   ! reduce/reduce conflict for RPAREN resolved using rule 119 (lista_preds_op -> .)
@@ -3669,18 +3678,18 @@ state 331
 
     (128) lista_predicados -> LPAREN ID . lista_var RPAREN lista_preds_op
     (133) lista_predicados -> LPAREN ID . RPAREN lista_predicados
-    (140) lista_var -> ID . lista_var
-    (138) lista_var -> .
-    (139) lista_var -> . VAR ID lista_var
-    (140) lista_var -> . ID lista_var
+    (141) lista_var -> ID . lista_var
+    (139) lista_var -> .
+    (140) lista_var -> . VAR ID lista_var
+    (141) lista_var -> . ID lista_var
 
   ! shift/reduce conflict for RPAREN resolved as shift
     RPAREN          shift and go to state 348
-    MINUS           reduce using rule 138 (lista_var -> .)
+    MINUS           reduce using rule 139 (lista_var -> .)
     VAR             shift and go to state 220
     ID              shift and go to state 217
 
-  ! RPAREN          [ reduce using rule 138 (lista_var -> .) ]
+  ! RPAREN          [ reduce using rule 139 (lista_var -> .) ]
 
     lista_var                      shift and go to state 347
 
@@ -3689,7 +3698,7 @@ state 332
     (126) lista_preds_op -> LPAREN WHEN . lista_preds_op RPAREN
     (119) lista_preds_op -> .
     (120) lista_preds_op -> . lista_predicados lista_preds_op
-    (121) lista_preds_op -> . LPAREN AND lista_preds_op RPAREN lista_preds_op
+    (121) lista_preds_op -> . LPAREN AND lista_preds_op RPAREN
     (122) lista_preds_op -> . LPAREN FORALL lista_preds_op RPAREN
     (123) lista_preds_op -> . LPAREN EXISTS lista_preds_op RPAREN
     (124) lista_preds_op -> . LPAREN IMPLY lista_preds_op RPAREN
@@ -3703,6 +3712,7 @@ state 332
     (132) lista_predicados -> . LPAREN DECREASE LPAREN ID RPAREN NUM RPAREN
     (133) lista_predicados -> . LPAREN ID RPAREN lista_predicados
     (134) lista_predicados -> . LPAREN NOT lista_predicados_not RPAREN
+    (135) lista_predicados -> . LPAREN NOT lista_predicados_not RPAREN LPAREN
 
   ! shift/reduce conflict for LPAREN resolved as shift
   ! reduce/reduce conflict for RPAREN resolved using rule 119 (lista_preds_op -> .)
@@ -3725,11 +3735,11 @@ state 333
 state 334
 
     (130) lista_predicados -> LPAREN COMP . lista_var RPAREN lista_preds_op
-    (138) lista_var -> .
-    (139) lista_var -> . VAR ID lista_var
-    (140) lista_var -> . ID lista_var
+    (139) lista_var -> .
+    (140) lista_var -> . VAR ID lista_var
+    (141) lista_var -> . ID lista_var
 
-    RPAREN          reduce using rule 138 (lista_var -> .)
+    RPAREN          reduce using rule 139 (lista_var -> .)
     VAR             shift and go to state 220
     ID              shift and go to state 217
 
@@ -3738,7 +3748,7 @@ state 334
 state 335
 
     (131) lista_predicados -> LPAREN VAR . ID COMP ID RPAREN lista_preds_op
-    (139) lista_var -> VAR . ID lista_var
+    (140) lista_var -> VAR . ID lista_var
 
     ID              shift and go to state 352
 
@@ -3753,11 +3763,12 @@ state 336
 state 337
 
     (134) lista_predicados -> LPAREN NOT . lista_predicados_not RPAREN
-    (135) lista_predicados_not -> .
-    (136) lista_predicados_not -> . LPAREN ID RPAREN lista_predicados_not
-    (137) lista_predicados_not -> . LPAREN ID lista_var RPAREN lista_predicados_not
+    (135) lista_predicados -> LPAREN NOT . lista_predicados_not RPAREN LPAREN
+    (136) lista_predicados_not -> .
+    (137) lista_predicados_not -> . LPAREN ID RPAREN lista_predicados_not
+    (138) lista_predicados_not -> . LPAREN ID lista_var RPAREN lista_predicados_not
 
-    RPAREN          reduce using rule 135 (lista_predicados_not -> .)
+    RPAREN          reduce using rule 136 (lista_predicados_not -> .)
     LPAREN          shift and go to state 354
 
     lista_predicados_not           shift and go to state 355
@@ -3794,7 +3805,7 @@ state 341
 
 state 342
 
-    (121) lista_preds_op -> LPAREN AND lista_preds_op . RPAREN lista_preds_op
+    (121) lista_preds_op -> LPAREN AND lista_preds_op . RPAREN
 
     RPAREN          shift and go to state 358
 
@@ -3830,10 +3841,10 @@ state 346
 state 347
 
     (128) lista_predicados -> LPAREN ID lista_var . RPAREN lista_preds_op
-    (140) lista_var -> ID lista_var .
+    (141) lista_var -> ID lista_var .
 
     RPAREN          shift and go to state 363
-    MINUS           reduce using rule 140 (lista_var -> ID lista_var .)
+    MINUS           reduce using rule 141 (lista_var -> ID lista_var .)
 
 
 state 348
@@ -3847,6 +3858,7 @@ state 348
     (132) lista_predicados -> . LPAREN DECREASE LPAREN ID RPAREN NUM RPAREN
     (133) lista_predicados -> . LPAREN ID RPAREN lista_predicados
     (134) lista_predicados -> . LPAREN NOT lista_predicados_not RPAREN
+    (135) lista_predicados -> . LPAREN NOT lista_predicados_not RPAREN LPAREN
 
   ! shift/reduce conflict for LPAREN resolved as shift
     COLON           reduce using rule 127 (lista_predicados -> .)
@@ -3881,13 +3893,13 @@ state 351
 state 352
 
     (131) lista_predicados -> LPAREN VAR ID . COMP ID RPAREN lista_preds_op
-    (139) lista_var -> VAR ID . lista_var
-    (138) lista_var -> .
-    (139) lista_var -> . VAR ID lista_var
-    (140) lista_var -> . ID lista_var
+    (140) lista_var -> VAR ID . lista_var
+    (139) lista_var -> .
+    (140) lista_var -> . VAR ID lista_var
+    (141) lista_var -> . ID lista_var
 
     COMP            shift and go to state 369
-    MINUS           reduce using rule 138 (lista_var -> .)
+    MINUS           reduce using rule 139 (lista_var -> .)
     VAR             shift and go to state 220
     ID              shift and go to state 217
 
@@ -3902,8 +3914,8 @@ state 353
 
 state 354
 
-    (136) lista_predicados_not -> LPAREN . ID RPAREN lista_predicados_not
-    (137) lista_predicados_not -> LPAREN . ID lista_var RPAREN lista_predicados_not
+    (137) lista_predicados_not -> LPAREN . ID RPAREN lista_predicados_not
+    (138) lista_predicados_not -> LPAREN . ID lista_var RPAREN lista_predicados_not
 
     ID              shift and go to state 371
 
@@ -3911,6 +3923,7 @@ state 354
 state 355
 
     (134) lista_predicados -> LPAREN NOT lista_predicados_not . RPAREN
+    (135) lista_predicados -> LPAREN NOT lista_predicados_not . RPAREN LPAREN
 
     RPAREN          shift and go to state 372
 
@@ -3921,7 +3934,7 @@ state 356
     (115) pddl_effects -> . lista_preds_op
     (119) lista_preds_op -> .
     (120) lista_preds_op -> . lista_predicados lista_preds_op
-    (121) lista_preds_op -> . LPAREN AND lista_preds_op RPAREN lista_preds_op
+    (121) lista_preds_op -> . LPAREN AND lista_preds_op RPAREN
     (122) lista_preds_op -> . LPAREN FORALL lista_preds_op RPAREN
     (123) lista_preds_op -> . LPAREN EXISTS lista_preds_op RPAREN
     (124) lista_preds_op -> . LPAREN IMPLY lista_preds_op RPAREN
@@ -3935,6 +3948,7 @@ state 356
     (132) lista_predicados -> . LPAREN DECREASE LPAREN ID RPAREN NUM RPAREN
     (133) lista_predicados -> . LPAREN ID RPAREN lista_predicados
     (134) lista_predicados -> . LPAREN NOT lista_predicados_not RPAREN
+    (135) lista_predicados -> . LPAREN NOT lista_predicados_not RPAREN LPAREN
 
   ! shift/reduce conflict for LPAREN resolved as shift
   ! reduce/reduce conflict for RPAREN resolved using rule 119 (lista_preds_op -> .)
@@ -3954,7 +3968,7 @@ state 357
     (115) pddl_effects -> . lista_preds_op
     (119) lista_preds_op -> .
     (120) lista_preds_op -> . lista_predicados lista_preds_op
-    (121) lista_preds_op -> . LPAREN AND lista_preds_op RPAREN lista_preds_op
+    (121) lista_preds_op -> . LPAREN AND lista_preds_op RPAREN
     (122) lista_preds_op -> . LPAREN FORALL lista_preds_op RPAREN
     (123) lista_preds_op -> . LPAREN EXISTS lista_preds_op RPAREN
     (124) lista_preds_op -> . LPAREN IMPLY lista_preds_op RPAREN
@@ -3968,6 +3982,7 @@ state 357
     (132) lista_predicados -> . LPAREN DECREASE LPAREN ID RPAREN NUM RPAREN
     (133) lista_predicados -> . LPAREN ID RPAREN lista_predicados
     (134) lista_predicados -> . LPAREN NOT lista_predicados_not RPAREN
+    (135) lista_predicados -> . LPAREN NOT lista_predicados_not RPAREN LPAREN
 
   ! shift/reduce conflict for LPAREN resolved as shift
   ! reduce/reduce conflict for RPAREN resolved using rule 119 (lista_preds_op -> .)
@@ -3983,39 +3998,12 @@ state 357
 
 state 358
 
-    (121) lista_preds_op -> LPAREN AND lista_preds_op RPAREN . lista_preds_op
-    (119) lista_preds_op -> .
-    (120) lista_preds_op -> . lista_predicados lista_preds_op
-    (121) lista_preds_op -> . LPAREN AND lista_preds_op RPAREN lista_preds_op
-    (122) lista_preds_op -> . LPAREN FORALL lista_preds_op RPAREN
-    (123) lista_preds_op -> . LPAREN EXISTS lista_preds_op RPAREN
-    (124) lista_preds_op -> . LPAREN IMPLY lista_preds_op RPAREN
-    (125) lista_preds_op -> . LPAREN PREFERENCE [ ID ] RPAREN
-    (126) lista_preds_op -> . LPAREN WHEN lista_preds_op RPAREN
-    (127) lista_predicados -> .
-    (128) lista_predicados -> . LPAREN ID lista_var RPAREN lista_preds_op
-    (129) lista_predicados -> . LPAREN lista_var MINUS ID RPAREN lista_preds_op
-    (130) lista_predicados -> . LPAREN COMP lista_var RPAREN lista_preds_op
-    (131) lista_predicados -> . LPAREN VAR ID COMP ID RPAREN lista_preds_op
-    (132) lista_predicados -> . LPAREN DECREASE LPAREN ID RPAREN NUM RPAREN
-    (133) lista_predicados -> . LPAREN ID RPAREN lista_predicados
-    (134) lista_predicados -> . LPAREN NOT lista_predicados_not RPAREN
+    (121) lista_preds_op -> LPAREN AND lista_preds_op RPAREN .
 
-  ! shift/reduce conflict for LPAREN resolved as shift
-  ! reduce/reduce conflict for COLON resolved using rule 119 (lista_preds_op -> .)
-  ! reduce/reduce conflict for RPAREN resolved using rule 119 (lista_preds_op -> .)
-  ! shift/reduce conflict for LPAREN resolved as shift
-    COLON           reduce using rule 119 (lista_preds_op -> .)
-    RPAREN          reduce using rule 119 (lista_preds_op -> .)
-    LPAREN          shift and go to state 319
+    COLON           reduce using rule 121 (lista_preds_op -> LPAREN AND lista_preds_op RPAREN .)
+    RPAREN          reduce using rule 121 (lista_preds_op -> LPAREN AND lista_preds_op RPAREN .)
+    LPAREN          reduce using rule 121 (lista_preds_op -> LPAREN AND lista_preds_op RPAREN .)
 
-  ! LPAREN          [ reduce using rule 119 (lista_preds_op -> .) ]
-  ! COLON           [ reduce using rule 127 (lista_predicados -> .) ]
-  ! RPAREN          [ reduce using rule 127 (lista_predicados -> .) ]
-  ! LPAREN          [ reduce using rule 127 (lista_predicados -> .) ]
-
-    lista_preds_op                 shift and go to state 376
-    lista_predicados               shift and go to state 322
 
 state 359
 
@@ -4048,7 +4036,7 @@ state 362
 
     (125) lista_preds_op -> LPAREN PREFERENCE [ ID . ] RPAREN
 
-    ]               shift and go to state 377
+    ]               shift and go to state 376
 
 
 state 363
@@ -4056,7 +4044,7 @@ state 363
     (128) lista_predicados -> LPAREN ID lista_var RPAREN . lista_preds_op
     (119) lista_preds_op -> .
     (120) lista_preds_op -> . lista_predicados lista_preds_op
-    (121) lista_preds_op -> . LPAREN AND lista_preds_op RPAREN lista_preds_op
+    (121) lista_preds_op -> . LPAREN AND lista_preds_op RPAREN
     (122) lista_preds_op -> . LPAREN FORALL lista_preds_op RPAREN
     (123) lista_preds_op -> . LPAREN EXISTS lista_preds_op RPAREN
     (124) lista_preds_op -> . LPAREN IMPLY lista_preds_op RPAREN
@@ -4070,6 +4058,7 @@ state 363
     (132) lista_predicados -> . LPAREN DECREASE LPAREN ID RPAREN NUM RPAREN
     (133) lista_predicados -> . LPAREN ID RPAREN lista_predicados
     (134) lista_predicados -> . LPAREN NOT lista_predicados_not RPAREN
+    (135) lista_predicados -> . LPAREN NOT lista_predicados_not RPAREN LPAREN
 
   ! shift/reduce conflict for LPAREN resolved as shift
   ! reduce/reduce conflict for COLON resolved using rule 119 (lista_preds_op -> .)
@@ -4084,7 +4073,7 @@ state 363
   ! RPAREN          [ reduce using rule 127 (lista_predicados -> .) ]
   ! LPAREN          [ reduce using rule 127 (lista_predicados -> .) ]
 
-    lista_preds_op                 shift and go to state 378
+    lista_preds_op                 shift and go to state 377
     lista_predicados               shift and go to state 322
 
 state 364
@@ -4096,16 +4085,17 @@ state 364
     (132) lista_predicados -> LPAREN . DECREASE LPAREN ID RPAREN NUM RPAREN
     (133) lista_predicados -> LPAREN . ID RPAREN lista_predicados
     (134) lista_predicados -> LPAREN . NOT lista_predicados_not RPAREN
-    (138) lista_var -> .
-    (139) lista_var -> . VAR ID lista_var
-    (140) lista_var -> . ID lista_var
+    (135) lista_predicados -> LPAREN . NOT lista_predicados_not RPAREN LPAREN
+    (139) lista_var -> .
+    (140) lista_var -> . VAR ID lista_var
+    (141) lista_var -> . ID lista_var
 
     ID              shift and go to state 331
     COMP            shift and go to state 334
     VAR             shift and go to state 335
     DECREASE        shift and go to state 336
     NOT             shift and go to state 337
-    MINUS           reduce using rule 138 (lista_var -> .)
+    MINUS           reduce using rule 139 (lista_var -> .)
 
     lista_var                      shift and go to state 333
 
@@ -4131,7 +4121,7 @@ state 367
 
     (129) lista_predicados -> LPAREN lista_var MINUS ID . RPAREN lista_preds_op
 
-    RPAREN          shift and go to state 379
+    RPAREN          shift and go to state 378
 
 
 state 368
@@ -4139,7 +4129,7 @@ state 368
     (130) lista_predicados -> LPAREN COMP lista_var RPAREN . lista_preds_op
     (119) lista_preds_op -> .
     (120) lista_preds_op -> . lista_predicados lista_preds_op
-    (121) lista_preds_op -> . LPAREN AND lista_preds_op RPAREN lista_preds_op
+    (121) lista_preds_op -> . LPAREN AND lista_preds_op RPAREN
     (122) lista_preds_op -> . LPAREN FORALL lista_preds_op RPAREN
     (123) lista_preds_op -> . LPAREN EXISTS lista_preds_op RPAREN
     (124) lista_preds_op -> . LPAREN IMPLY lista_preds_op RPAREN
@@ -4153,6 +4143,7 @@ state 368
     (132) lista_predicados -> . LPAREN DECREASE LPAREN ID RPAREN NUM RPAREN
     (133) lista_predicados -> . LPAREN ID RPAREN lista_predicados
     (134) lista_predicados -> . LPAREN NOT lista_predicados_not RPAREN
+    (135) lista_predicados -> . LPAREN NOT lista_predicados_not RPAREN LPAREN
 
   ! shift/reduce conflict for LPAREN resolved as shift
   ! reduce/reduce conflict for COLON resolved using rule 119 (lista_preds_op -> .)
@@ -4167,47 +4158,51 @@ state 368
   ! RPAREN          [ reduce using rule 127 (lista_predicados -> .) ]
   ! LPAREN          [ reduce using rule 127 (lista_predicados -> .) ]
 
-    lista_preds_op                 shift and go to state 380
+    lista_preds_op                 shift and go to state 379
     lista_predicados               shift and go to state 322
 
 state 369
 
     (131) lista_predicados -> LPAREN VAR ID COMP . ID RPAREN lista_preds_op
 
-    ID              shift and go to state 381
+    ID              shift and go to state 380
 
 
 state 370
 
     (132) lista_predicados -> LPAREN DECREASE LPAREN ID . RPAREN NUM RPAREN
 
-    RPAREN          shift and go to state 382
+    RPAREN          shift and go to state 381
 
 
 state 371
 
-    (136) lista_predicados_not -> LPAREN ID . RPAREN lista_predicados_not
-    (137) lista_predicados_not -> LPAREN ID . lista_var RPAREN lista_predicados_not
-    (138) lista_var -> .
-    (139) lista_var -> . VAR ID lista_var
-    (140) lista_var -> . ID lista_var
+    (137) lista_predicados_not -> LPAREN ID . RPAREN lista_predicados_not
+    (138) lista_predicados_not -> LPAREN ID . lista_var RPAREN lista_predicados_not
+    (139) lista_var -> .
+    (140) lista_var -> . VAR ID lista_var
+    (141) lista_var -> . ID lista_var
 
   ! shift/reduce conflict for RPAREN resolved as shift
-    RPAREN          shift and go to state 383
+    RPAREN          shift and go to state 382
     VAR             shift and go to state 220
     ID              shift and go to state 217
 
-  ! RPAREN          [ reduce using rule 138 (lista_var -> .) ]
+  ! RPAREN          [ reduce using rule 139 (lista_var -> .) ]
 
-    lista_var                      shift and go to state 384
+    lista_var                      shift and go to state 383
 
 state 372
 
     (134) lista_predicados -> LPAREN NOT lista_predicados_not RPAREN .
+    (135) lista_predicados -> LPAREN NOT lista_predicados_not RPAREN . LPAREN
 
-    LPAREN          reduce using rule 134 (lista_predicados -> LPAREN NOT lista_predicados_not RPAREN .)
+  ! shift/reduce conflict for LPAREN resolved as shift
     COLON           reduce using rule 134 (lista_predicados -> LPAREN NOT lista_predicados_not RPAREN .)
     RPAREN          reduce using rule 134 (lista_predicados -> LPAREN NOT lista_predicados_not RPAREN .)
+    LPAREN          shift and go to state 384
+
+  ! LPAREN          [ reduce using rule 134 (lista_predicados -> LPAREN NOT lista_predicados_not RPAREN .) ]
 
 
 state 373
@@ -4233,21 +4228,12 @@ state 375
 
 state 376
 
-    (121) lista_preds_op -> LPAREN AND lista_preds_op RPAREN lista_preds_op .
-
-    COLON           reduce using rule 121 (lista_preds_op -> LPAREN AND lista_preds_op RPAREN lista_preds_op .)
-    RPAREN          reduce using rule 121 (lista_preds_op -> LPAREN AND lista_preds_op RPAREN lista_preds_op .)
-    LPAREN          reduce using rule 121 (lista_preds_op -> LPAREN AND lista_preds_op RPAREN lista_preds_op .)
-
-
-state 377
-
     (125) lista_preds_op -> LPAREN PREFERENCE [ ID ] . RPAREN
 
     RPAREN          shift and go to state 385
 
 
-state 378
+state 377
 
     (128) lista_predicados -> LPAREN ID lista_var RPAREN lista_preds_op .
 
@@ -4256,12 +4242,12 @@ state 378
     RPAREN          reduce using rule 128 (lista_predicados -> LPAREN ID lista_var RPAREN lista_preds_op .)
 
 
-state 379
+state 378
 
     (129) lista_predicados -> LPAREN lista_var MINUS ID RPAREN . lista_preds_op
     (119) lista_preds_op -> .
     (120) lista_preds_op -> . lista_predicados lista_preds_op
-    (121) lista_preds_op -> . LPAREN AND lista_preds_op RPAREN lista_preds_op
+    (121) lista_preds_op -> . LPAREN AND lista_preds_op RPAREN
     (122) lista_preds_op -> . LPAREN FORALL lista_preds_op RPAREN
     (123) lista_preds_op -> . LPAREN EXISTS lista_preds_op RPAREN
     (124) lista_preds_op -> . LPAREN IMPLY lista_preds_op RPAREN
@@ -4275,6 +4261,7 @@ state 379
     (132) lista_predicados -> . LPAREN DECREASE LPAREN ID RPAREN NUM RPAREN
     (133) lista_predicados -> . LPAREN ID RPAREN lista_predicados
     (134) lista_predicados -> . LPAREN NOT lista_predicados_not RPAREN
+    (135) lista_predicados -> . LPAREN NOT lista_predicados_not RPAREN LPAREN
 
   ! shift/reduce conflict for LPAREN resolved as shift
   ! reduce/reduce conflict for COLON resolved using rule 119 (lista_preds_op -> .)
@@ -4292,7 +4279,7 @@ state 379
     lista_preds_op                 shift and go to state 386
     lista_predicados               shift and go to state 322
 
-state 380
+state 379
 
     (130) lista_predicados -> LPAREN COMP lista_var RPAREN lista_preds_op .
 
@@ -4301,37 +4288,46 @@ state 380
     RPAREN          reduce using rule 130 (lista_predicados -> LPAREN COMP lista_var RPAREN lista_preds_op .)
 
 
-state 381
+state 380
 
     (131) lista_predicados -> LPAREN VAR ID COMP ID . RPAREN lista_preds_op
 
     RPAREN          shift and go to state 387
 
 
-state 382
+state 381
 
     (132) lista_predicados -> LPAREN DECREASE LPAREN ID RPAREN . NUM RPAREN
 
     NUM             shift and go to state 388
 
 
-state 383
+state 382
 
-    (136) lista_predicados_not -> LPAREN ID RPAREN . lista_predicados_not
-    (135) lista_predicados_not -> .
-    (136) lista_predicados_not -> . LPAREN ID RPAREN lista_predicados_not
-    (137) lista_predicados_not -> . LPAREN ID lista_var RPAREN lista_predicados_not
+    (137) lista_predicados_not -> LPAREN ID RPAREN . lista_predicados_not
+    (136) lista_predicados_not -> .
+    (137) lista_predicados_not -> . LPAREN ID RPAREN lista_predicados_not
+    (138) lista_predicados_not -> . LPAREN ID lista_var RPAREN lista_predicados_not
 
-    RPAREN          reduce using rule 135 (lista_predicados_not -> .)
+    RPAREN          reduce using rule 136 (lista_predicados_not -> .)
     LPAREN          shift and go to state 354
 
     lista_predicados_not           shift and go to state 389
 
-state 384
+state 383
 
-    (137) lista_predicados_not -> LPAREN ID lista_var . RPAREN lista_predicados_not
+    (138) lista_predicados_not -> LPAREN ID lista_var . RPAREN lista_predicados_not
 
     RPAREN          shift and go to state 390
+
+
+state 384
+
+    (135) lista_predicados -> LPAREN NOT lista_predicados_not RPAREN LPAREN .
+
+    LPAREN          reduce using rule 135 (lista_predicados -> LPAREN NOT lista_predicados_not RPAREN LPAREN .)
+    COLON           reduce using rule 135 (lista_predicados -> LPAREN NOT lista_predicados_not RPAREN LPAREN .)
+    RPAREN          reduce using rule 135 (lista_predicados -> LPAREN NOT lista_predicados_not RPAREN LPAREN .)
 
 
 state 385
@@ -4357,7 +4353,7 @@ state 387
     (131) lista_predicados -> LPAREN VAR ID COMP ID RPAREN . lista_preds_op
     (119) lista_preds_op -> .
     (120) lista_preds_op -> . lista_predicados lista_preds_op
-    (121) lista_preds_op -> . LPAREN AND lista_preds_op RPAREN lista_preds_op
+    (121) lista_preds_op -> . LPAREN AND lista_preds_op RPAREN
     (122) lista_preds_op -> . LPAREN FORALL lista_preds_op RPAREN
     (123) lista_preds_op -> . LPAREN EXISTS lista_preds_op RPAREN
     (124) lista_preds_op -> . LPAREN IMPLY lista_preds_op RPAREN
@@ -4371,6 +4367,7 @@ state 387
     (132) lista_predicados -> . LPAREN DECREASE LPAREN ID RPAREN NUM RPAREN
     (133) lista_predicados -> . LPAREN ID RPAREN lista_predicados
     (134) lista_predicados -> . LPAREN NOT lista_predicados_not RPAREN
+    (135) lista_predicados -> . LPAREN NOT lista_predicados_not RPAREN LPAREN
 
   ! shift/reduce conflict for LPAREN resolved as shift
   ! reduce/reduce conflict for COLON resolved using rule 119 (lista_preds_op -> .)
@@ -4397,19 +4394,19 @@ state 388
 
 state 389
 
-    (136) lista_predicados_not -> LPAREN ID RPAREN lista_predicados_not .
+    (137) lista_predicados_not -> LPAREN ID RPAREN lista_predicados_not .
 
-    RPAREN          reduce using rule 136 (lista_predicados_not -> LPAREN ID RPAREN lista_predicados_not .)
+    RPAREN          reduce using rule 137 (lista_predicados_not -> LPAREN ID RPAREN lista_predicados_not .)
 
 
 state 390
 
-    (137) lista_predicados_not -> LPAREN ID lista_var RPAREN . lista_predicados_not
-    (135) lista_predicados_not -> .
-    (136) lista_predicados_not -> . LPAREN ID RPAREN lista_predicados_not
-    (137) lista_predicados_not -> . LPAREN ID lista_var RPAREN lista_predicados_not
+    (138) lista_predicados_not -> LPAREN ID lista_var RPAREN . lista_predicados_not
+    (136) lista_predicados_not -> .
+    (137) lista_predicados_not -> . LPAREN ID RPAREN lista_predicados_not
+    (138) lista_predicados_not -> . LPAREN ID lista_var RPAREN lista_predicados_not
 
-    RPAREN          reduce using rule 135 (lista_predicados_not -> .)
+    RPAREN          reduce using rule 136 (lista_predicados_not -> .)
     LPAREN          shift and go to state 354
 
     lista_predicados_not           shift and go to state 393
@@ -4434,9 +4431,9 @@ state 392
 
 state 393
 
-    (137) lista_predicados_not -> LPAREN ID lista_var RPAREN lista_predicados_not .
+    (138) lista_predicados_not -> LPAREN ID lista_var RPAREN lista_predicados_not .
 
-    RPAREN          reduce using rule 137 (lista_predicados_not -> LPAREN ID lista_var RPAREN lista_predicados_not .)
+    RPAREN          reduce using rule 138 (lista_predicados_not -> LPAREN ID lista_var RPAREN lista_predicados_not .)
 
 WARNING: 
 WARNING: Conflicts:
@@ -4459,15 +4456,14 @@ WARNING: shift/reduce conflict for LPAREN in state 332 resolved as shift
 WARNING: shift/reduce conflict for LPAREN in state 348 resolved as shift
 WARNING: shift/reduce conflict for LPAREN in state 356 resolved as shift
 WARNING: shift/reduce conflict for LPAREN in state 357 resolved as shift
-WARNING: shift/reduce conflict for LPAREN in state 358 resolved as shift
-WARNING: shift/reduce conflict for LPAREN in state 358 resolved as shift
 WARNING: shift/reduce conflict for LPAREN in state 363 resolved as shift
 WARNING: shift/reduce conflict for LPAREN in state 363 resolved as shift
 WARNING: shift/reduce conflict for LPAREN in state 368 resolved as shift
 WARNING: shift/reduce conflict for LPAREN in state 368 resolved as shift
 WARNING: shift/reduce conflict for RPAREN in state 371 resolved as shift
-WARNING: shift/reduce conflict for LPAREN in state 379 resolved as shift
-WARNING: shift/reduce conflict for LPAREN in state 379 resolved as shift
+WARNING: shift/reduce conflict for LPAREN in state 372 resolved as shift
+WARNING: shift/reduce conflict for LPAREN in state 378 resolved as shift
+WARNING: shift/reduce conflict for LPAREN in state 378 resolved as shift
 WARNING: shift/reduce conflict for LPAREN in state 387 resolved as shift
 WARNING: shift/reduce conflict for LPAREN in state 387 resolved as shift
 WARNING: reduce/reduce conflict in state 135 resolved using rule (lista_objects -> <empty>)
@@ -4502,13 +4498,11 @@ WARNING: reduce/reduce conflict in state 356 resolved using rule (lista_preds_op
 WARNING: rejected rule (lista_predicados -> <empty>) in state 356
 WARNING: reduce/reduce conflict in state 357 resolved using rule (lista_preds_op -> <empty>)
 WARNING: rejected rule (lista_predicados -> <empty>) in state 357
-WARNING: reduce/reduce conflict in state 358 resolved using rule (lista_preds_op -> <empty>)
-WARNING: rejected rule (lista_predicados -> <empty>) in state 358
 WARNING: reduce/reduce conflict in state 363 resolved using rule (lista_preds_op -> <empty>)
 WARNING: rejected rule (lista_predicados -> <empty>) in state 363
 WARNING: reduce/reduce conflict in state 368 resolved using rule (lista_preds_op -> <empty>)
 WARNING: rejected rule (lista_predicados -> <empty>) in state 368
-WARNING: reduce/reduce conflict in state 379 resolved using rule (lista_preds_op -> <empty>)
-WARNING: rejected rule (lista_predicados -> <empty>) in state 379
+WARNING: reduce/reduce conflict in state 378 resolved using rule (lista_preds_op -> <empty>)
+WARNING: rejected rule (lista_predicados -> <empty>) in state 378
 WARNING: reduce/reduce conflict in state 387 resolved using rule (lista_preds_op -> <empty>)
 WARNING: rejected rule (lista_predicados -> <empty>) in state 387

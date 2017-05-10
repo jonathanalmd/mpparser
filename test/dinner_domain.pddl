@@ -51,20 +51,14 @@
     :parameters()
     :precondition
       (and
-      (quiet)
-      (not (garbage)(garbage))
+        (quiet)
+
+      (not (garbage))
       )
     :effect
       (and
       (garbage)
-      (garbage)
-      (garbage)
-
-      (garbage)
-                  (not (quiet)(quiet))
-
+      (not (quiet))
       )
   )
 )
-
-

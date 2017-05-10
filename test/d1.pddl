@@ -37,7 +37,7 @@
 			
 			(at-robbyx4 ?from5 ?from6)
 			)
-			
+
 		)
 	)
 
@@ -72,6 +72,7 @@
 
 				(not (carry ?obj ?gripper)
 					)
+					
 			)
 	)
 )

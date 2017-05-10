@@ -18,6 +18,9 @@ def reportSyntaxError(value):
             print("\t\tOR")
             print("\tPredicate after 'NOT' operator: please put all positive predicates first and then the negative predicates")
             print("\te.g.: (predicate1) (predicate2) (predicate3) (not(predicate4)(predicate5))")
+            print("\t\tOR")
+            print("\tPredicate declared outside 'AND' operator: please insert all predicates inside (and )")
+            print("\te.g.: (and(predicate1) (predicate2) (predicate3) (not(predicate4)(predicate5)))")
     elif value != "(":
         if run_mode == "strips" and value.upper() == "PRECONDITIONS":
             print("Syntax error in Action formalization line %d"%(linestrips))
@@ -38,8 +41,11 @@ def reportSyntaxError(value):
                 print("Wrong ':constants' formalization")
             else:
                 print("Syntax error in %s line %d"%(value,plex.lexer.lineno))
+                print("\tP.S.: predicate after 'NOT' operator: please put all positive predicates first and then the negative predicates")
+                print("\te.g.: (predicate1) (predicate2) (predicate3) (not(predicate4)(predicate5))")
         else:
             print("Syntax error in %s line %d"%(value,plex.lexer.lineno))
+
     else:
         print("Syntax error at EOI")
     sys.exit()
