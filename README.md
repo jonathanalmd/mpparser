@@ -1,9 +1,14 @@
 # mpparser
 Multi-Lingual Parser: PDDL, ADL and STRIPS
 
-pddl domain v1.0: ok
-pddl problem v1.0: ok
-adl v1.0: ok
+pddl domain v1.3: ok
+pddl problem v1.3: ok
+adl v1.3: ok
+strips v1.3 ok
 
-working with strips 1.0
+
+working with semantic error messages
+
+
+
 
