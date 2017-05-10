@@ -383,6 +383,21 @@ def p_strips_predicado_2(p):
     # print("\t",objStrips.lista_ids_sep)
     objStrips.appendListIds()
 
+def p_strips_predicado_3(p):
+    '''strips_predicado : ID LPAREN  RPAREN'''
+    # print("<!pred>:",p[2])
+    objStrips.appendPredName(p[1])
+    # print("\t",objStrips.lista_ids_sep)
+    objStrips.appendListIds()
+
+def p_strips_predicado_4(p):
+    '''strips_predicado : LNOT ID LPAREN  RPAREN'''
+    # print("<!pred>:",p[2])
+    objStrips.appendPredName("!"+p[2])
+    # print("\t",objStrips.lista_ids_sep)
+    objStrips.appendListIds()
+
+
 def p_strips_lista_ids_1(p):
     '''strips_lista_ids : ID'''
     # print(">",p[1])
