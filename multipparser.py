@@ -989,7 +989,12 @@ def p_lista_predicados_1(p):
     #     objDomain.appendListaPDDLvars()
 
     objDomain.cleanPDDLvars()
-    objDomain.appendPredicado(p[2])
+
+    if p[2] in [pred_name.name for pred_name in objDomain.domain_predicates]:
+        objDomain.appendPredicado(p[2])
+    else:
+        errorhandler.reportSyntaxError("#"+p[2])
+
     # if objDomain.dealing_with_types:
     #     objDomain.dealingWithTypeSep()
 
@@ -1013,7 +1018,12 @@ def p_lista_predicados_6(p):
     objDomain.appendVar(p[2])
     # objDomain.appendVar("(NOVAR)")
     objDomain.appendListaPDDLvars()
-    objDomain.appendPredicado(p[2])
+
+    if p[2] in [pred_name.name for pred_name in objDomain.domain_predicates]:
+        objDomain.appendPredicado(p[2])
+    else:
+        errorhandler.reportSyntaxError("#"+p[2])
+
     objDomain.cleanPDDLvars()
     # print(objDomain.lista_predicados)
     # print(objDomain.lista_pddl_vars)
