@@ -8,14 +8,15 @@
 
 (:INIT 	
 	(CLEAR C) 
-	(CLEAR A) 
+	(CLEAR A)   
 	(CLEAR B) 
 	(CLEAR D) 
 		(NOT(HANDEMPTY))
 
 	(ONTABLE C) 
 	(= (ondblock C A B D) 1)
-	(NOT(on AAA))
+	(NOT(on AAA)
+	(onB BBBBBB CC))
 	(ONTABLE A)
 	(ONTABLE B) 
 	(ONTABLE D) 

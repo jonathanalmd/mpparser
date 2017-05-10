@@ -8,12 +8,12 @@ def reportSyntaxError(value):
     if value == "(":
         print("Syntax error in line",plex.lexer.lineno-1)
         print("\tMissing or more {'(',')'} than expected")
-        if run_mode == "pddlproblem":
+        # if run_mode == "pddlproblem":
+        #     print("\t\tOR")
+        #     print("\tUsing more than one predicate inside 'NOT' operator: please apply 'NOT' operator on each predicate individually")
+        if run_mode == "pddldomain":
             print("\t\tOR")
-            print("\tUsing more than one predicate inside 'NOT' operator: please apply 'NOT' operator on each predicate individually")
-        elif run_mode == "pddldomain":
-            print("\t\tOR")
-            print("\tUsing more than one 'NOT' operator: please apply 'NOT' one time for all negative predicates")
+            print("\tUing more than one 'NOT' operator: please apply 'NOT' one time for all negative predicates")
             print("\te.g.: (not(predicate1)) (not(predicate2)) -> (not (predicate1) (predicate2))")
             print("\t\tOR")
             print("\tPredicate after 'NOT' operator: please put all positive predicates first and then the negative predicates")
