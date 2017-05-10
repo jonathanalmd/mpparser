@@ -535,7 +535,7 @@ def p_lista_not_preds_p_2(p):
     ''' lista_not_preds_p : LPAREN lista_ids_not_p RPAREN lista_not_preds_p'''
     
 def p_lista_ids_not_p_1(p):
-    ''' lista_ids_not_p :  '''
+    ''' lista_ids_not_p : '''
     # print("aa")
     print(objProblem.lista_ids)
     if objProblem.lista_ids:
@@ -631,6 +631,7 @@ def p_lista_ids_p_6(p):
 # =================================================================================================== #
 # ========================================== DOMAIN ================================================= #
 # =================================================================================================== #
+
 
 
 def p_domain_formalization_1(p):
@@ -892,7 +893,7 @@ def p_lista_preds_op_1(p):
     '''lista_preds_op : '''
 
 def p_lista_preds_op_2(p):
-    '''lista_preds_op : lista_predicados '''
+    '''lista_preds_op : lista_predicados lista_preds_op'''
     # print("<<<<<<<<<FINAL_LOGIC>>>>",objDomain.curLogicalOperator)
 
 def p_lista_preds_op_3(p):
@@ -921,13 +922,6 @@ def p_lista_preds_op_7(p):
 
 def p_lista_preds_op_8(p):
     '''lista_preds_op : LPAREN WHEN lista_preds_op RPAREN'''
-
-def p_lista_preds_op_9(p):
-    '''lista_preds_op : LPAREN NOT lista_predicados_not RPAREN ''' 
-    objDomain.curLogicalOperator = "NOT"
-    # objDomain.lista_predicados.append("AND")
-    # print("\t\tNOT>>>>",objDomain.lista_predicados)
-    # objDomain.lista_predicados[0] = "!" + str(len(objDomain.lista_predicados)) + "*" +objDomain.lista_predicados[0]
 
 
 def p_lista_predicados_0(p):
@@ -974,6 +968,13 @@ def p_lista_predicados_6(p):
     objDomain.cleanPDDLvars()
     # print(objDomain.lista_predicados)
     # print(objDomain.lista_pddl_vars)
+
+def p_lista_predicados_7(p):
+    '''lista_predicados : LPAREN NOT lista_predicados_not RPAREN ''' 
+    objDomain.curLogicalOperator = "NOT"
+    # objDomain.lista_predicados.append("AND")
+    # print("\t\tNOT>>>>",objDomain.lista_predicados)
+    # objDomain.lista_predicados[0] = "!" + str(len(objDomain.lista_predicados)) + "*" +objDomain.lista_predicados[0]
 
 
 def p_lista_predicados_not_1(p):
@@ -1038,7 +1039,6 @@ def p_lista_ids_2(p):
 # =================================================================================================== #
 # ======================================= FIM DOMAIN ================================================ #
 # =================================================================================================== #
-
 
 # =================================================================================================== #
 # =================================================================================================== #

@@ -37,6 +37,7 @@
 			
 			(at-robbyx4 ?from5 ?from6)
 			)
+			
 		)
 	)
 
@@ -67,13 +68,9 @@
 
 
 				(at ?obj ?room) 
-								(at2 ?obj ?dd3) 
-
-				(free ?gripper) 
-
+				
 
 				(not (carry ?obj ?gripper)
-					(carry ?oddddbj ?grisddpper)
 					)
 			)
 	)
