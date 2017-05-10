@@ -477,7 +477,12 @@ def p_lista_objects_1(p):
     '''lista_objects : '''
 def p_lista_objects_2(p):
     '''lista_objects : lista_objids_p MINUS ID lista_objects'''
-    objProblem.appendObjType(p[3])
+    if ("TYPING" in objDomain.domain_requirements) and (p[3] in objDomain.domain_types):
+        objProblem.appendObjType(p[3])
+    else:
+        errorhandler.reportSyntaxError("?"+p[3])
+
+
 
 def p_lista_objects_3(p):
     '''lista_objects : lista_objids_p'''

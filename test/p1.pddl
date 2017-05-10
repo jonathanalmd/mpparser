@@ -2,8 +2,8 @@
 
 (:domain BLOCKS)
 
-(:objects D B A C - block
-			X Y Z - block2
+(:objects D B A C - gripper
+			X Y Z - room
 )
 
 (:INIT 	
