@@ -11,7 +11,6 @@
 	(CLEAR A)   
 	(CLEAR B) 
 	(CLEAR D) 
-		(NOT(HANDEMPTY))
 
 	(ONTABLE C) 
 	(= (ondblock C A B D) 1)
@@ -27,7 +26,7 @@
 
 
 (:goal 
-	(AND
+	(and
 		(CLEAR B) 
 		(CLEAR D) 
 		(ONTABLE A)

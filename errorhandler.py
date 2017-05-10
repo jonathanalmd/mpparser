@@ -56,6 +56,9 @@ def reportSyntaxError(value):
             if value[0] == "?":
                 print("Syntax error in '%s' (definition in/before line %d)"%(value[1:],plex.lexer.lineno))
                 print("\tType '%s' is not defined in ':types' definition"%(value[1:]))
+            elif value[0] == "!":
+                print("Syntax error in '%s' (definition in/before line %d)"%(value[1:],plex.lexer.lineno))
+                print("\tNegative predicate '%s' definition without ':negative-preconditions' in domain ':requirements' definition"%(value[1:]))
         else:
             print("Syntax error in '%s' line %d"%(value,plex.lexer.lineno))
 

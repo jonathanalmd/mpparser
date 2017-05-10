@@ -77,7 +77,7 @@ class PDDLProblemParse:
         self.cleanProblemIds()
         self.cleanProblemListaIdsSep()
 
-    def setProblemPredicates(self, runmode):
+    def setProblemPredicates(self, runmode, operator):
         # print (self.lista_ids_sep)
         # print ("\n\n")
         if runmode == "i":
@@ -101,24 +101,43 @@ class PDDLProblemParse:
                     # ipred.p_vars = init_pred[1:]
                     ipred.p_vars = ipred_vars
                 self.problem_init_pred.append(ipred)
-        else:
-            for goal_pred in self.lista_ids_sep:
-                if goal_pred[0] == "!":
-                    gpred = PDDLProblemPredicate(goal_pred[1])
-                    gpred.p_vars = goal_pred[2:]
-                    gpred.name = "!" + gpred.name 
-                elif goal_pred[0] == "=":
-                    # print("GOALPred",goal_pred)
-                    gpred = PDDLProblemPredicate(goal_pred[1])
-                    gpred.p_vars = goal_pred[2:len(goal_pred)]
-                    # gpred.p_vars.append(goal_pred[-1])
-                    # print (gpred.p_vars)
-                    gpred.name = "=" + gpred.name 
-                else:
-                    gpred = PDDLProblemPredicate(goal_pred[0])       
-                    gpred.p_vars = goal_pred[1:]
+        elif runmode == "g": #goal
+            if operator == "and":
+                for goal_pred in self.lista_ids_sep:
+                    if goal_pred[0] == "!":
+                        gpred = PDDLProblemPredicate(goal_pred[1])
+                        gpred.p_vars = goal_pred[2:]
+                        gpred.name = "&!" + gpred.name 
+                    elif goal_pred[0] == "=":
+                        # print("GOALPred",goal_pred)
+                        gpred = PDDLProblemPredicate(goal_pred[1])
+                        gpred.p_vars = goal_pred[2:len(goal_pred)]
+                        # gpred.p_vars.append(goal_pred[-1])
+                        # print (gpred.p_vars)
+                        gpred.name = "&=" + gpred.name 
+                    else:
+                        gpred = PDDLProblemPredicate("&" + goal_pred[0])       
+                        gpred.p_vars = goal_pred[1:]
 
-                self.problem_goal_pred.append(gpred)
+                    self.problem_goal_pred.append(gpred)
+            else: #or
+                for goal_pred in self.lista_ids_sep:
+                    if goal_pred[0] == "!":
+                        gpred = PDDLProblemPredicate(goal_pred[1])
+                        gpred.p_vars = goal_pred[2:]
+                        gpred.name = "|!" + gpred.name 
+                    elif goal_pred[0] == "=":
+                        # print("GOALPred",goal_pred)
+                        gpred = PDDLProblemPredicate(goal_pred[1])
+                        gpred.p_vars = goal_pred[2:len(goal_pred)]
+                        # gpred.p_vars.append(goal_pred[-1])
+                        # print (gpred.p_vars)
+                        gpred.name = "|=" + gpred.name 
+                    else:
+                        gpred = PDDLProblemPredicate("|" + goal_pred[0])       
+                        gpred.p_vars = goal_pred[1:]
+
+                    self.problem_goal_pred.append(gpred)
         # print (self.problem_init_pred)
         self.cleanProblemIds()
         self.cleanProblemListaIdsSep()

@@ -490,7 +490,7 @@ def p_lista_objects_3(p):
 def p_def_init_1(p):
     '''def_init : LPAREN COLON INIT lista_predicados_p RPAREN'''
     # print(objProblem.lista_ids_sep)
-    objProblem.setProblemPredicates("i")
+    objProblem.setProblemPredicates("i","none")
 
 def p_def_goal_1(p):
     '''def_goal : '''
@@ -498,7 +498,13 @@ def p_def_goal_1(p):
 def p_def_goal_2(p):
     '''def_goal : LPAREN COLON GOAL LPAREN AND lista_predicados_p RPAREN RPAREN'''
     # print(objProblem.lista_ids_sep)
-    objProblem.setProblemPredicates("g")
+    objProblem.setProblemPredicates("g","and")
+
+def p_def_goal_6(p):
+    '''def_goal : LPAREN COLON GOAL LPAREN OR lista_predicados_or_p RPAREN RPAREN'''
+    # print(objProblem.lista_ids_sep)
+
+    objProblem.setProblemPredicates("g","or")
 
 def p_def_goal_5(p):
     '''def_goal : LPAREN COLON GOAL LPAREN NOT lista_predicados_p RPAREN RPAREN'''
@@ -508,6 +514,20 @@ def p_def_goal_3(p):
 
 def p_def_goal_4(p):
     '''def_goal : LPAREN COLON GOAL RPAREN'''
+
+
+def p_lista_predicados_or_p_1(p):
+    '''lista_predicados_or_p : '''
+
+def p_lista_predicados_or_p_2(p):
+    '''lista_predicados_or_p : LPAREN lista_ids_p RPAREN lista_predicados_p'''
+    # {;}
+    if objProblem.lista_ids:
+        objProblem.appendListIds()
+    # print(objProblem.lista_obj_type)
+    # print(objProblem.lista_ids_sep)
+    # objProblem.setProblemObjects()
+    objProblem.cleanProblemIds()
 
 def p_lista_predicados_p_1(p):
     '''lista_predicados_p : '''
@@ -531,6 +551,7 @@ def p_lista_predicados_p_3(p):
     # print(objProblem.lista_ids_sep)
     # # objProblem.setProblemObjects()
     # objProblem.cleanProblemIds()
+    
 
 def p_lista_not_preds_p_1(p):
     ''' lista_not_preds_p : '''
@@ -554,8 +575,10 @@ def p_lista_ids_not_p_2(p):
     ''' lista_ids_not_p : ID lista_ids_not_p'''
     # print(" >>>>:", p[1])
     # objProblem.appendId("!")
-    objProblem.appendId("!"+p[1])
-    # objProblem.appendId("!")
+    if "NEGATIVE-PRECONDITIONS" in objDomain.domain_requirements:
+        objProblem.appendId("!"+p[1])
+    else:
+        errorhandler.reportSyntaxError("!"+p[1])
 
     
 

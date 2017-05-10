@@ -55,11 +55,11 @@ class BFSPlanner:
                     if "!" in precond.name:
                         aux = []
                         aux.append('not')
-                        precond.name = re.sub('[&!]', '', precond.name)
+                        precond.name = re.sub('[&!|]', '', precond.name)
                         aux.append([precond.name])
                         action_pred.append(aux)
                     else:
-                        precond.name = re.sub('[&!]', '', precond.name)
+                        precond.name = re.sub('[&!|]', '', precond.name)
                         action_pred.append([precond.name])
 
                     if precond.p_vars[0][0] != '(':
@@ -71,11 +71,11 @@ class BFSPlanner:
                     if "!" in effect.name:
                         aux = []
                         aux.append('not')
-                        effect.name = re.sub('[&!]', '', effect.name)
+                        effect.name = re.sub('[&!|]', '', effect.name)
                         aux.append([effect.name])
                         action_pred.append(aux)
                     else:
-                        effect.name = re.sub('[&!]', '', effect.name)
+                        effect.name = re.sub('[&!|]', '', effect.name)
                         action_pred.append([effect.name])
 
                     if effect.p_vars[0][0] != '(':
@@ -103,18 +103,18 @@ class BFSPlanner:
                 positive_preconditions = []
                 for precond in single_action.preconditions:
                     if "!" in precond.name:
-                        negative_preconditions.append([re.sub('[&!]', '', precond.name)])
+                        negative_preconditions.append([re.sub('[&!|]', '', precond.name)])
                     else:
-                        positive_preconditions.append([re.sub('[&!]', '', precond.name)])
+                        positive_preconditions.append([re.sub('[&!|]', '', precond.name)])
 
                 # action.append(":effects")
                 add_effects = []
                 del_effects = []
                 for effect in single_action.effects:
                     if "!" in effect.name:
-                        del_effects.append([re.sub('[&!]', '', effect.name)])
+                        del_effects.append([re.sub('[&!|]', '', effect.name)])
                     else:
-                        add_effects.append([re.sub('[&!]', '', effect.name)])
+                        add_effects.append([re.sub('[&!|]', '', effect.name)])
 
 
                 actions.append(Action(aname, parameters, positive_preconditions, negative_preconditions, add_effects, del_effects))
@@ -134,18 +134,18 @@ class BFSPlanner:
                 positive_preconditions = []
                 for i in range (0, len(single_action.precond),2):
                     if "!" in single_action.precond[i]:
-                        negative_preconditions.append([re.sub('[&!]', '', single_action.precond[i])])
+                        negative_preconditions.append([re.sub('[&!|]', '', single_action.precond[i])])
                     else:
-                        positive_preconditions.append([re.sub('[&!]', '', single_action.precond[i])])
+                        positive_preconditions.append([re.sub('[&!|]', '', single_action.precond[i])])
 
                 # action.append(":effects")
                 add_effects = []
                 del_effects = []
                 for i in range(0, len(single_action.effect), 2):
                     if "!" in single_action.effect[i]:
-                        del_effects.append([re.sub('[&!]', '', single_action.effect[i])])
+                        del_effects.append([re.sub('[&!|]', '', single_action.effect[i])])
                     else:
-                        add_effects.append([re.sub('[&!]', '', single_action.effect[i])])
+                        add_effects.append([re.sub('[&!|]', '', single_action.effect[i])])
 
 
                 actions.append(Action(aname, parameters, positive_preconditions, negative_preconditions, add_effects, del_effects))
@@ -166,18 +166,18 @@ class BFSPlanner:
                 positive_preconditions = []
                 for i in range (0, len(single_action.precond),2):
                     if "!" in single_action.precond[i]:
-                        negative_preconditions.append([re.sub('[&!]', '', single_action.precond[i])])
+                        negative_preconditions.append([re.sub('[&!|]', '', single_action.precond[i])])
                     else:
-                        positive_preconditions.append([re.sub('[&!]', '', single_action.precond[i])])
+                        positive_preconditions.append([re.sub('[&!|]', '', single_action.precond[i])])
 
                 # action.append(":effects")
                 add_effects = []
                 del_effects = []
                 for i in range(0, len(single_action.effect), 2):
                     if "!" in single_action.effect[i]:
-                        del_effects.append([re.sub('[&!]', '', single_action.effect[i])])
+                        del_effects.append([re.sub('[&!|]', '', single_action.effect[i])])
                     else:
-                        add_effects.append([re.sub('[&!]', '', single_action.effect[i])])
+                        add_effects.append([re.sub('[&!|]', '', single_action.effect[i])])
 
 
                 actions.append(Action(aname, parameters, positive_preconditions, negative_preconditions, add_effects, del_effects))
@@ -198,11 +198,11 @@ class BFSPlanner:
                 if "!" in pred_name.name:
                     aux = []
                     aux.append('not')
-                    pred_name.name = re.sub('[&!]', '', pred_name.name)
+                    pred_name.name = re.sub('[&!|]', '', pred_name.name)
                     aux.append([pred_name.name])
                     init_preds.append(aux)
                 else:
-                    pred_name.name = re.sub('[&!]', '', pred_name.name)
+                    pred_name.name = re.sub('[&!|]', '', pred_name.name)
                     init_preds.append([pred_name.name])
 
                 if pred_name.p_vars != []:
@@ -227,11 +227,11 @@ class BFSPlanner:
                 # if "!" in pred_name.name:
                 #     aux = []
                 #     aux.append('not')
-                #     pred_name.name = re.sub('[&!]', '', pred_name.name)
+                #     pred_name.name = re.sub('[&!|]', '', pred_name.name)
                 #     aux.append([pred_name.name])
                 #     init_preds.append(aux)
                 # else:
-                #     pred_name.name = re.sub('[&!]', '', pred_name.name)
+                #     pred_name.name = re.sub('[&!|]', '', pred_name.name)
                 #     init_preds.append([pred_name.name])
 
                 # if pred_name.p_vars != []:
@@ -276,11 +276,11 @@ class BFSPlanner:
                 if "!" in pred_name.name:
                     aux = []
                     aux.append('not')
-                    name = re.sub('[&!]', '', pred_name.name)
+                    name = re.sub('[&!|]', '', pred_name.name)
                     aux.append([name])
                     init_preds.append(aux)
                 else:
-                    name = re.sub('[&!]', '', pred_name.name)
+                    name = re.sub('[&!|]', '', pred_name.name)
                     init_preds.append([name])
 
                 if pred_name.p_vars != []:
@@ -305,13 +305,13 @@ class BFSPlanner:
                 # if "!" in pred_name.name:
                 #     aux = []
                 #     aux.append('not')
-                #     pred_name.name = re.sub('[&!]', '', pred_name.name)
+                #     pred_name.name = re.sub('[&!|]', '', pred_name.name)
                 #     aux.append([pred_name.name])
                 #     init_preds.append(aux)
                 # else:
                 # print(pred_name)
                 if "!" not in pred_name.name:
-                    name = re.sub('[&!]', '', pred_name.name)
+                    name = re.sub('[&!|]', '', pred_name.name)
                     state.append([name])
 
                 if pred_name.p_vars != []:
@@ -327,20 +327,20 @@ class BFSPlanner:
             for i in range(0,len(goal)-1,2):
                 # print(i)
                 if "!" not in goal[i]:
-                    name = re.sub('[&!]', '', goal[i])
+                    name = re.sub('[&!|]', '', goal[i])
                     state.append([name])
                 if goal[i+1]:
                     init_preds.append(goal[i+1])
                 # if "!" in pred_name.name:
                 #     aux = []
                 #     aux.append('not')
-                #     pred_name.name = re.sub('[&!]', '', pred_name.name)
+                #     pred_name.name = re.sub('[&!|]', '', pred_name.name)
                 #     aux.append([pred_name.name])
                 #     init_preds.append(aux)
                 # else:
                 # print(pred_name)
                 # if "!" not in pred_name.name:
-                #     name = re.sub('[&!]', '', pred_name.name)
+                #     name = re.sub('[&!|]', '', pred_name.name)
                 #     state.append([name])
 
                 # if pred_name.p_vars != []:
@@ -354,20 +354,20 @@ class BFSPlanner:
             for i in range(0,len(goal)-1,2):
                 # print(i)
                 if "!" not in goal[i]:
-                    name = re.sub('[&!]', '', goal[i])
+                    name = re.sub('[&!|]', '', goal[i])
                     state.append([name])
                 if goal[i+1]:
                     init_preds.append(goal[i+1])
                 # if "!" in pred_name.name:
                 #     aux = []
                 #     aux.append('not')
-                #     pred_name.name = re.sub('[&!]', '', pred_name.name)
+                #     pred_name.name = re.sub('[&!|]', '', pred_name.name)
                 #     aux.append([pred_name.name])
                 #     init_preds.append(aux)
                 # else:
                 # print(pred_name)
                 # if "!" not in pred_name.name:
-                #     name = re.sub('[&!]', '', pred_name.name)
+                #     name = re.sub('[&!|]', '', pred_name.name)
                 #     state.append([name])
 
                 # if pred_name.p_vars != []:
@@ -388,13 +388,13 @@ class BFSPlanner:
                 # if "!" in pred_name.name:
                 #     aux = []
                 #     aux.append('not')
-                #     pred_name.name = re.sub('[&!]', '', pred_name.name)
+                #     pred_name.name = re.sub('[&!|]', '', pred_name.name)
                 #     aux.append([pred_name.name])
                 #     init_preds.append(aux)
                 # else:
                 # print(pred_name)
                 if "!" in pred_name.name:
-                    name = re.sub('[&!]', '', pred_name.name)
+                    name = re.sub('[&!|]', '', pred_name.name)
                     state.append([name])
 
                 if pred_name.p_vars != []:
@@ -409,20 +409,20 @@ class BFSPlanner:
             for i in range(0,len(goal)-1,2):
                 # print(i)
                 if "!" in goal[i]:
-                    name = re.sub('[&!]', '', goal[i])
+                    name = re.sub('[&!|]', '', goal[i])
                     state.append([name])
                 if goal[i+1]:
                     init_preds.append(goal[i+1])
                 # if "!" in pred_name.name:
                 #     aux = []
                 #     aux.append('not')
-                #     pred_name.name = re.sub('[&!]', '', pred_name.name)
+                #     pred_name.name = re.sub('[&!|]', '', pred_name.name)
                 #     aux.append([pred_name.name])
                 #     init_preds.append(aux)
                 # else:
                 # print(pred_name)
                 # if "!" not in pred_name.name:
-                #     name = re.sub('[&!]', '', pred_name.name)
+                #     name = re.sub('[&!|]', '', pred_name.name)
                 #     state.append([name])
 
                 # if pred_name.p_vars != []:
@@ -435,7 +435,7 @@ class BFSPlanner:
             for i in range(0,len(goal)-1,2):
                 # print(i)
                 if "!" in goal[i]:
-                    name = re.sub('[&!]', '', goal[i])
+                    name = re.sub('[&!|]', '', goal[i])
                     state.append([name])
                 if goal[i+1]:
                     init_preds.append(goal[i+1])
