@@ -22,14 +22,20 @@
 	(:action move
 		:parameters  (?from1 ?from2 - t ?to22 - re ?t2 - teste3)
 		:precondition 
-		(and
+		(and			(at-robby3 ?to4)
+
 			(at-robby1 ?from11 ?from11)
+			(not
+			(at-robby3 ?to4)
 			
+			(at-robbyx4 ?from5 ?from6)
+			)
 		)
 		:effect (and
 (at-robby1 ?from11 ?from11)
 
 (at-robby3 ?to3)(at-robby4 ?to4)(at-robby5 ?to)
+			(at-robby3 ?to4)
 
 
 			(not
@@ -37,7 +43,6 @@
 			
 			(at-robbyx4 ?from5 ?from6)
 			)
-
 		)
 	)
 
@@ -72,7 +77,6 @@
 
 				(not (carry ?obj ?gripper)
 					)
-					
 			)
 	)
 )
