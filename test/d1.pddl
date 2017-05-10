@@ -1,5 +1,5 @@
 (define (domain gripper-typedd)
-	(:requirements :strips :typing)
+	(:requirements :strips)
 
 	(:types room ball gripper)
 

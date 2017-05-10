@@ -101,10 +101,14 @@ class PDDLDomainParse:
                 lista_types=[], dict_constants={}, pddl_ids=[], 
                 dealing_with_types=[], lista_pddl_ids=[]):
         self.domain_name = domain_name
+        self.domain_requirements = []
+
         self.lista_predicados = lista_predicados
         self.domain_predicates = [] # lista de PDDLPredicate()
         self.domain_functions = [] # lista de PDDLFunction()
         self.domain_types = []
+
+
         self.lista_types = lista_types
         self.dict_constants = dict_constants
         self.pddl_ids = pddl_ids

@@ -99,16 +99,7 @@ def t_NUM(t):
     return t
 
 
-# def t_OPERATOR(t):
-#     r'='
-#     # if t.value == "=":
-#     #     t.type = "COMP"
-#     # elif t.value in ["=","not","NOT"]:
-#     #     t.type = t.value.upper()
-#     if t.value in ["=","not","NOT"]:
-#         t.type = "OPERATOR"
-        
-#     return t
+
 
 
 def t_comment(t):

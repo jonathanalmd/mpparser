@@ -21,7 +21,7 @@ def reportSyntaxError(value):
             print("\t\tOR")
             print("\tPredicate declared outside 'AND' operator: please insert all predicates inside (and )")
             print("\te.g.: (and(predicate1) (predicate2) (predicate3) (not(predicate4)(predicate5)))")
-    elif value != "(":
+    else:
         if run_mode == "strips" and value.upper() == "PRECONDITIONS":
             print("Syntax error in Action formalization line %d"%(linestrips))
             print("\tProbably using more ',' than expected in Action EFFECTS formalization")
@@ -29,24 +29,28 @@ def reportSyntaxError(value):
             print("Syntax error in Action Formalization line %d"%(plex.lexer.lineno-1))
             print("\tProbably using more ',' than expected in Action PRECONDITIONS formalization")
         elif run_mode == "pddldomain":
-            if value.upper() == "CONSTANTS":
-                print("Syntax error in %s line %d"%(value,plex.lexer.lineno))
+            if value == "TYPING":
+                print("Syntax error in '%s' line %d"%(value,plex.lexer.lineno))
+                print("\tUsing type definition without ':typing' requirement")
+            elif value.upper() == "CONSTANTS":
+                print("Syntax error in '%s' line %d"%(value,plex.lexer.lineno))
                 print("\tAll constants must be typed")
                 print("\t'You must define ':types' in order to use ':constants' definition")
             elif value == "const-typed":
-                print("Syntax error in %s line %d"%(value,plex.lexer.lineno))
+                print("Syntax error in '%s' line %d"%(value,plex.lexer.lineno))
                 print("\tAll constants must be typed")
             elif value == "const-def":
-                print("Syntax error in %s line %d"%(value,plex.lexer.lineno))
+                print("Syntax error in '%s' line %d"%(value,plex.lexer.lineno))
                 print("Wrong ':constants' formalization")
+            elif value.upper() in ["STRIPS","ADL","TYPING","NEGATIVE-PRECONDITIONS","DISJUNCTIVE-PRECONDITIONS","EQUALITY","EXISTENTIAL-PRECONDITIONS","UNIVERSAL-PRECONDITIONS","QUANTIFIED-PRCONDITIONS","FLUENTS","CONDITIONAL-EFFECTS"]:
+                print("Syntax error in '%s' line %d"%(value,plex.lexer.lineno))
+                print("\tInvalid requirement definition in ':requirements' section")
             else:
-                print("Syntax error in %s line %d"%(value,plex.lexer.lineno))
+                print("Syntax error in '%s' line %d"%(value,plex.lexer.lineno))
                 print("\tP.S.: predicate after 'NOT' operator: please put all positive predicates first and then the negative predicates")
                 print("\te.g.: (predicate1) (predicate2) (predicate3) (not(predicate4)(predicate5))")
         else:
-            print("Syntax error in %s line %d"%(value,plex.lexer.lineno))
+            print("Syntax error in '%s' line %d"%(value,plex.lexer.lineno))
 
-    else:
-        print("Syntax error at EOI")
     sys.exit()
 

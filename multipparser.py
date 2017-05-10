@@ -537,11 +537,11 @@ def p_lista_not_preds_p_2(p):
 def p_lista_ids_not_p_1(p):
     ''' lista_ids_not_p : '''
     # print("aa")
-    print(objProblem.lista_ids)
+    # print(objProblem.lista_ids)
     if objProblem.lista_ids:
         objProblem.appendListIds()
     # print(objProblem.lista_obj_type)
-    print(objProblem.lista_ids_sep)
+    # print(objProblem.lista_ids_sep)
     # objProblem.setProblemObjects()
     objProblem.cleanProblemIds()
    
@@ -649,6 +649,9 @@ def p_domain_formalization_4(p):
 def p_domain_formalization_5(p):
     '''domain_formalization : def_domain def_requirements def_predicates def_actions'''
 
+def p_domain_formalization_6(p):
+    '''domain_formalization : def_domain def_requirements def_predicates def_functions def_actions'''
+
 
 
 def p_def_domain_1(p):
@@ -658,12 +661,15 @@ def p_def_domain_1(p):
 
 def p_def_requirements_1(p):
     '''def_requirements : LPAREN COLON REQUIREMENTS lista_requirements RPAREN'''
+    # print("\n\n\n\t\t",objDomain.domain_requirements)
 
 def p_lista_requirements_1(p):
     '''lista_requirements : '''
 
 def p_lista_requirements_2(p):
     '''lista_requirements : COLON ID lista_requirements'''
+    objDomain.domain_requirements.append(p[2].upper())
+    # print("\n\n\t",p[2])
 
 def p_def_types_1(p):
     '''def_types : LPAREN COLON TYPES lista_types RPAREN'''
@@ -677,7 +683,10 @@ def p_lista_types_1(p):
 
 def p_lista_types_2(p):
     '''lista_types : ID lista_types'''
-    objDomain.appendType(p[1])
+    if "TYPING" in objDomain.domain_requirements:
+        objDomain.appendType(p[1])
+    else:
+        errorhandler.reportSyntaxError("TYPING")
 
 def p_def_constants_1(p):
     '''def_constants : LPAREN COLON CONSTANTS lista_constants RPAREN'''
@@ -713,8 +722,7 @@ def p_lista_constants_2(p):
         objDomain.appendListaPDDLids()
     objDomain.cleanPDDLids()
     objDomain.dealingWithType(p[3])
-
-
+    
 def p_lista_constants_3(p): # catch error dsd
     '''lista_constants : lista_ids MINUS ID lista_ids
                         | lista_ids'''
@@ -738,7 +746,10 @@ def p_lista_predicates_2(p):
     '''lista_predicates : LPAREN ID p_def RPAREN lista_predicates'''
     objDomain.appendPredicado(p[2])
     if objDomain.dealing_with_types:
-        objDomain.dealingWithTypeSep()
+        if "TYPING" in objDomain.domain_requirements:
+            objDomain.dealingWithTypeSep()
+        else:
+            errorhandler.reportSyntaxError("TYPING")
 
     # print(objDomain.lista_predicados)
     # print(objDomain.dealing_with_types)
@@ -976,14 +987,6 @@ def p_lista_predicados_7(p):
     # print("\t\tNOT>>>>",objDomain.lista_predicados)
     # objDomain.lista_predicados[0] = "!" + str(len(objDomain.lista_predicados)) + "*" +objDomain.lista_predicados[0]
 
-def p_lista_predicados_8(p):
-    '''lista_predicados : LPAREN NOT lista_predicados_not RPAREN LPAREN''' 
-    objDomain.curLogicalOperator = "NOT"
-    # objDomain.lista_predicados.append("AND")
-    # print("\t\tNOT>>>>",objDomain.lista_predicados)
-    # objDomain.lista_predicados[0] = "!" + str(len(objDomain.lista_predicados)) + "*" +objDomain.lista_predicados[0]
-    print("ERRO")
-    sys.exit()
 
 def p_lista_predicados_not_1(p):
     ''' lista_predicados_not : '''
