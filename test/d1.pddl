@@ -1,7 +1,7 @@
 (define (domain gripper-typedd)
-	(:requirements :strips)
+	(:requirements :strips :typing)
 
-	(:types room ball gripper)
+	(:types room ball gripper teste3 re t rm teste)
 
 	(:constants left right - gripper)
 
@@ -47,7 +47,7 @@
 	)
 
 	(:action pick
-		:parameters (?roomAAA ?e3 - rm ?aaa - sad)
+		:parameters (?roomAAA ?e3 - rm ?aaa - t)
 		:precondition  (and 
 			(at ?obj11 ?room11)
 			(at-robby ?room)

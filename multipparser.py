@@ -686,7 +686,7 @@ def p_lista_types_2(p):
     if "TYPING" in objDomain.domain_requirements:
         objDomain.appendType(p[1])
     else:
-        errorhandler.reportSyntaxError("TYPING")
+        errorhandler.reportSyntaxError("@"+p[1])
 
 def p_def_constants_1(p):
     '''def_constants : LPAREN COLON CONSTANTS lista_constants RPAREN'''
@@ -749,7 +749,7 @@ def p_lista_predicates_2(p):
         if "TYPING" in objDomain.domain_requirements:
             objDomain.dealingWithTypeSep()
         else:
-            errorhandler.reportSyntaxError("TYPING")
+            errorhandler.reportSyntaxError("@"+p[2])
 
     # print(objDomain.lista_predicados)
     # print(objDomain.dealing_with_types)
@@ -761,7 +761,10 @@ def p_p_def_1(p):
     objDomain.appendListaPDDLvars()
 
     objDomain.cleanPDDLvars()
-    objDomain.dealingWithType(p[3])
+    if ("TYPING" in objDomain.domain_requirements) and (p[3] in objDomain.domain_types):
+        objDomain.dealingWithType(p[3])
+    else:
+        errorhandler.reportSyntaxError("?"+p[3])
 
     # print(p[3])
 
@@ -793,8 +796,12 @@ def p_lista_functions_def_2(p):
     '''lista_functions_def : LPAREN ID lista_var MINUS ID RPAREN lista_functions_def'''
     # print("Function:",p[2])
     objDomain.appendFunction(p[2])
-    objDomain.appendType(p[5])
-    objDomain.appendFuncType("(NOTYPE)")
+    if "TYPING" in objDomain.domain_requirements:
+        objDomain.appendType(p[5])
+        objDomain.appendFuncType("(NOTYPE)")
+    else:
+        errorhandler.reportSyntaxError("@"+p[5])
+    
 
 def p_lista_functions_def_3(p):
     '''lista_functions_def : LPAREN ID RPAREN lista_functions_def'''
@@ -886,7 +893,10 @@ def p_lista_parameters_2(p):
     # print(objDomain.pddl_vars)
     # print(objDomain.lista_pddl_vars)
     # objDomain.cleanListaPDDLvars()
-    objDomain.appendType(p[3])
+    if ("TYPING" in objDomain.domain_requirements) and (p[3] in objDomain.domain_types):
+        objDomain.appendType(p[3])
+    else:
+        errorhandler.reportSyntaxError("?"+p[3])
     # print("<<<############",objDomain.lista_pddl_vars)
 
 def p_lista_parameters_3(p):

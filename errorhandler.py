@@ -29,9 +29,12 @@ def reportSyntaxError(value):
             print("Syntax error in Action Formalization line %d"%(plex.lexer.lineno-1))
             print("\tProbably using more ',' than expected in Action PRECONDITIONS formalization")
         elif run_mode == "pddldomain":
-            if value == "TYPING":
-                print("Syntax error in '%s' line %d"%(value,plex.lexer.lineno))
+            if value[0] == "@":
+                print("Syntax error in '%s' (definition in/before line %d)"%(value[1:],plex.lexer.lineno))
                 print("\tUsing type definition without ':typing' requirement")
+            elif value[0] == "?":
+                print("Syntax error in '%s' (definition in/before line %d)"%(value[1:],plex.lexer.lineno))
+                print("\tType '%s' is not defined in ':types' definition"%(value[1:]))
             elif value.upper() == "CONSTANTS":
                 print("Syntax error in '%s' line %d"%(value,plex.lexer.lineno))
                 print("\tAll constants must be typed")
