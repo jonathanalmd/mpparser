@@ -65,6 +65,7 @@
 				(free ?gripper) 
 								(not (carry ?obj ?gripper)
 								(carry ?oddddbj ?grisddpper))
+				(at ?obj ?room) 
 
 			)
 	)

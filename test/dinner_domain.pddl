@@ -56,8 +56,11 @@
       )
     :effect
       (and
+            (not (quiet)(quiet))
+
       (garbage)
-      (not (quiet))
       )
   )
 )
+
+
