@@ -129,13 +129,17 @@ def main():
 
         # plan = planner.bfsPlanner(parsed_data)
         plan = planner.aStarPlanner(parsed_data)
-        
-        if plan:
-            print('Plan:')
-            for act in plan:
-                print(act)
+        if plan is None:
+            print('No Plan!')
         else:
-            print('No plan was found')
+            for action in plan:
+                print(action)
+        # if plan:
+        #     print('Plan:')
+        #     for act in plan:
+        #         print(act)
+        # else:
+        #     print('No plan was found')
         # print(planning.getPDDLDomainPredicates())
 
 main()

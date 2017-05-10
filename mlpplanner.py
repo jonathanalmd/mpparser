@@ -1,5 +1,15 @@
 import re
+import astar
+from itertools import product,zip_longest
+import operator as ops
 
+NUM_OPS = {
+    '>' : ops.gt,
+    '<' : ops.lt,
+    '=' : ops.eq,
+    '>=': ops.ge,
+    '<=': ops.le
+}
 class Action:
 
     def __init__(self, name, parameters, positive_preconditions, negative_preconditions, add_effects, del_effects, cost = 0):
@@ -50,19 +60,148 @@ class ActionStar:
                           set of (permuted) arguments
         """
         self.name = name
+        self.types = []
+        self.arg_names = []
         if len(parameters) > 0:
-            self.types, self.arg_names = zip(*parameters)
-        else:
-            self.types = tuple()
-            self.arg_names = tuple()
+            for param in parameters:
+                if param[0] != "(NOTYPE)":
+                    self.types.append(param[0])
+                    self.arg_names.append(param[1:])
+                else:
+                    self.arg_names.append(param[1:])
+        # if len(parameters) > 0:
+        #     *self.types, self.arg_names = zip_longest(*parameters)
+            
+        # else:
+        self.types = tuple(self.types)
+        self.arg_names = tuple(self.arg_names)
+        print(">>>>>",self.types)
+        print(">>>>>",self.arg_names)
         self.preconditions = preconditions
         self.effects = effects
         self.unique = unique
         self.no_permute = no_permute
 
+    def ground(self, *args):
+        return _GroundedAction(self, *args)
+
+    def __str__(self):
+        arglist = ', '.join(['%s - %s' % pair for pair in zip(self.arg_names, self.types)])
+        return '%s(%s)' % (self.name, arglist)
+
+class _GroundedAction(object):
+    """
+    An action schema that has been grounded with objects
+    """
+    def __init__(self, action, *args):
+        self.name = action.name
+        ground = _grounder(action.arg_names, args)
+
+        # Ground Action Signature
+        print(action.arg_names)
+        self.sig = ground((self.name,) + action.arg_names)
+        print("GROUND",self.sig)
+
+        # Ground Preconditions
+        self.preconditions = list()
+        self.num_preconditions = list()
+        for pre in action.preconditions:
+            if pre[0] in NUM_OPS:
+                operands = [0, 0]
+                for i in range(2):
+                    if type(pre[i + 1]) == int:
+                        operands[i] = pre[i + 1]
+                    else:
+                        operands[i] = ground(pre[i + 1])
+                np = _num_pred(NUM_OPS[pre[0]], *operands)
+                self.num_preconditions.append(np)
+            else:
+                self.preconditions.append(ground(pre))
+
+        print("AAAA")
+        # Ground Effects
+        self.add_effects = list()
+        self.del_effects = list()
+        self.num_effects = list()
+        for effect in action.effects:
+            if effect[0] == -1:
+                self.del_effects.append(ground(effect[1]))
+            elif effect[0] == '+=':
+                function = ground(effect[1])
+                value = effect[2]
+                self.num_effects.append((function, value))
+            elif effect[0] == '-=':
+                function = ground(effect[1])
+                value = -effect[2]
+                self.num_effects.append((function, value))
+            else:
+                self.add_effects.append(ground(effect))
+
+    def __str__(self):
+        arglist = ', '.join(map(str, self.sig[1:]))
+        return '%s(%s)' % (self.sig[0], arglist)
+
+class State(object):
+
+    def __init__(self, predicates, functions, cost=0, predecessor=None):
+        """Represents a state for A* search"""
+        self.predicates = frozenset(predicates)
+        self.functions = tuple(functions.items())
+        self.f_dict = functions
+        self.predecessor = predecessor
+        self.cost = cost
+
+    def is_true(self, predicates, num_predicates):
+        return (all(p in self.predicates for p in predicates) and
+                all(np(self) for np in num_predicates))
+
+    def apply(self, action, monotone=False):
+        """
+        Apply the action to this state to produce a new state.
+        If monotone, ignore the delete list (for A* heuristic)
+        """
+        new_preds = set(self.predicates)
+        new_preds |= set(action.add_effects)
+        if not monotone:
+            new_preds -= set(action.del_effects)
+        new_functions = dict()
+        new_functions.update(self.functions)
+        for function, value in action.num_effects:
+            new_functions[function] += value
+        return State(new_preds, new_functions, self.cost + 1, (self, action))
+
+    def plan(self):
+        """
+        Follow backpointers to successor states
+        to produce a plan.
+        """
+        plan = list()
+        n = self
+        while n.predecessor is not None:
+            plan.append(n.predecessor[1])
+            n = n.predecessor[0]
+        plan.reverse()
+        return plan
+
+    # Implement __hash__ and __eq__ so we can easily
+    # check if we've encountered this state before
+
+    def __hash__(self):
+        return hash((self.predicates, self.functions))
+
+    def __eq__(self, other):
+        return ((self.predicates, self.functions) ==
+                (other.predicates, other.functions))
+
+    def __str__(self):
+        return ('Predicates:\n%s' % '\n'.join(map(str, self.predicates))
+                +'\nFunctions:\n%s' % '\n'.join(map(str, self.functions)))
+    def __lt__(self, other):
+        return hash(self) < hash(other)
+
 class DomainStar:
 
-    def __init__(self, actions=()):
+    def __init__(self, actions):
         """
         Represents a PDDL-like Problem Domain
         @arg actions : list of Action objects
@@ -87,6 +226,42 @@ class DomainStar:
                 param_combos.add(param_set)
                 grounded_actions.append(action.ground(*params))
         return grounded_actions
+
+
+class ProblemStar:
+
+    def __init__(self, domain, objects, init=(), goal=()):
+        """
+        Represents a PDDL Problem Specification
+        @arg domain : Domain object specifying domain
+        @arg objects : dictionary of object tuples keyed by type
+        @arg init : tuple of initial state predicates
+        @arg goal : tuple of goal state predicates
+        """
+        # Ground actions from domain
+        self.grounded_actions = domain.ground(objects)
+
+        # Parse Initial State
+        print(init)
+        predicates = list()
+        functions = dict()
+        for predicate in init:
+            print (predicate)
+            if predicate[0] == '=':
+                functions[predicate[1]] = predicate[2]
+            else:
+                predicates.append(predicate)
+        self.initial_state = State(predicates, functions)
+
+        # Parse Goal State
+        self.goals = list()
+        self.num_goals = list()
+        for g in goal:
+            if g[0] in NUM_OPS:
+                ng = _num_pred(NUM_OPS[g[0]], *g[1:])
+                self.num_goals.append(ng)
+            else:
+                self.goals.append(g)
 
 class MLPlanner:
     def __init__(self, rmode):
@@ -431,16 +606,15 @@ class MLPlanner:
         goal_pos = self.getProblemGoalPos(planning)
         goal_not = self.getProblemGoalNeg(planning)
 
-        print(actions,state,goal_pos,goal_not, sep="\n\n")
+        # print(actions,state,goal_pos,goal_not, sep="\n\n")
         return actions, state, goal_pos, goal_not
 
-    def aStarPlanner(self, planning):
-        actions, state, goal_pos, goal_not = self.setParsedData(planning)
-
+    def setDomainAStar(self,planning):
         actions = planning.getPDDLDomainActions()
+        domain = []
 
         for action in actions:
-            print (action)
+            # print (action)
             #get parameters
             param_tuples = []
             for key, value in action.parameters.items():
@@ -450,29 +624,162 @@ class MLPlanner:
                 param_tuples.append(tuple(param_tuple))
 
             param_tuples = tuple(param_tuples)
-            print(param_tuples)
+            print("PARAM>::",param_tuples)
 
             #get preconditions
             precond_tuples = []
             for precond in action.preconditions:
                 precond_tuple = []
+                precond.name = re.sub('[&]', '', precond.name)
                 if "!" in precond.name:
-                    name = re.sub('[&!]', '', precond.name)
-                    precond_tuple.append(name)
-                for var in precond.p_vars:
-                    # deal with '='
-                    precond_tuple.append(var)
+                    name = re.sub('[!]', '', precond.name)
+                    precond_tuple.append(-1)
+                    # precond_tuple.append(name)
+                    aux_tuple = []
+                    aux_tuple.append(name)
+                    for var in precond.p_vars:
+                        # deal with '='
+                        if var != "(NOVARS!)":
+                            aux_tuple.append(var)
+                    precond_tuple.append(tuple(aux_tuple))
+                else:
+                    precond_tuple.append(precond.name)
+                    for var in precond.p_vars:
+                        # deal with '='
+                        if var != "(NOVARS!)":
+                            precond_tuple.append(var)
                 precond_tuples.append(tuple(precond_tuple))
 
             precond_tuples = tuple(precond_tuples)
-            print(precond_tuples)
+            # print("PRE>::",precond_tuples)
 
-            # action_star = ActionStar(action.name)
-            domain = []
-            domain.append(action)
+            #get effects
+            effect_tuples = []
+            for effect in action.effects:
+                effect_tuple = []
+                effect.name = re.sub('[&]', '', effect.name)
+                if "!" in effect.name:
+                    name = re.sub('[!]', '', effect.name)
+                    effect_tuple.append(-1)
+                    # effect_tuple.append(name)
+                    aux_tuple = []
+                    aux_tuple.append(name)
+                    for var in effect.p_vars:
+                        # deal with '='
+                        if var != "(NOVARS!)":
+                            aux_tuple.append(var)
+                    effect_tuple.append(tuple(aux_tuple))
+                else:
+                    effect_tuple.append(precond.name)
+                    for var in effect.p_vars:
+                        # deal with '='
+                        if var != "(NOVARS!)":
+                            effect_tuple.append(var)
+                effect_tuples.append(tuple(effect_tuple))
+
+            effect_tuples = tuple(effect_tuples)
+            print("EFFECT>:",effect_tuples)
+
+            action_star = ActionStar(action.name,param_tuples,precond_tuples,effect_tuples)
+            domain.append(action_star)
+
+        domain_obj = DomainStar(domain)
+        return domain_obj
+    
+    def setProblemAStar(self,planning):
+        init_p = planning.getPDDLProblemInit()
+        goal_p = planning.getPDDLProblemGoal()
+
+        print(init_p,goal_p, sep = "\n\n")
+
+        init_tuples = []
+        for ipred in init_p:
+            init_tuple = []
+            if "=" in ipred.name:
+                init_tuple.append("=")
+                ipred.name = re.sub('[=]', '', ipred.name)
+                tuple_params = [ipred.name]
+                for var in ipred.p_vars[:-1]:
+                    tuple_params.append(var)
+                init_tuple.append(tuple(tuple_params))
+                init_tuple.append(ipred.p_vars[-1])
+            else:
+                if "!" in ipred.name:
+                    name = re.sub('[!]', '', ipred.name)
+                    init_tuple.append(-1)
+                    # init_tuple.append(name)
+                    aux_tuple = []
+                    aux_tuple.append(name)
+                    for var in ipred.p_vars:
+                        # deal with '='
+                        if var != "(NOVARS!)":
+                            aux_tuple.append(var)
+                    init_tuple.append(tuple(aux_tuple))
+                else:
+                    init_tuple.append(ipred.name)
+                    for var in ipred.p_vars:
+                        # deal with '='
+                        if var != "(NOVARS!)":
+                            init_tuple.append(var)
+            init_tuples.append(tuple(init_tuple))
+
+        init_tuples = tuple(init_tuples)
+        # print (init_tuples)
+
+        goal_tuples = []
+        for gpred in goal_p:
+            goal_tuple = []
+            if "=" in gpred.name:
+                goal_tuple.append("=")
+                gpred.name = re.sub('[=]', '', gpred.name)
+                tuple_params = [gpred.name]
+                for var in gpred.p_vars[:-1]:
+                    tuple_params.append(var)
+                goal_tuple.append(tuple(tuple_params))
+                goal_tuple.append(gpred.p_vars[-1])
+            else:    
+                if "!" in gpred.name:
+                    name = re.sub('[!]', '', gpred.name)
+                    goal_tuple.append(-1)
+                    # goal_tuple.append(name)
+                    aux_tuple = []
+                    aux_tuple.append(name)
+                    for var in gpred.p_vars:
+                        # deal with '='
+                        if var != "(NOVARS!)":
+                            aux_tuple.append(var)
+                    goal_tuple.append(tuple(aux_tuple))
+                else:
+                    goal_tuple.append(gpred.name)
+                    for var in gpred.p_vars:
+                        # deal with '='
+                        if var != "(NOVARS!)":
+                            goal_tuple.append(var)
+            goal_tuples.append(tuple(goal_tuple))
+
+        goal_tuples = tuple(goal_tuples)
+        print (goal_tuples)
+
+        # + objects!!
+
+        return init_tuples, goal_tuples
+
+    def aStarPlanner(self, planning):
+        # actions, state, goal_pos, goal_not = self.setParsedData(planning)
+
+        domain = self.setDomainAStar(planning)
+        init, goal = self.setProblemAStar(planning)
+        objects = planning.getPDDLProblemObjects()
+        for key, value in objects.items():
+            objects[key] = tuple(value)
+        print(objects)
+        problem = ProblemStar(domain,objects,init,goal)
+
+        plan = astar.planner(problem)
+
+        return plan            
 
 
-        
     def bfsPlanner(self, planning):
         print("RUN_MODE>",self.rmode)
 
@@ -540,5 +847,24 @@ class MLPlanner:
               new_state.append(i)
         return new_state
 
+def _grounder(arg_names, args):
+    """
+    Returns a function for grounding predicates and function symbols
+    """
+    namemap = dict()
+    for arg_name, arg in zip(arg_names, args):
+        namemap[arg_name] = arg
+
+    def _ground_by_names(predicate):
+        print(predicate[0:1])
+        return predicate[0:1] + tuple(namemap.get(arg, arg) for arg in predicate[1:])
+
+    return _ground_by_names
+
+def neg(effect):
+    """
+    Makes the given effect a negative (delete) effect, like 'not' in PDDL.
+    """
+    return (-1, effect)
 
 

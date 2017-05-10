@@ -957,7 +957,7 @@ def p_lista_predicados_6(p):
 
 def p_lista_predicados_7(p):
     '''lista_predicados : lista_notpredicados '''
-    
+
     # print(objDomain.reversed_preds)
     # if objDomain.reversed_preds:
     #     objDomain.lista_predicados.reverse()
@@ -983,6 +983,7 @@ def p_lista_notpredicados_1(p):
     # objDomain.lista_predicados.reverse()
 
     # objDomain.lista_predicados[0] = "!" + str(len(objDomain.lista_predicados)) + "*" +objDomain.lista_predicados[0]
+
 
 def p_lista_notpredicados_2(p):
     '''lista_notpredicados : LPAREN NOT lista_predicados_not RPAREN ''' 

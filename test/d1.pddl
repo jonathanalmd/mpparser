@@ -20,7 +20,7 @@
 
   )
 	(:action move
-		:parameters  (?from1 ?from2 - t ?to22 - re ?t2 - teste3)
+		:parameters  (?from1 ?from2 - block ?to22 - block2)
 		:precondition 
 		(and
 			(at-robby1 ?from11 ?from11)
@@ -64,10 +64,13 @@
 
 			(at ?obj ?room)
 						(at2 ?obj ?room) 
+						(atwwww ?objwww ?roomww)
 
 			(not (carry1 ?obj1 ?gripper1)
 
 			(carry2 ?obj2 ?gripper2))
+
+
 			(not (carry3 ?obj3 ?gripper3))
 			(not (carry4 ?obj4 ?gripper4))
 

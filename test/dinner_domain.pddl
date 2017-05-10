@@ -47,17 +47,5 @@
       (quiet))
     )
   )
-  (:action dirty
-    :parameters()
-    :precondition
-      (and
-      (not (garbage))
-      (quiet)
-      )
-    :effect
-      (and
-      (garbage)
-      (not (quiet))
-      )
-  )
+  
 )
