@@ -382,6 +382,7 @@ class PDDLDomainParse:
                     pddl_predicate.p_vars = ['(NOVARS!)']
                 else:
                     # action.effects[predicate] = self.lista_pddl_vars[2][i]
+                    self.lista_pddl_vars[2][i].reverse()
                     pddl_predicate.p_vars = self.lista_pddl_vars[2][i]
                     i = i + 1
                 action.effects.append(pddl_predicate)

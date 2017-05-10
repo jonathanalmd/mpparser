@@ -6,11 +6,18 @@ linestrips = 0
 
 def reportSyntaxError(value):
     if value == "(":
-        print("Syntax error in line",plex.lexer.lineno)
+        print("Syntax error in line",plex.lexer.lineno-1)
         print("\tMissing or more {'(',')'} than expected")
         if run_mode == "pddlproblem":
             print("\t\tOR")
             print("\tUsing more than one predicate inside 'NOT' operator: please apply 'NOT' operator on each predicate individually")
+        elif run_mode == "pddldomain":
+            print("\t\tOR")
+            print("\tUsing more than one 'NOT' operator: please apply 'NOT' one time for all negative predicates")
+            print("\te.g.: (not(predicate1)) (not(predicate2)) -> (not (predicate1) (predicate2))")
+            print("\t\tOR")
+            print("\tPredicate after 'NOT' operator: please put all positive predicates first and then the negative predicates")
+            print("\te.g.: (predicate1) (predicate2) (predicate3) (not(predicate4)(predicate5))")
     elif value != "(":
         if run_mode == "strips" and value.upper() == "PRECONDITIONS":
             print("Syntax error in Action formalization line %d"%(linestrips))

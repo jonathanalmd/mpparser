@@ -27,6 +27,11 @@
 			
 		)
 		:effect (and
+(at-robby1 ?from11 ?from11)
+
+(at-robby3 ?to3)(at-robby4 ?to4)(at-robby5 ?to)
+
+
 			(not
 			(at-robby3 ?to4)
 			
@@ -62,11 +67,14 @@
 
 
 				(at ?obj ?room) 
-				(free ?gripper) 
-								(not (carry ?obj ?gripper)
-								(carry ?oddddbj ?grisddpper))
-				(at ?obj ?room) 
+								(at2 ?obj ?dd3) 
 
+				(free ?gripper) 
+
+
+				(not (carry ?obj ?gripper)
+					(carry ?oddddbj ?grisddpper)
+					)
 			)
 	)
 )
