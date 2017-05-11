@@ -7,6 +7,7 @@
     (quiet)
     (present)
     (garbage)
+    (unused)
   )
   (:action cook
     :parameters ()

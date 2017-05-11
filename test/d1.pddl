@@ -1,4 +1,4 @@
-(define (domain gripper-typedd)
+(define (domain BLOCKS)
 	(:requirements :strips :typing :negative-preconditions)
 
 	(:types room ball gripper teste3 re t rm teste)
@@ -6,10 +6,18 @@
 	(:constants left right - gripper)
 
 	(:predicates
-		(at ?b - ball ?r - room)
+		(huahua - ball)
+		(at ?b ?b2 - ball ?r ?r2 - room)
 		(free ?g - gripper)
 
 		(carry ?o - ball ?g - gripper ?t - teste)
+					(at-robby1 ?from11 ?from113 - teste)
+			(at-robby3 ?to4 - teste)
+(at-robby4 ?to4 - teste)(at-robby5 ?to - teste)
+(at-robby ?to4 - teste)
+			(IRRA ?i ?i2 - teste)
+(gripper ?gripper - gripper)
+(ball ?obj - ball) (room ?room - room)
 	)
   (:functions
 
@@ -24,7 +32,7 @@
 		:precondition 
 		(and			(at-robby3 ?to4)
 
-			(at-robby1 ?from11 ?from11)
+			(at-robby1 ?from131 ?from11)
 			(not
 			(at-robby3 ?to4)
 			
@@ -32,7 +40,7 @@
 			)
 		)
 		:effect (and
-(at-robby1 ?from11 ?from11)
+(at-robby1 ?from11d ?from11)
 
 (at-robby3 ?to3)(at-robby4 ?to4)(at-robby5 ?to)
 			(at-robby3 ?to4)

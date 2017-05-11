@@ -453,6 +453,14 @@ def p_problem_formalization_1(p):
     '''problem_formalization : def_problem def_domain_p def_objects def_init def_goal
                                 | def_problem def_domain_p def_init def_goal
     '''
+    defined_objects = list(objProblem.problem_objects.values())
+    defined_objects = set([item for sublist in defined_objects for item in sublist])
+
+    used_objects = set(objProblem.problem_used_obj)
+    unused_objects = defined_objects - used_objects
+    # print("U>",unused_predicates,defined_predicates,used_predicates)
+    if unused_objects:
+        print("WARNING: Unused predicates (defined but not used): ",unused_objects)
 
 def p_def_problem_1(p):
     '''def_problem : LPAREN PROBLEM ID RPAREN'''
@@ -594,7 +602,10 @@ def p_lista_objids_p_1(p):
 def p_lista_objids_p_2(p):
     '''lista_objids_p : ID lista_objids_p'''
     # print(p[1])
-    objProblem.appendId(p[1])
+    if p[1] in objProblem.lista_ids:
+        errorhandler.reportSyntaxError("o*"+p[1])
+    else:
+        objProblem.appendId(p[1])
 
 
 
@@ -666,22 +677,56 @@ def p_lista_ids_p_6(p):
 
 def p_domain_formalization_1(p):
     '''domain_formalization : def_domain def_requirements def_types def_constants def_predicates def_functions def_actions'''
-
+    defined_predicates = set([pred_name.name for pred_name in objDomain.domain_predicates])
+    used_predicates = set(objDomain.domain_used_predicates)
+    unused_predicates = defined_predicates - used_predicates
+    # print("U>",unused_predicates,defined_predicates,used_predicates)
+    if unused_predicates:
+        print("WARNING: Unused predicates (defined but not used): ",unused_predicates)
 def p_domain_formalization_2(p):
     '''domain_formalization : def_domain def_requirements def_types def_predicates def_actions'''
+    defined_predicates = set([pred_name.name for pred_name in objDomain.domain_predicates])
+    used_predicates = set(objDomain.domain_used_predicates)
+    unused_predicates = defined_predicates - used_predicates
+    # print("U>",unused_predicates,defined_predicates,used_predicates)
+    if unused_predicates:
+        print("WARNING: Unused predicates (defined but not used): ",unused_predicates)
 
 def p_domain_formalization_3(p):
     '''domain_formalization : def_domain def_requirements def_types def_predicates def_functions def_actions'''
+    defined_predicates = set([pred_name.name for pred_name in objDomain.domain_predicates])
+    used_predicates = set(objDomain.domain_used_predicates)
+    unused_predicates = defined_predicates - used_predicates
+    # print("U>",unused_predicates,defined_predicates,used_predicates)
+    if unused_predicates:
+        print("WARNING: Unused predicates (defined but not used): ",unused_predicates)
 
 def p_domain_formalization_4(p):
     '''domain_formalization : def_domain def_requirements def_types def_constants def_predicates def_actions'''
+    defined_predicates = set([pred_name.name for pred_name in objDomain.domain_predicates])
+    used_predicates = set(objDomain.domain_used_predicates)
+    unused_predicates = defined_predicates - used_predicates
+    # print("U>",unused_predicates,defined_predicates,used_predicates)
+    if unused_predicates:
+        print("WARNING: Unused predicates (defined but not used): ",unused_predicates)
 
 def p_domain_formalization_5(p):
     '''domain_formalization : def_domain def_requirements def_predicates def_actions'''
+    defined_predicates = set([pred_name.name for pred_name in objDomain.domain_predicates])
+    used_predicates = set(objDomain.domain_used_predicates)
+    unused_predicates = defined_predicates - used_predicates
+    # print("U>",unused_predicates,defined_predicates,used_predicates)
+    if unused_predicates:
+        print("WARNING: Unused predicates (defined but not used): ",unused_predicates)
 
 def p_domain_formalization_6(p):
     '''domain_formalization : def_domain def_requirements def_predicates def_functions def_actions'''
-
+    defined_predicates = set([pred_name.name for pred_name in objDomain.domain_predicates])
+    used_predicates = set(objDomain.domain_used_predicates)
+    unused_predicates = defined_predicates - used_predicates
+    # print("U>",unused_predicates,defined_predicates,used_predicates)
+    if unused_predicates:
+        print("WARNING: Unused predicates (defined but not used): ",unused_predicates)
 
 
 def p_def_domain_1(p):
@@ -714,7 +759,10 @@ def p_lista_types_1(p):
 def p_lista_types_2(p):
     '''lista_types : ID lista_types'''
     if "TYPING" in objDomain.domain_requirements:
-        objDomain.appendType(p[1])
+        if p[1] in objDomain.lista_types:
+            errorhandler.reportSyntaxError("t*"+p[1])
+        else:
+            objDomain.appendType(p[1])
     else:
         errorhandler.reportSyntaxError("@"+p[1])
 
@@ -749,9 +797,16 @@ def p_lista_constants_2(p):
     '''lista_constants : lista_ids MINUS ID lista_constants'''
     # {;}
     if objDomain.pddl_ids:
-        objDomain.appendListaPDDLids()
+        if len(objDomain.pddl_ids) != len(set(objDomain.pddl_ids)):
+            errorhandler.reportSyntaxError("c*")
+        else:
+            objDomain.appendListaPDDLids()
     objDomain.cleanPDDLids()
-    objDomain.dealingWithType(p[3])
+    if "TYPING" in objDomain.domain_requirements:
+        objDomain.dealingWithType(p[3])
+    else:    
+        errorhandler.reportSyntaxError("@"+p[3])
+
     
 def p_lista_constants_3(p): # catch error dsd
     '''lista_constants : lista_ids MINUS ID lista_ids
@@ -818,6 +873,8 @@ def p_p_def_2(p):
 
 def p_def_functions_1(p):
     '''def_functions : LPAREN COLON FUNCTIONS lista_functions_def RPAREN'''
+    if len(objDomain.lista_pddl_func) !=  len(set(objDomain.lista_pddl_func)):
+        errorhandler.reportSyntaxError("f*")
     objDomain.dealWithFunctionDef()
     objDomain.cleanPDDLvars() # clean antes de dealWithActions    
     objDomain.cleanListaPDDLvars()
@@ -830,6 +887,8 @@ def p_lista_functions_def_1(p):
 def p_lista_functions_def_2(p):
     '''lista_functions_def : LPAREN ID lista_var MINUS ID RPAREN lista_functions_def'''
     # print("Function:",p[2])
+    
+
     objDomain.appendFunction(p[2])
     if "TYPING" in objDomain.domain_requirements:
         objDomain.appendType(p[5])
@@ -992,6 +1051,7 @@ def p_lista_predicados_1(p):
     # print(objDomain.lista_pddl_vars)
     # print(">>>",objDomain.pddl_vars)
 
+
     if objDomain.pddl_vars:
         objDomain.appendListaPDDLvars()
     # else:
@@ -1089,7 +1149,10 @@ def p_lista_var_2(p):
     # {;}
     # print(">",p[2])
     # print(">>>jajajajjajajajaj>>",objDomain.pddl_vars)
-    objDomain.appendVar(p[2])
+    if p[2] in objDomain.pddl_vars:
+        errorhandler.reportSyntaxError("vp*"+p[2]) # var repetida
+    else:
+        objDomain.appendVar(p[2])
 
 def p_lista_var_3(p):
     '''lista_var : ID lista_var'''

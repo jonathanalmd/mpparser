@@ -108,6 +108,7 @@ class PDDLDomainParse:
         self.domain_functions = [] # lista de PDDLFunction()
         self.domain_types = []
 
+        self.domain_used_predicates = []
 
         self.lista_types = lista_types
         self.dict_constants = dict_constants
@@ -146,11 +147,13 @@ class PDDLDomainParse:
         # print(self.lista_pddl_vars_sep)
         # print(self.dealing_with_types_sep)
         
+
         i = 0
         while i < len(self.lista_pddl_vars_sep):
             self.lista_pddl_vars_sep[i] = [x for x in self.lista_pddl_vars_sep[i] if x != []]
             i = i + 1
         self.dealing_with_types_sep = [x for x in self.dealing_with_types_sep if x != []]
+        
         i = 0
         for var in self.lista_pddl_vars_sep:
             if not var: # var == []
@@ -159,11 +162,13 @@ class PDDLDomainParse:
         if self.dealing_with_types_sep == []:
             for pddl_vars in self.lista_pddl_vars_sep:
                 self.dealing_with_types_sep.append(["(NOTYPE)"])
-        # print("\n>>>",self.lista_pddl_vars_sep)
-        # print("\n>>",self.dealing_with_types_sep)
+        print("\n>>>",self.lista_pddl_vars_sep)
+        print("\n>>",self.dealing_with_types_sep)
         
         if len(self.dealing_with_types_sep) != len(self.lista_pddl_vars_sep):
-            print("ERRO: predicates must be all typed or all not typed")
+            print("Semantic Error: predicates must be all typed or all not typed")
+            print("\tIf there is a predicate with no variables please type the predicate name")
+            print("\t\te.g.: (predicate-name) -> (predicate-name - some-defined-type)")
             sys.exit()
         else:
             i = 0
@@ -178,7 +183,9 @@ class PDDLDomainParse:
                     # print("j",j)
                     # print(self.dealing_with_types_sep[i][j])
                     # print(self.lista_pddl_vars_sep[i][j])
-                    pddl_predicate.p_vars[self.dealing_with_types_sep[i][j]] = self.lista_pddl_vars_sep[i][j]
+                    reversed_pred_vars = self.lista_pddl_vars_sep[i][j]
+                    reversed_pred_vars.reverse()
+                    pddl_predicate.p_vars[self.dealing_with_types_sep[i][j]] = reversed_pred_vars
                     j = j + 1
                 i = i + 1
 
@@ -223,6 +230,7 @@ class PDDLDomainParse:
         for i in range(0,len(self.lista_pddl_func)):
             func = PDDLFunction()
             func.name = self.lista_pddl_func[i]
+            self.lista_pddl_vars[i].reverse()
             func.f_vars[self.lista_types[i]] = self.lista_pddl_vars[i]
             func.f_type = self.lista_pddl_func_types[i] 
             self.domain_functions.append(func)
@@ -318,7 +326,7 @@ class PDDLDomainParse:
                 self.lista_types.append("(NOTYPE)")
 
         if (len(self.lista_types) != len(self.lista_pddl_vars[0]) ) and all(isinstance(n, list) for n in self.lista_pddl_vars[0]):
-            print("ERRO: action parameters variables in line %d must be all typed or all not typed"%(self.curLineAction))
+            print("Syntatic Error in action parameters variables in line %d must be all typed or all not typed"%(self.curLineAction))
             print("\tType(s)",self.lista_types)
             print("\tVar(s)",self.lista_pddl_vars)
             print("\tExpecting " + str(len(self.lista_pddl_vars[0])) + " type(s) and received only " + str(len(self.lista_types)) + " type(s)")
@@ -363,12 +371,15 @@ class PDDLDomainParse:
             for predicate in self.lista_action_predicados[0]:
                 pddl_predicate = PDDLPredicate(predicate)
                 predicate_aux = re.sub('[!&]', '', predicate)
+                self.domain_used_predicates.append(predicate_aux)
                 if predicate_aux in var_list:
                     # action.preconditions[predicate] = ['(NOVARS!)']
                     pddl_predicate.p_vars = ['(NOVARS!)']
                 else:
                     # action.preconditions[predicate] = self.lista_pddl_vars[1][i]
-                    pddl_predicate.p_vars = self.lista_pddl_vars[1][i]
+                    reversed_pred_vars = self.lista_pddl_vars[1][i]
+                    reversed_pred_vars.reverse()
+                    pddl_predicate.p_vars = reversed_pred_vars
                     i = i + 1
                 action.preconditions.append(pddl_predicate)
             #effect
@@ -381,13 +392,15 @@ class PDDLDomainParse:
             for predicate in self.lista_action_predicados[1]:
                 pddl_predicate = PDDLPredicate(predicate)
                 predicate_aux = re.sub('[!&]', '', predicate)
+                self.domain_used_predicates.append(predicate_aux)
                 if predicate_aux in var_list:
                     # action.effects[predicate] = ['(NOVARS!)']
                     pddl_predicate.p_vars = ['(NOVARS!)']
                 else:
                     # action.effects[predicate] = self.lista_pddl_vars[2][i]
-                    self.lista_pddl_vars[2][i].reverse()
-                    pddl_predicate.p_vars = self.lista_pddl_vars[2][i]
+                    reversed_pred_vars = self.lista_pddl_vars[2][i]
+                    reversed_pred_vars.reverse()
+                    pddl_predicate.p_vars = reversed_pred_vars
                     i = i + 1
                 action.effects.append(pddl_predicate)
 

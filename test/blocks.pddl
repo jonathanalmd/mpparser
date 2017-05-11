@@ -3,7 +3,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (define (domain BLOCKS)
-  (:requirements :strips)
+  (:requirements :strips :typing)
+  	(:types room ball bal3)
+
   (:predicates (on ?x ?y)
 	       (ontable ?x)
 	       (clear ?x)

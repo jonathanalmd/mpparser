@@ -2,7 +2,7 @@
 
 (:domain BLOCKS)
 
-(:objects D B A C - gripper
+(:objects D B A C lanche - gripper
 			X Y Z - room
 )
 

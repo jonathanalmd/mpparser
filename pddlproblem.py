@@ -1,4 +1,5 @@
 import re
+import errorhandler
 
 class PDDLProblemPredicate:
     def __init__(self, pred_name):
@@ -52,6 +53,7 @@ class PDDLProblemParse:
         self.problem_goal_pred = []
 
         self.lista_obj_type = []
+        self.problem_used_obj = []
 
         self.lista_ids = []
         self.lista_ids_sep = []
@@ -69,10 +71,14 @@ class PDDLProblemParse:
         # print(self.lista_obj_type)
         # print(self.lista_ids_sep)
 
+        check_obj_repetition = []
         for obj_type, ids in zip(self.lista_obj_type, self.lista_ids_sep):
             self.problem_objects[obj_type] = ids
+            for oid in ids:
+                check_obj_repetition.append(oid)
 
-
+        if len(check_obj_repetition) != len(set(check_obj_repetition)):
+            errorhandler.reportSyntaxError("ot*") # repeated obj from diff types
         # cleann variables to use in :INIT formalization
         self.cleanProblemIds()
         self.cleanProblemListaIdsSep()
@@ -85,6 +91,8 @@ class PDDLProblemParse:
                 if init_pred[0] == "!":
                     ipred = PDDLProblemPredicate(init_pred[1])
                     ipred.p_vars = init_pred[2:]
+                    for obj in init_pred[2:]:
+                        self.problem_used_obj.append(obj)
                     ipred.name = "!" + ipred.name 
                 elif init_pred[0] == "=":
                     # print(init_pred)
@@ -98,6 +106,7 @@ class PDDLProblemParse:
                     for var in init_pred[1:]:
                         var = re.sub('[!&]', '', var)
                         ipred_vars.append(var)
+                        self.problem_used_obj.append(var)
                     # ipred.p_vars = init_pred[1:]
                     ipred.p_vars = ipred_vars
                 self.problem_init_pred.append(ipred)
@@ -107,6 +116,8 @@ class PDDLProblemParse:
                     if goal_pred[0] == "!":
                         gpred = PDDLProblemPredicate(goal_pred[1])
                         gpred.p_vars = goal_pred[2:]
+                        for obj in goal_pred[2:]:
+                            self.problem_used_obj.append(obj)
                         gpred.name = "&!" + gpred.name 
                     elif goal_pred[0] == "=":
                         # print("GOALPred",goal_pred)
@@ -118,6 +129,8 @@ class PDDLProblemParse:
                     else:
                         gpred = PDDLProblemPredicate("&" + goal_pred[0])       
                         gpred.p_vars = goal_pred[1:]
+                        for obj in goal_pred[1:]:
+                            self.problem_used_obj.append(obj)
 
                     self.problem_goal_pred.append(gpred)
             else: #or
@@ -125,6 +138,8 @@ class PDDLProblemParse:
                     if goal_pred[0] == "!":
                         gpred = PDDLProblemPredicate(goal_pred[1])
                         gpred.p_vars = goal_pred[2:]
+                        for obj in goal_pred[2:]:
+                            self.problem_used_obj.append(obj)
                         gpred.name = "|!" + gpred.name 
                     elif goal_pred[0] == "=":
                         # print("GOALPred",goal_pred)
@@ -136,7 +151,9 @@ class PDDLProblemParse:
                     else:
                         gpred = PDDLProblemPredicate("|" + goal_pred[0])       
                         gpred.p_vars = goal_pred[1:]
-
+                        for obj in goal_pred[1:]:
+                            self.problem_used_obj.append(obj)
+                            
                     self.problem_goal_pred.append(gpred)
         # print (self.problem_init_pred)
         self.cleanProblemIds()
