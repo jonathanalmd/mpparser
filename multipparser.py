@@ -461,6 +461,8 @@ def p_def_problem_1(p):
 
 def p_def_domain_p_1(p):
     '''def_domain_p : LPAREN COLON DOMAIN ID RPAREN'''
+    if p[4] != objDomain.domain_name:
+        errorhandler.reportSyntaxError(["]"+p[4],objDomain.domain_name])
     objProblem.setProblemDomain(p[4])
     # print(objProblem.problem_domain)
 
@@ -764,6 +766,10 @@ def p_def_predicates_1(p):
 def p_def_predicates_2(p):
     '''def_predicates : LPAREN COLON PREDICATES lista_predicates RPAREN'''
     # print(objDomain.lista_predicados) # predicates completo
+    if len(objDomain.lista_predicados) != len(set(objDomain.lista_predicados)):
+        # predicado com nome repetido
+        errorhandler.reportSyntaxError("*"+p[3])
+
     objDomain.setDomainPredicates()
 
 def p_lista_predicates_1(p):
@@ -773,6 +779,7 @@ def p_lista_predicates_1(p):
 def p_lista_predicates_2(p):
     '''lista_predicates : LPAREN ID p_def RPAREN lista_predicates'''
     objDomain.appendPredicado(p[2])
+    
     if objDomain.dealing_with_types:
         if "TYPING" in objDomain.domain_requirements:
             objDomain.dealingWithTypeSep()
@@ -862,6 +869,9 @@ def p_def_actions_1(p):
 
 def p_def_actions_2(p):
     '''def_actions : LPAREN COLON ACTION ID a_def RPAREN def_actions'''
+    if p[4] in objDomain.lista_actions:
+        errorhandler.reportSyntaxError(">"+p[4])
+
     objDomain.lista_actions.append(p[4])
     # objDomain.dealWithAction(p[4])
     objDomain.setDomainActions(p[4])
