@@ -1,5 +1,5 @@
 (define (problem pb1)
-  (:domain dinner lanche)
+  (:domain dinner)
   (:init
     (garbage)
     (clean)

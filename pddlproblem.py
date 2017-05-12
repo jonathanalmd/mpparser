@@ -78,7 +78,7 @@ class PDDLProblemParse:
                 check_obj_repetition.append(oid)
 
         if len(check_obj_repetition) != len(set(check_obj_repetition)):
-            errorhandler.reportSyntaxError("ot*") # repeated obj from diff types
+            errorhandler.reportError("ot*") # repeated obj from diff types
         # cleann variables to use in :INIT formalization
         self.cleanProblemIds()
         self.cleanProblemListaIdsSep()
@@ -153,9 +153,9 @@ class PDDLProblemParse:
                         gpred.p_vars = goal_pred[1:]
                         for obj in goal_pred[1:]:
                             self.problem_used_obj.append(obj)
-                            
+
                     self.problem_goal_pred.append(gpred)
-        # print (self.problem_init_pred)
+
         self.cleanProblemIds()
         self.cleanProblemListaIdsSep()
 
@@ -188,5 +188,13 @@ class PDDLProblemParse:
     def getPDDLProblem(self):
         return PDDLProblemInfo(self.problem_name, self.problem_domain, self.problem_objects, self.problem_init_pred, self.problem_goal_pred)
 
+    def getUnusedObjects(self):
+        defined_objects = []
+        used_objects = []
+        defined_objects = list(self.problem_objects.values())
+        defined_objects = set([item for sublist in defined_objects for item in sublist])
 
+        used_objects = set(self.problem_used_obj)
+        unused_objects = defined_objects - used_objects
 
+        return unused_objects

@@ -453,33 +453,28 @@ def p_problem_formalization_1(p):
     '''problem_formalization : def_problem def_domain_p def_objects def_init def_goal
                                 | def_problem def_domain_p def_init def_goal
     '''
-    defined_objects = list(objProblem.problem_objects.values())
-    defined_objects = set([item for sublist in defined_objects for item in sublist])
-
-    used_objects = set(objProblem.problem_used_obj)
-    unused_objects = defined_objects - used_objects
+    unused_objects = objProblem.getUnusedObjects()
     # print("U>",unused_predicates,defined_predicates,used_predicates)
     if unused_objects:
-        print("WARNING: Unused predicates (defined but not used): ",unused_objects)
+        print("WARNING: Unused objects in problem definition (defined but not used): ",unused_objects)
 
 def p_def_problem_1(p):
     '''def_problem : LPAREN PROBLEM ID RPAREN'''
+    
     objProblem.setProblemName(p[3])
-    # print(objProblem.problem_name)
 
 def p_def_domain_p_1(p):
     '''def_domain_p : LPAREN COLON DOMAIN ID RPAREN'''
+    
     if p[4] != objDomain.domain_name:
-        errorhandler.reportSyntaxError(["]"+p[4],objDomain.domain_name])
+        errorhandler.reportError(["]"+p[4],objDomain.domain_name])
     objProblem.setProblemDomain(p[4])
-    # print(objProblem.problem_domain)
 
 def p_def_objects_1(p):
     '''def_objects : LPAREN COLON OBJECTS lista_objects RPAREN'''
+    
     if objProblem.lista_ids:
         objProblem.appendListIds()
-    # print(objProblem.lista_obj_type)
-    # print(objProblem.lista_ids_sep)
     objProblem.setProblemObjects()
     objProblem.cleanProblemIds()
 
@@ -487,11 +482,11 @@ def p_lista_objects_1(p):
     '''lista_objects : '''
 def p_lista_objects_2(p):
     '''lista_objects : lista_objids_p MINUS ID lista_objects'''
+    
     if ("TYPING" in objDomain.domain_requirements) and (p[3] in objDomain.domain_types):
         objProblem.appendObjType(p[3])
     else:
-        errorhandler.reportSyntaxError("?"+p[3])
-
+        errorhandler.reportError("?"+p[3])
 
 
 def p_lista_objects_3(p):
@@ -499,7 +494,7 @@ def p_lista_objects_3(p):
 
 def p_def_init_1(p):
     '''def_init : LPAREN COLON INIT lista_predicados_p RPAREN'''
-    # print(objProblem.lista_ids_sep)
+
     objProblem.setProblemPredicates("i","none")
 
 def p_def_goal_1(p):
@@ -507,12 +502,11 @@ def p_def_goal_1(p):
 
 def p_def_goal_2(p):
     '''def_goal : LPAREN COLON GOAL LPAREN AND lista_predicados_p RPAREN RPAREN'''
-    # print(objProblem.lista_ids_sep)
+
     objProblem.setProblemPredicates("g","and")
 
 def p_def_goal_6(p):
     '''def_goal : LPAREN COLON GOAL LPAREN OR lista_predicados_or_p RPAREN RPAREN'''
-    # print(objProblem.lista_ids_sep)
 
     objProblem.setProblemPredicates("g","or")
 
@@ -531,11 +525,9 @@ def p_lista_predicados_or_p_1(p):
 
 def p_lista_predicados_or_p_2(p):
     '''lista_predicados_or_p : LPAREN lista_ids_p RPAREN lista_predicados_p'''
-    # {;}
+
     if objProblem.lista_ids:
         objProblem.appendListIds()
-    # print(objProblem.lista_obj_type)
-    # print(objProblem.lista_ids_sep)
     # objProblem.setProblemObjects()
     objProblem.cleanProblemIds()
 
@@ -544,11 +536,9 @@ def p_lista_predicados_p_1(p):
 
 def p_lista_predicados_p_2(p):
     '''lista_predicados_p : LPAREN lista_ids_p RPAREN lista_predicados_p'''
-    # {;}
+
     if objProblem.lista_ids:
         objProblem.appendListIds()
-    # print(objProblem.lista_obj_type)
-    # print(objProblem.lista_ids_sep)
     # objProblem.setProblemObjects()
     objProblem.cleanProblemIds()
 
@@ -557,7 +547,6 @@ def p_lista_predicados_p_3(p):
     # {;}
     # if objProblem.lista_ids:
     #     objProblem.appendListIds()
-    # # print(objProblem.lista_obj_type)
     # print(objProblem.lista_ids_sep)
     # # objProblem.setProblemObjects()
     # objProblem.cleanProblemIds()
@@ -572,7 +561,7 @@ def p_lista_not_preds_p_2(p):
     
 def p_lista_ids_not_p_1(p):
     ''' lista_ids_not_p : '''
-    # print("aa")
+
     # print(objProblem.lista_ids)
     if objProblem.lista_ids:
         objProblem.appendListIds()
@@ -583,27 +572,25 @@ def p_lista_ids_not_p_1(p):
    
 def p_lista_ids_not_p_2(p):
     ''' lista_ids_not_p : ID lista_ids_not_p'''
-    # print(" >>>>:", p[1])
-    # objProblem.appendId("!")
+
     if "NEGATIVE-PRECONDITIONS" in objDomain.domain_requirements:
         objProblem.appendId("!"+p[1])
     else:
-        errorhandler.reportSyntaxError("!"+p[1])
+        errorhandler.reportError("!"+p[1])
 
-    
 
 def p_lista_objids_p_1(p):
     '''lista_objids_p : '''
-    # print(objProblem.lista_ids)
+
     if objProblem.lista_ids:
         objProblem.appendListIds()
         objProblem.cleanProblemIds()
 
 def p_lista_objids_p_2(p):
     '''lista_objids_p : ID lista_objids_p'''
-    # print(p[1])
+
     if p[1] in objProblem.lista_ids:
-        errorhandler.reportSyntaxError("o*"+p[1])
+        errorhandler.reportError("o*"+p[1])
     else:
         objProblem.appendId(p[1])
 
@@ -621,30 +608,9 @@ def p_lista_ids_p_2(p):
     # print(p[1])
     objProblem.appendId(p[1])
 
-# def p_lista_ids_p_3(p):
-#     '''lista_ids_p : NOT LPAREN ID lista_ids_p RPAREN '''
-#     # print(p[1],p[3])
-#     # print(objProblem.lista_ids)
-#     # objProblem.lista_ids.insert(0,"!")
-#     # objProblem.lista_ids.insert(1,p[3])
-#     objProblem.appendId(p[3])
-#     objProblem.appendId("!")
-#     # print(objProblem.lista_ids)
-
-# def p_lista_ids_p_4(p):
-#     '''lista_ids_p : NOT lista_predicados_p '''
-#     # print(p[1],p[3])
-#     # print(objProblem.lista_ids)
-#     # objProblem.lista_ids.insert(0,"!")
-#     # objProblem.lista_ids.insert(1,p[3])
-#     objProblem.appendId(p[3])
-#     objProblem.appendId("!")
-#     # print(objProblem.lista_ids)
-
 def p_lista_ids_p_5(p):
     '''lista_ids_p : COMP LPAREN ID lista_ids_p RPAREN NUM'''
-    # print(objProblem.lista_ids)
-    # print(p[1],p[3])
+ 
     # objProblem.lista_ids.insert(0,"=")
     # objProblem.lista_ids.insert(1,p[3])
     objProblem.appendId(p[3])
@@ -654,8 +620,7 @@ def p_lista_ids_p_5(p):
 
 def p_lista_ids_p_6(p):
     '''lista_ids_p : COMP LPAREN ID lista_ids_p RPAREN ID'''
-    # print(objProblem.lista_ids)
-    # print(p[1],p[3])
+
     # objProblem.lista_ids.insert(0,"=")
     # objProblem.lista_ids.insert(1,p[3])
     objProblem.appendId(p[3])
@@ -673,84 +638,65 @@ def p_lista_ids_p_6(p):
 # ========================================== DOMAIN ================================================= #
 # =================================================================================================== #
 
-
-
 def p_domain_formalization_1(p):
     '''domain_formalization : def_domain def_requirements def_types def_constants def_predicates def_functions def_actions'''
-    defined_predicates = set([pred_name.name for pred_name in objDomain.domain_predicates])
-    used_predicates = set(objDomain.domain_used_predicates)
-    unused_predicates = defined_predicates - used_predicates
-    # print("U>",unused_predicates,defined_predicates,used_predicates)
+    unused_predicates = objDomain.getUnusedPredicates()
     if unused_predicates:
-        print("WARNING: Unused predicates (defined but not used): ",unused_predicates)
+        print("\nWARNING: Unused predicates in domain definition (defined but not used): ",unused_predicates)
+    
 def p_domain_formalization_2(p):
     '''domain_formalization : def_domain def_requirements def_types def_predicates def_actions'''
-    defined_predicates = set([pred_name.name for pred_name in objDomain.domain_predicates])
-    used_predicates = set(objDomain.domain_used_predicates)
-    unused_predicates = defined_predicates - used_predicates
-    # print("U>",unused_predicates,defined_predicates,used_predicates)
+    unused_predicates = objDomain.getUnusedPredicates()
     if unused_predicates:
-        print("WARNING: Unused predicates (defined but not used): ",unused_predicates)
+        print("\nWARNING: Unused predicates in domain definition (defined but not used): ",unused_predicates)
 
 def p_domain_formalization_3(p):
     '''domain_formalization : def_domain def_requirements def_types def_predicates def_functions def_actions'''
-    defined_predicates = set([pred_name.name for pred_name in objDomain.domain_predicates])
-    used_predicates = set(objDomain.domain_used_predicates)
-    unused_predicates = defined_predicates - used_predicates
-    # print("U>",unused_predicates,defined_predicates,used_predicates)
+    unused_predicates = objDomain.getUnusedPredicates()
     if unused_predicates:
-        print("WARNING: Unused predicates (defined but not used): ",unused_predicates)
+        print("\nWARNING: Unused predicates in domain definition (defined but not used): ",unused_predicates)
 
 def p_domain_formalization_4(p):
     '''domain_formalization : def_domain def_requirements def_types def_constants def_predicates def_actions'''
-    defined_predicates = set([pred_name.name for pred_name in objDomain.domain_predicates])
-    used_predicates = set(objDomain.domain_used_predicates)
-    unused_predicates = defined_predicates - used_predicates
-    # print("U>",unused_predicates,defined_predicates,used_predicates)
+    unused_predicates = objDomain.getUnusedPredicates()
     if unused_predicates:
-        print("WARNING: Unused predicates (defined but not used): ",unused_predicates)
+        print("\nWARNING: Unused predicates in domain definition (defined but not used): ",unused_predicates)
 
 def p_domain_formalization_5(p):
     '''domain_formalization : def_domain def_requirements def_predicates def_actions'''
-    defined_predicates = set([pred_name.name for pred_name in objDomain.domain_predicates])
-    used_predicates = set(objDomain.domain_used_predicates)
-    unused_predicates = defined_predicates - used_predicates
-    # print("U>",unused_predicates,defined_predicates,used_predicates)
+    unused_predicates = objDomain.getUnusedPredicates()
     if unused_predicates:
-        print("WARNING: Unused predicates (defined but not used): ",unused_predicates)
+        print("\nWARNING: Unused predicates in domain definition (defined but not used): ",unused_predicates)
 
 def p_domain_formalization_6(p):
     '''domain_formalization : def_domain def_requirements def_predicates def_functions def_actions'''
-    defined_predicates = set([pred_name.name for pred_name in objDomain.domain_predicates])
-    used_predicates = set(objDomain.domain_used_predicates)
-    unused_predicates = defined_predicates - used_predicates
-    # print("U>",unused_predicates,defined_predicates,used_predicates)
+    unused_predicates = objDomain.getUnusedPredicates()
     if unused_predicates:
-        print("WARNING: Unused predicates (defined but not used): ",unused_predicates)
+        print("\nWARNING: Unused predicates in domain definition (defined but not used): ",unused_predicates)
 
 
 def p_def_domain_1(p):
     '''def_domain : LPAREN DOMAIN ID RPAREN'''
+    
     objDomain.setDomainName(p[3])
 
 
 def p_def_requirements_1(p):
     '''def_requirements : LPAREN COLON REQUIREMENTS lista_requirements RPAREN'''
-    # print("\n\n\n\t\t",objDomain.domain_requirements)
+    # print("\n\t",objDomain.domain_requirements)
 
 def p_lista_requirements_1(p):
     '''lista_requirements : '''
 
 def p_lista_requirements_2(p):
     '''lista_requirements : COLON ID lista_requirements'''
+    
     objDomain.domain_requirements.append(p[2].upper())
-    # print("\n\n\t",p[2])
 
 def p_def_types_1(p):
     '''def_types : LPAREN COLON TYPES lista_types RPAREN'''
 
-# CHECK TALVEZ TIRE
-def p_def_types_3(p):
+def p_def_types_2(p):
     '''def_types : LPAREN COLON TYPES lista_types MINUS ID RPAREN'''
 
 def p_lista_types_1(p):
@@ -758,36 +704,19 @@ def p_lista_types_1(p):
 
 def p_lista_types_2(p):
     '''lista_types : ID lista_types'''
+    
     if "TYPING" in objDomain.domain_requirements:
         if p[1] in objDomain.lista_types:
-            errorhandler.reportSyntaxError("t*"+p[1])
+            errorhandler.reportError("t*"+p[1])
         else:
             objDomain.appendType(p[1])
     else:
-        errorhandler.reportSyntaxError("@"+p[1])
+        errorhandler.reportError("@"+p[1])
 
 def p_def_constants_1(p):
     '''def_constants : LPAREN COLON CONSTANTS lista_constants RPAREN'''
     objDomain.appendConstants()
 
-
-
-# def p_lista_constants_1(p):
-#     '''lista_constants : lista_ids MINUS ID'''
-#     if objDomain.pddl_ids:
-#         objDomain.appendListaPDDLids()
-#     objDomain.cleanPDDLids()
-#     objDomain.dealingWithType(p[3])
-#     objDomain.appendConstants()
-
-# def p_lista_constants_2(p):
-#     '''lista_constants : lista_ids MINUS ID lista_constants'''
-#     # {;}
-#     if objDomain.pddl_ids:
-#         objDomain.appendListaPDDLids()
-#     objDomain.cleanPDDLids()
-#     objDomain.dealingWithType(p[3])
-#     objDomain.dealWithConstants()
 
 def p_lista_constants_1(p):
     '''lista_constants : '''
@@ -795,24 +724,24 @@ def p_lista_constants_1(p):
 
 def p_lista_constants_2(p):
     '''lista_constants : lista_ids MINUS ID lista_constants'''
-    # {;}
+
     if objDomain.pddl_ids:
         if len(objDomain.pddl_ids) != len(set(objDomain.pddl_ids)):
-            errorhandler.reportSyntaxError("c*")
+            errorhandler.reportError("c*")
         else:
             objDomain.appendListaPDDLids()
     objDomain.cleanPDDLids()
     if "TYPING" in objDomain.domain_requirements:
         objDomain.dealingWithType(p[3])
     else:    
-        errorhandler.reportSyntaxError("@"+p[3])
+        errorhandler.reportError("@"+p[3])
 
     
 def p_lista_constants_3(p): # catch error dsd
     '''lista_constants : lista_ids MINUS ID lista_ids
                         | lista_ids'''
-    # {;}
-    errorhandler.reportSyntaxError("const-typed")
+
+    errorhandler.reportError("const-typed")
 
 
 def p_def_predicates_1(p):
@@ -823,7 +752,7 @@ def p_def_predicates_2(p):
     # print(objDomain.lista_predicados) # predicates completo
     if len(objDomain.lista_predicados) != len(set(objDomain.lista_predicados)):
         # predicado com nome repetido
-        errorhandler.reportSyntaxError("*"+p[3])
+        errorhandler.reportError("*"+p[3])
 
     objDomain.setDomainPredicates()
 
@@ -839,7 +768,7 @@ def p_lista_predicates_2(p):
         if "TYPING" in objDomain.domain_requirements:
             objDomain.dealingWithTypeSep()
         else:
-            errorhandler.reportSyntaxError("@"+p[2])
+            errorhandler.reportError("@"+p[2])
 
     # print(objDomain.lista_predicados)
     # print(objDomain.dealing_with_types)
@@ -854,9 +783,7 @@ def p_p_def_1(p):
     if ("TYPING" in objDomain.domain_requirements) and (p[3] in objDomain.domain_types):
         objDomain.dealingWithType(p[3])
     else:
-        errorhandler.reportSyntaxError("?"+p[3])
-
-    # print(p[3])
+        errorhandler.reportError("?"+p[3])
 
 def p_p_def_2(p):
     '''p_def : lista_var'''
@@ -869,12 +796,11 @@ def p_p_def_2(p):
     objDomain.cleanListaPDDLvars()
 
 
-
-
 def p_def_functions_1(p):
     '''def_functions : LPAREN COLON FUNCTIONS lista_functions_def RPAREN'''
+    
     if len(objDomain.lista_pddl_func) !=  len(set(objDomain.lista_pddl_func)):
-        errorhandler.reportSyntaxError("f*")
+        errorhandler.reportError("f*")
     objDomain.dealWithFunctionDef()
     objDomain.cleanPDDLvars() # clean antes de dealWithActions    
     objDomain.cleanListaPDDLvars()
@@ -882,24 +808,23 @@ def p_def_functions_1(p):
 
 def p_lista_functions_def_1(p):
     '''lista_functions_def : '''
+    
     objDomain.lista_pddl_vars.append(objDomain.pddl_vars) # last vars 
 
 def p_lista_functions_def_2(p):
     '''lista_functions_def : LPAREN ID lista_var MINUS ID RPAREN lista_functions_def'''
-    # print("Function:",p[2])
-    
 
     objDomain.appendFunction(p[2])
     if "TYPING" in objDomain.domain_requirements:
         objDomain.appendType(p[5])
         objDomain.appendFuncType("(NOTYPE)")
     else:
-        errorhandler.reportSyntaxError("@"+p[5])
+        errorhandler.reportError("@"+p[5])
     
 
 def p_lista_functions_def_3(p):
     '''lista_functions_def : LPAREN ID RPAREN lista_functions_def'''
-    # print("Function:",p[2])
+
     objDomain.appendFunction("0"+p[2])
     objDomain.appendType("(NOTYPE)")
     objDomain.appendFuncType("(NOTYPE)")
@@ -907,17 +832,14 @@ def p_lista_functions_def_3(p):
 
 def p_lista_functions_def_4(p):
     '''lista_functions_def : LPAREN ID lista_var MINUS ID RPAREN MINUS ID lista_functions_def'''
-    # print("Function:",p[2])
-    # print("\tvars type:",p[5])
-    # print("\tfunc type:",p[8])
+
     objDomain.appendFunction(p[2])
     objDomain.appendType(p[5])
     objDomain.appendFuncType(p[8])
 
 def p_lista_functions_def_5(p):
     '''lista_functions_def : LPAREN ID RPAREN MINUS ID lista_functions_def'''
-    # print("Function:",p[2])
-    # print("\tfunc type:",p[5])
+
     objDomain.appendFunction("0"+p[2])
     # objDomain.lista_pddl_vars.append(["NULL"])
     objDomain.appendType("(NOTYPE)")
@@ -928,8 +850,9 @@ def p_def_actions_1(p):
 
 def p_def_actions_2(p):
     '''def_actions : LPAREN COLON ACTION ID a_def RPAREN def_actions'''
+    
     if p[4] in objDomain.lista_actions:
-        errorhandler.reportSyntaxError(">"+p[4])
+        errorhandler.reportError(">"+p[4])
 
     objDomain.lista_actions.append(p[4])
     # objDomain.dealWithAction(p[4])
@@ -971,39 +894,17 @@ def p_lista_parameters_1(p):
 
     # objDomain.cleanListaPDDLvars()
 
-# def p_lista_parameters_2(p):
-#     '''lista_parameters : VAR ID MINUS ID lista_parameters'''
-#     # objDomain.lista_pddl_vars.append(p[2])
-#     # print(objDomain.pddl_vars)
-#     # print(objDomain.lista_pddl_vars)
-#     # objDomain.cleanListaPDDLvars()
-
-#     objDomain.appendType(p[4])
-#     # print("<<<############",objDomain.lista_pddl_vars)
-
-#     objDomain.appendVar(p[2])
-
-#     objDomain.dealWithParameters()
 
 def p_lista_parameters_2(p):
     '''lista_parameters : lista_var MINUS ID lista_parameters'''
-    # print(objDomain.pddl_vars)
-    # print(objDomain.lista_pddl_vars)
     # objDomain.cleanListaPDDLvars()
     if ("TYPING" in objDomain.domain_requirements) and (p[3] in objDomain.domain_types):
         objDomain.appendType(p[3])
     else:
-        errorhandler.reportSyntaxError("?"+p[3])
-    # print("<<<############",objDomain.lista_pddl_vars)
+        errorhandler.reportError("?"+p[3])
 
 def p_lista_parameters_3(p):
     '''lista_parameters : lista_var '''
-    # print(objDomain.pddl_vars)
-    # print(objDomain.lista_pddl_vars)
-    # objDomain.cleanListaPDDLvars()
-    # print("<<<############",objDomain.lista_pddl_vars)
-
-    objDomain.curLineAction = plex.lexer.lineno - 1
 
     objDomain.dealWithParameters()
 
@@ -1016,13 +917,7 @@ def p_lista_preds_op_2(p):
 
 def p_lista_preds_op_3(p):
     '''lista_preds_op : LPAREN AND lista_preds_op RPAREN '''
-    # objDomain.appendPredicado(p[2])
-    # if objDomain.dealing_with_types:
-    #     objDomain.dealingWithTypeSep()
-    objDomain.curLogicalOperator = "AND"
-    # objDomain.lista_predicados.append("AND")
-    # print("\t\tAND>>>>",objDomain.lista_predicados)
-    # print("\tvars:",objDomain.lista_pddl_vars)
+ 
     objDomain.lista_predicados[0] = "&" + str(len(objDomain.lista_predicados)) + "*" + objDomain.lista_predicados[0]
 
 
@@ -1047,10 +942,6 @@ def p_lista_predicados_0(p):
 
 def p_lista_predicados_1(p):
     '''lista_predicados : LPAREN ID lista_var RPAREN lista_preds_op'''
-    # print(p[2])
-    # print(objDomain.lista_pddl_vars)
-    # print(">>>",objDomain.pddl_vars)
-
 
     if objDomain.pddl_vars:
         objDomain.appendListaPDDLvars()
@@ -1063,7 +954,7 @@ def p_lista_predicados_1(p):
     if p[2] in [pred_name.name for pred_name in objDomain.domain_predicates]:
         objDomain.appendPredicado(p[2])
     else:
-        errorhandler.reportSyntaxError("#"+p[2])
+        errorhandler.reportError("#"+p[2])
 
     # if objDomain.dealing_with_types:
     #     objDomain.dealingWithTypeSep()
@@ -1092,18 +983,14 @@ def p_lista_predicados_6(p):
     if p[2] in [pred_name.name for pred_name in objDomain.domain_predicates]:
         objDomain.appendPredicado(p[2])
     else:
-        errorhandler.reportSyntaxError("#"+p[2])
+        errorhandler.reportError("#"+p[2])
 
     objDomain.cleanPDDLvars()
-    # print(objDomain.lista_predicados)
-    # print(objDomain.lista_pddl_vars)
 
 def p_lista_predicados_7(p):
     '''lista_predicados : LPAREN NOT lista_predicados_not RPAREN ''' 
-    objDomain.curLogicalOperator = "NOT"
     # objDomain.lista_predicados.append("AND")
     # print("\t\tNOT>>>>",objDomain.lista_predicados)
-    # objDomain.lista_predicados[0] = "!" + str(len(objDomain.lista_predicados)) + "*" +objDomain.lista_predicados[0]
 
 
 def p_lista_predicados_not_1(p):
@@ -1114,62 +1001,54 @@ def p_lista_predicados_not_2(p):
     objDomain.appendListaPDDLvars()
     objDomain.cleanPDDLvars()
     objDomain.appendVar(p[2])
-    # objDomain.appendVar("(NOVAR)")
+
     objDomain.appendListaPDDLvars()
     objDomain.appendPredicado("!"+p[2])
     objDomain.cleanPDDLvars()
-    # print(objDomain.lista_predicados)
-    # print(objDomain.lista_pddl_vars)
+
 def p_lista_predicados_not_3(p):
     '''lista_predicados_not : LPAREN ID lista_var RPAREN lista_predicados_not'''
-    # print(p[2])
-    # print(objDomain.lista_pddl_vars)
-    # print(">>>",objDomain.pddl_vars)
 
     if objDomain.pddl_vars:
         objDomain.appendListaPDDLvars()
-    # else:
-    #     # objDomain.pddl_vars = ["(NOVdAR)"]
-    #     objDomain.appendListaPDDLvars()
 
     objDomain.cleanPDDLvars()
     objDomain.appendPredicado("!"+p[2])
-    # if objDomain.dealing_with_types:
-    #     objDomain.dealingWithTypeSep()
 
 def p_lista_var_1(p):
     '''lista_var : '''
-    # print(">>kekekekekekeke>",objDomain.pddl_vars)
+ 
     if objDomain.pddl_vars:
         objDomain.appendListaPDDLvars()
         objDomain.cleanPDDLvars()
 
 def p_lista_var_2(p):
     '''lista_var : VAR ID lista_var'''
-    # {;}
-    # print(">",p[2])
-    # print(">>>jajajajjajajajaj>>",objDomain.pddl_vars)
+
     if p[2] in objDomain.pddl_vars:
-        errorhandler.reportSyntaxError("vp*"+p[2]) # var repetida
+        errorhandler.reportError("vp*"+p[2]) # var repetida
     else:
         objDomain.appendVar(p[2])
 
 def p_lista_var_3(p):
     '''lista_var : ID lista_var'''
+    
     objDomain.appendVar(p[0])
 
 def p_lista_ids_1(p):
     '''lista_ids : '''
+    
     if objDomain.pddl_ids:
         objDomain.appendListaPDDLids()
     objDomain.cleanPDDLids()
 
 def p_lista_ids_2(p):
     '''lista_ids : ID lista_ids'''
+    
     objDomain.appendPDDLid(p[1])
 
 # =================================================================================================== #
-# ======================================= FIM DOMAIN ================================================ #
+# =========================================== FIM DOMAIN ============================================ #
 # =================================================================================================== #
 
 # =================================================================================================== #
@@ -1181,9 +1060,9 @@ def p_lista_ids_2(p):
 def p_error(p):
     # print("Syntax error in %s line %d"%(p.value,plex.lexer.lineno))
     if p != None:
-        errorhandler.reportSyntaxError(p.value)
+        errorhandler.reportError(p.value)
     else:
-        errorhandler.reportSyntaxError("(")
+        errorhandler.reportError("(")
 
 pparser = yacc.yacc()
 objDomain = pddldomain.PDDLDomainParse()
@@ -1206,6 +1085,10 @@ def parse(pmode, filelist):
 
         # objDomain.printDomainInfo()
         # objProblem.printProblemInfo()
+
+        
+        # print("U>",unused_predicates,defined_predicates,used_predicates)
+        
 
         return objDomain.getPDDLDomain(), objProblem.getPDDLProblem()
 

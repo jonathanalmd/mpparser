@@ -1,18 +1,9 @@
-# %{
-# #include <stdio.h> 
-# #define YYDEBUG 1
-# int yylex (void);
-# void yyerror (const char *s);
-# extern FILE *yyin;
-# extern int yydebug;
-# extern int yylineno;
-# %}
-
 import sys
 import yacc 
 import lex
 import plex
 import re
+
 class PDDLPredicate:
     def __init__(self, pred_name):
         self.name = pred_name
@@ -97,24 +88,22 @@ class PDDLDomainInfo:
 
 
 class PDDLDomainParse:
-    def __init__(self, domain_name="", lista_predicados=[], 
-                lista_types=[], dict_constants={}, pddl_ids=[], 
-                dealing_with_types=[], lista_pddl_ids=[]):
-        self.domain_name = domain_name
+    def __init__(self):
+        self.domain_name = ""
         self.domain_requirements = []
 
-        self.lista_predicados = lista_predicados
+        self.lista_predicados = []
         self.domain_predicates = [] # lista de PDDLPredicate()
         self.domain_functions = [] # lista de PDDLFunction()
         self.domain_types = []
 
         self.domain_used_predicates = []
 
-        self.lista_types = lista_types
-        self.dict_constants = dict_constants
-        self.pddl_ids = pddl_ids
-        self.lista_pddl_ids = lista_pddl_ids
-        self.dealing_with_types = dealing_with_types
+        self.lista_types = []
+        self.dict_constants = {}
+        self.pddl_ids = []
+        self.lista_pddl_ids = []
+        self.dealing_with_types = []
 
         self.dealing_with_types_sep = []
 
@@ -131,13 +120,8 @@ class PDDLDomainParse:
 
         self.lista_action_predicados = []
 
-        self.curLogicalOperator = ""
 
-        self.curLineAction = 0
 
-        self.curDealingWith = ""
-
-        self.not_counter = 0
 
     def setDomainName(self,domain_name):
         self.domain_name = domain_name
@@ -162,8 +146,8 @@ class PDDLDomainParse:
         if self.dealing_with_types_sep == []:
             for pddl_vars in self.lista_pddl_vars_sep:
                 self.dealing_with_types_sep.append(["(NOTYPE)"])
-        print("\n>>>",self.lista_pddl_vars_sep)
-        print("\n>>",self.dealing_with_types_sep)
+        # print("\n>>>",self.lista_pddl_vars_sep)
+        # print("\n>>",self.dealing_with_types_sep)
         
         if len(self.dealing_with_types_sep) != len(self.lista_pddl_vars_sep):
             print("Semantic Error: predicates must be all typed or all not typed")
@@ -518,6 +502,15 @@ class PDDLDomainParse:
 
     def getTypes(self):
         return self.lista_types
+
+    def getUnusedPredicates(self):
+        unused_predicates = []
+        used_predicates = []
+        defined_predicates = set([pred_name.name for pred_name in self.domain_predicates])
+        used_predicates = set(self.domain_used_predicates)
+        unused_predicates = defined_predicates - used_predicates
+
+        return unused_predicates
 
     def printDomainInfo(self):
         print("\n\n\n")
