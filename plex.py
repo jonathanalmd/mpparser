@@ -1,12 +1,4 @@
-# ----------------------------------------------------------------------
-# clex.py
-#
-# A lexer for ANSI C.
-# ----------------------------------------------------------------------
-
 import sys
-# sys.path.insert(0, "../..")
-
 import lex
 
 # Reserved words
@@ -17,12 +9,10 @@ reserved = [
     'EFFECT', 'FORALL', 'EXISTS', 'INCREASE', 'DECREASE', 'ASSIGN', 
     'IMPLY', 'PREFERENCE', 'WHEN', 'AGENT', 'PROBLEM', 'OBJECTS', 'INIT', 
     'GOAL', 'CONDITION', 'INITIAL', 'STATE','ACTIONS', 'PRECONDITIONS',
-    'PRECOND', 'AND', 'NOT', 'OR', 'OPERATOR'
+    'PRECOND', 'AND', 'NOT', 'OR'
 ]
 
 tokens = reserved + [
-    # Literals (identifier, integer constant, float constant, string constant,
-    # char const)
     'ID', 'NUM', 'MINUS',
     
     'LOR', 'LAND', 'LNOT', 
@@ -99,9 +89,6 @@ def t_NUM(t):
     return t
 
 
-
-
-
 def t_comment(t):
     r'\s*;.*'
     t.lexer.lineno += t.value.count('\n')
@@ -113,8 +100,8 @@ def t_error(t):
     t.lexer.skip(1)
 
 
-lexer = lex.lex()
 
+lexer = lex.lex()
 
 if __name__ == "__main__":
     lex.runmain(lexer)

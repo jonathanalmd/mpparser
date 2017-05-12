@@ -218,24 +218,11 @@ class BFSPlanner:
     def getProblemInitFormated(self,planning_problem):
         if self.rmode == "pddl":
             init = planning_problem.getPDDLProblemInit()
-            # print (init)
             state = []
 
             init_preds = []
             # state.append(":init")
             for pred_name in init:
-                # if "!" in pred_name.name:
-                #     aux = []
-                #     aux.append('not')
-                #     pred_name.name = re.sub('[&!|]', '', pred_name.name)
-                #     aux.append([pred_name.name])
-                #     init_preds.append(aux)
-                # else:
-                #     pred_name.name = re.sub('[&!|]', '', pred_name.name)
-                #     init_preds.append([pred_name.name])
-
-                # if pred_name.p_vars != []:
-                #     init_preds.append(effect.p_vars)
                 init_preds.append([pred_name.name])
             state = init_preds
 
@@ -291,7 +278,6 @@ class BFSPlanner:
         elif self.rmode == "adl":
             pass
 
-        # print ("STATE>",state)
         return state
 
 
@@ -302,14 +288,6 @@ class BFSPlanner:
 
             init_preds = []
             for pred_name in goal:
-                # if "!" in pred_name.name:
-                #     aux = []
-                #     aux.append('not')
-                #     pred_name.name = re.sub('[&!|]', '', pred_name.name)
-                #     aux.append([pred_name.name])
-                #     init_preds.append(aux)
-                # else:
-                # print(pred_name)
                 if "!" not in pred_name.name:
                     name = re.sub('[&!|]', '', pred_name.name)
                     state.append([name])
@@ -331,20 +309,6 @@ class BFSPlanner:
                     state.append([name])
                 if goal[i+1]:
                     init_preds.append(goal[i+1])
-                # if "!" in pred_name.name:
-                #     aux = []
-                #     aux.append('not')
-                #     pred_name.name = re.sub('[&!|]', '', pred_name.name)
-                #     aux.append([pred_name.name])
-                #     init_preds.append(aux)
-                # else:
-                # print(pred_name)
-                # if "!" not in pred_name.name:
-                #     name = re.sub('[&!|]', '', pred_name.name)
-                #     state.append([name])
-
-                # if pred_name.p_vars != []:
-                #     init_preds.append(pred_name.p_vars)
     
         else:#strips
             goal = planning_problem.getSTRIPSGoalState()
@@ -358,24 +322,10 @@ class BFSPlanner:
                     state.append([name])
                 if goal[i+1]:
                     init_preds.append(goal[i+1])
-                # if "!" in pred_name.name:
-                #     aux = []
-                #     aux.append('not')
-                #     pred_name.name = re.sub('[&!|]', '', pred_name.name)
-                #     aux.append([pred_name.name])
-                #     init_preds.append(aux)
-                # else:
-                # print(pred_name)
-                # if "!" not in pred_name.name:
-                #     name = re.sub('[&!|]', '', pred_name.name)
-                #     state.append([name])
 
-                # if pred_name.p_vars != []:
-                #     init_preds.append(pred_name.p_vars)
         if init_preds:
             state.append(init_preds)
 
-        # print (state)
         return state
 
     def getProblemGoalNeg(self,planning_problem):
@@ -385,14 +335,6 @@ class BFSPlanner:
 
             init_preds = []
             for pred_name in goal:
-                # if "!" in pred_name.name:
-                #     aux = []
-                #     aux.append('not')
-                #     pred_name.name = re.sub('[&!|]', '', pred_name.name)
-                #     aux.append([pred_name.name])
-                #     init_preds.append(aux)
-                # else:
-                # print(pred_name)
                 if "!" in pred_name.name:
                     name = re.sub('[&!|]', '', pred_name.name)
                     state.append([name])
@@ -413,20 +355,7 @@ class BFSPlanner:
                     state.append([name])
                 if goal[i+1]:
                     init_preds.append(goal[i+1])
-                # if "!" in pred_name.name:
-                #     aux = []
-                #     aux.append('not')
-                #     pred_name.name = re.sub('[&!|]', '', pred_name.name)
-                #     aux.append([pred_name.name])
-                #     init_preds.append(aux)
-                # else:
-                # print(pred_name)
-                # if "!" not in pred_name.name:
-                #     name = re.sub('[&!|]', '', pred_name.name)
-                #     state.append([name])
 
-                # if pred_name.p_vars != []:
-                #     init_preds.append(pred_name.p_vars)
         else: #strips
             goal = planning_problem.getSTRIPSGoalState()
             state = []
@@ -443,7 +372,6 @@ class BFSPlanner:
         if init_preds:
             state.append(init_preds)
                 
-        # print (state)
         return state
 
     def setParsedData(self,planning):
@@ -461,13 +389,11 @@ class BFSPlanner:
 
         # Parsed data
         actions, state, goal_pos, goal_not = self.setParsedData(planning)
-
         # for act in actions:
         #     print(act)
         # print(state)
         # print(goal_pos)
         # print(goal_not)
-        
         # state = parser.state
         # goal_pos = parser.positive_goals
         # goal_not = parser.negative_goals
@@ -496,10 +422,6 @@ class BFSPlanner:
                         fringe.append((act, plan))
         return None
 
-    #-----------------------------------------------
-    # Applicable
-    #-----------------------------------------------
-
     def applicable(self, state, positive, negative):
         for i in positive:
             if i not in state:
@@ -508,10 +430,6 @@ class BFSPlanner:
             if i in state:
                 return False
         return True
-
-    #-----------------------------------------------
-    # Apply
-    #-----------------------------------------------
 
     def apply(self, state, positive, negative):
         new_state = []

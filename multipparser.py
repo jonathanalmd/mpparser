@@ -1,13 +1,3 @@
-# %{
-# #include <stdio.h> 
-# #define YYDEBUG 1
-# int yylex (void);
-# void yyerror (const char *s);
-# extern FILE *yyin;
-# extern int yydebug;
-# extern int yylineno;
-# %}
-
 import sys
 import yacc 
 import lex
@@ -164,13 +154,6 @@ class mlpParser:
 
 
 
-
-
-
-
-
-
-
 # Get the token map
 tokens = plex.tokens
 
@@ -192,8 +175,6 @@ def p_programa_3(p):
 def p_programa_4(p):
     '''programa : adl_formalization'''
 
-def p_programa_5(p):
-    '''programa : LPAREN DOMAIN RPAREN'''
 
 # ======================================= END MAIN RULES ======================================== #
 
@@ -238,13 +219,13 @@ def p_adl_lista_predicados_2(p):
     '''adl_lista_predicados : adl_predicado AND adl_lista_predicados'''
 
 
-
 def p_adl_goal_state_1(p):
     '''adl_goal_state : GOAL LPAREN adl_lista_predicados RPAREN'''
 
 
 def p_adl_actions_def_1(p):
     '''adl_actions_def : adl_action'''
+
     objADL.setADLActions()
 
 def p_adl_actions_def_2(p):
@@ -266,17 +247,17 @@ def p_adl_action_2(p):
 
 def p_adl_params_1(p):
     '''adl_params : ID COLON adl_parametro COMMA adl_params'''
-    # print("<VAR>",p[1])
+
     objADL.appendActionParam(p[1])
 
 def p_adl_params_2(p):
     '''adl_params : ID COLON adl_parametro'''
-    # print("<VAR>",p[1])
+
     objADL.appendActionParam(p[1])
 
 def p_adl_parametro_1(p):
     '''adl_parametro : ID'''
-    # print("<TYPE>",p[1])
+
     objADL.appendActionParamType(p[1])
 
 
@@ -292,51 +273,61 @@ def p_adl_effect_1(p):
 
 def p_adl_predicado_1(p):
     '''adl_predicado : ID LPAREN adl_lista_ids RPAREN'''
+
     objADL.appendPredicado(p[1])
     objADL.appendListIds()
     # print (objADL.lista_ids_sep)
 
 def p_adl_predicado_2(p):
     '''adl_predicado : AND ID LPAREN adl_lista_ids RPAREN'''
+
     objADL.appendPredicado(p[2])
 
 def p_adl_predicado_3(p):
     ''' adl_predicado : ID LPAREN RPAREN'''
+
     objADL.appendPredicado(p[1])
     objADL.appendListIds()
 
 def p_adl_predicado_4(p):
     ''' adl_predicado : AND ID LPAREN RPAREN'''
+
     objADL.appendPredicado("!"+p[2])
     objADL.appendListIds()
 
 def p_adl_predicado_5(p):
     '''adl_predicado : LNOT ID LPAREN adl_lista_ids RPAREN'''
+
     objADL.appendPredicado("!"+p[2])
     objADL.appendListIds()
     # print (objADL.lista_ids_sep)
 
 def p_adl_predicado_6(p):
     '''adl_predicado : AND LNOT ID LPAREN adl_lista_ids RPAREN'''
+
     objADL.appendPredicado("!"+p[3])
 
 def p_adl_predicado_7(p):
     ''' adl_predicado : LNOT ID LPAREN RPAREN'''
+
     objADL.appendPredicado("!"+p[2])
     objADL.appendListIds()
 
 def p_adl_predicado_8(p):
     ''' adl_predicado : AND LNOT ID LPAREN RPAREN'''
+
     objADL.appendPredicado("!"+p[3])
     objADL.appendListIds()
 
 
 def p_adl_lista_ids_1(p):
     '''adl_lista_ids : ID'''
+
     objADL.appendId(p[1])
     
 def p_adl_lista_ids_2(p):
     '''adl_lista_ids : ID COMMA adl_lista_ids'''
+
     objADL.appendId(p[1])
 
 # =================================================================================================== #
@@ -356,12 +347,13 @@ def p_strips_formalization_1(p):
 
 def p_strips_initial_state_1(p):
     '''strips_initial_state : INITIAL STATE COLON strips_lista_predicados'''
+    
     errorhandler.linestrips = plex.lexer.lineno
 
 
 def p_strips_lista_predicados_1(p):
     '''strips_lista_predicados : strips_predicado'''
-    # print("<preds>:",objStrips.lista_pred_names)
+
     # print("\t",objStrips.lista_ids_sep)
     objStrips.dealWithPredicates()
 
@@ -371,28 +363,28 @@ def p_strips_lista_predicados_2(p):
 
 def p_strips_predicado_1(p):
     '''strips_predicado : ID LPAREN strips_lista_ids RPAREN'''
-    # print("<pred>:",p[1])
+
     objStrips.appendPredName(p[1])
     # print("\t",objStrips.lista_ids_sep)
     objStrips.appendListIds()
 
 def p_strips_predicado_2(p):
     '''strips_predicado : LNOT ID LPAREN strips_lista_ids RPAREN'''
-    # print("<!pred>:",p[2])
+
     objStrips.appendPredName("!"+p[2])
     # print("\t",objStrips.lista_ids_sep)
     objStrips.appendListIds()
 
 def p_strips_predicado_3(p):
     '''strips_predicado : ID LPAREN  RPAREN'''
-    # print("<!pred>:",p[2])
+
     objStrips.appendPredName(p[1])
     # print("\t",objStrips.lista_ids_sep)
     objStrips.appendListIds()
 
 def p_strips_predicado_4(p):
     '''strips_predicado : LNOT ID LPAREN  RPAREN'''
-    # print("<!pred>:",p[2])
+
     objStrips.appendPredName("!"+p[2])
     # print("\t",objStrips.lista_ids_sep)
     objStrips.appendListIds()
@@ -407,7 +399,6 @@ def p_strips_lista_ids_2(p):
     '''strips_lista_ids : ID COMMA strips_lista_ids'''
     # print(p[1])
     objStrips.appendId(p[1])
-
 
 
 def p_strips_goal_state_1(p):
@@ -544,7 +535,7 @@ def p_lista_predicados_p_2(p):
 
 def p_lista_predicados_p_3(p):
     '''lista_predicados_p : LPAREN NOT lista_not_preds_p RPAREN lista_predicados_p'''
-    # {;}
+
     # if objProblem.lista_ids:
     #     objProblem.appendListIds()
     # print(objProblem.lista_ids_sep)
