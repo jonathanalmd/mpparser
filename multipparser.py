@@ -636,36 +636,55 @@ def p_domain_formalization_1(p):
     unused_predicates = objDomain.getUnusedPredicates()
     if unused_predicates:
         print("\nWARNING: Unused predicates in domain definition (defined but not used): ",unused_predicates)
-    
+    unused_types = objDomain.getUnusedTypes()
+    if unused_types:
+        print("\nWARNING: Unused types in domain definition (defined but not used): ",unused_types)
+
+
 def p_domain_formalization_2(p):
     '''domain_formalization : def_domain def_requirements def_types def_predicates def_actions'''
     unused_predicates = objDomain.getUnusedPredicates()
     if unused_predicates:
         print("\nWARNING: Unused predicates in domain definition (defined but not used): ",unused_predicates)
+    unused_types = objDomain.getUnusedTypes()
+    if unused_types:
+        print("\nWARNING: Unused types in domain definition (defined but not used): ",unused_types)
 
 def p_domain_formalization_3(p):
     '''domain_formalization : def_domain def_requirements def_types def_predicates def_functions def_actions'''
     unused_predicates = objDomain.getUnusedPredicates()
     if unused_predicates:
         print("\nWARNING: Unused predicates in domain definition (defined but not used): ",unused_predicates)
+    unused_types = objDomain.getUnusedTypes()
+    if unused_types:
+        print("\nWARNING: Unused types in domain definition (defined but not used): ",unused_types)
 
 def p_domain_formalization_4(p):
     '''domain_formalization : def_domain def_requirements def_types def_constants def_predicates def_actions'''
     unused_predicates = objDomain.getUnusedPredicates()
     if unused_predicates:
         print("\nWARNING: Unused predicates in domain definition (defined but not used): ",unused_predicates)
+    unused_types = objDomain.getUnusedTypes()
+    if unused_types:
+        print("\nWARNING: Unused types in domain definition (defined but not used): ",unused_types)
 
 def p_domain_formalization_5(p):
     '''domain_formalization : def_domain def_requirements def_predicates def_actions'''
     unused_predicates = objDomain.getUnusedPredicates()
     if unused_predicates:
         print("\nWARNING: Unused predicates in domain definition (defined but not used): ",unused_predicates)
+    unused_types = objDomain.getUnusedTypes()
+    if unused_types:
+        print("\nWARNING: Unused types in domain definition (defined but not used): ",unused_types)
 
 def p_domain_formalization_6(p):
     '''domain_formalization : def_domain def_requirements def_predicates def_functions def_actions'''
     unused_predicates = objDomain.getUnusedPredicates()
     if unused_predicates:
         print("\nWARNING: Unused predicates in domain definition (defined but not used): ",unused_predicates)
+    unused_types = objDomain.getUnusedTypes()
+    if unused_types:
+        print("\nWARNING: Unused types in domain definition (defined but not used): ",unused_types)
 
 
 def p_def_domain_1(p):

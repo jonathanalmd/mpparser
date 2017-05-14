@@ -121,6 +121,7 @@ class PDDLDomainParse:
         self.domain_types = []
 
         self.domain_used_predicates = []
+        self.domain_used_types = []
 
         self.lista_types = []
         self.dict_constants = {}
@@ -183,7 +184,6 @@ class PDDLDomainParse:
                 len_pred_types = len(self.dealing_with_types_sep[i])
                 self.dealing_with_types_sep[i].reverse()
                 j = 0
-                # print("i",i)
                 while j < len_pred_types:
                     # print("j",j)
                     # print(self.dealing_with_types_sep[i][j])
@@ -191,6 +191,8 @@ class PDDLDomainParse:
                     reversed_pred_vars = self.lista_pddl_vars_sep[i][j]
                     reversed_pred_vars.reverse()
                     pddl_predicate.p_vars[self.dealing_with_types_sep[i][j]] = reversed_pred_vars
+                    if self.dealing_with_types_sep[i][j] not in self.domain_used_types:
+                        self.domain_used_types.append(self.dealing_with_types_sep[i][j])
                     j = j + 1
                 i = i + 1
 
@@ -235,7 +237,10 @@ class PDDLDomainParse:
             func.name = self.lista_pddl_func[i]
             self.lista_pddl_vars[i].reverse()
             func.f_vars[self.lista_types[i]] = self.lista_pddl_vars[i]
-            func.f_type = self.lista_pddl_func_types[i] 
+            func.f_type = self.lista_pddl_func_types[i]
+            for utype in self.lista_types:
+                if utype not in self.domain_used_types:
+                    self.domain_used_types.append(utype)
             self.domain_functions.append(func)
 
         self.lista_pddl_vars = []
@@ -266,11 +271,12 @@ class PDDLDomainParse:
             self.lista_pddl_ids.reverse()
             for curr_type, pddl_id in zip(self.dealing_with_types, self.lista_pddl_ids):
                 self.dict_constants[curr_type] = pddl_id
+                if curr_type not in self.domain_used_types:
+                    self.domain_used_types.append(curr_type)
             self.dealing_with_types = []
         else:
             print("Erro sintatico: decalracao de constante ausente (só colocou o tipo)")
         self.domain_types = self.lista_types
-
         self.lista_pddl_vars_sep = []
         self.dealing_with_types_sep = []
         self.dealing_with_types = []
@@ -318,7 +324,11 @@ class PDDLDomainParse:
         self.lista_pddl_vars[2] = [x for x in self.lista_pddl_vars[2] if x != []]
         # print("ACTION1>>",self.lista_pddl_vars)
         # print("<TYPE>>>>>",self.lista_types)
-        if self.lista_types == []:
+        if self.lista_types:
+            for utype in self.lista_types:
+                if utype not in self.domain_used_types:
+                    self.domain_used_types.append(utype)
+        else:
             for pddl_vars in self.lista_pddl_vars[0]:
                 self.lista_types.append("(NOTYPE)")
 
@@ -488,13 +498,13 @@ class PDDLDomainParse:
         return self.lista_types
 
     def getUnusedPredicates(self):
-        unused_predicates = []
-        used_predicates = []
         defined_predicates = set([pred_name.name for pred_name in self.domain_predicates])
         used_predicates = set(self.domain_used_predicates)
         unused_predicates = defined_predicates - used_predicates
-
         return unused_predicates
+
+    def getUnusedTypes(self):
+        return set(self.domain_types) - set(self.domain_used_types)
 
     def printDomainInfo(self):
         print("\n\n\n")
@@ -521,6 +531,7 @@ class PDDLDomainParse:
     def __str__(self):
         return "\nDomain name: " + self.domain_name + \
         "\n\tPredicates: " + str(self.domain_predicates) + \
+        "\n\tTypes: " + str(self.domain_types) + \
         "\n\tConstants: " + str(self.dict_constants) + \
         "\n\tFunctions: " + str(self.domain_functions) + \
         "\n\tActions: " + str(self.domain_actions)
@@ -528,6 +539,7 @@ class PDDLDomainParse:
     def __repr__(self):
         return "\nDomain name: " + self.domain_name + \
         "\n\tPredicates: " + str(self.domain_predicates) + \
+        "\n\tTypes: " + str(self.domain_types) + \
         "\n\tConstants: " + str(self.dict_constants) + \
         "\n\tFunctions: " + str(self.domain_functions) + \
         "\n\tActions: " + str(self.domain_actions)

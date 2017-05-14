@@ -1,7 +1,7 @@
 (define (domain BLOCKS)
 	(:requirements :strips :typing :negative-preconditions)
 
-	(:types room ball gripper teste3 re t rm teste)
+	(:types room ball gripper teste3 re t rm teste unused)
 
 	(:constants left right - gripper)
 
