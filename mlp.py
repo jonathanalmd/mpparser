@@ -1,6 +1,3 @@
-# An implementation of Dartmouth BASIC (1964)
-#
-
 import sys
 import plex
 import multipparser
