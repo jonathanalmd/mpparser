@@ -17,11 +17,17 @@ class mlpParser:
         self.strips = None #class StripsInfo()
 
     def __str__(self):
-        return "\nPDDL:\nPDDL Domain:" + str(self.pddlDomain) + "\nPDDL Problem:" + str(self.pddlProblem) + "\n\nSTRIPS:" + str(self.strips) + "\n\nADL:" + str(self.adl) + "\n"
+        return "\nPDDL:\nPDDL Domain:" + str(self.pddlDomain) + \
+        "\nPDDL Problem:" + str(self.pddlProblem) + \
+        "\n\nSTRIPS:" + str(self.strips) + \
+        "\n\nADL:" + str(self.adl) + "\n"
 
     def __repr__(self):
-        return "\nPDDL\nPDDL Domain:" + str(self.pddlDomain) + "\nPDDL Problem:" + str(self.pddlProblem) + "\n\nSTRIPS:" + str(self.strips) + "\n\nADL:" + str(self.adl) + "\n"
-
+        return "\nPDDL:\nPDDL Domain:" + str(self.pddlDomain) + \
+        "\nPDDL Problem:" + str(self.pddlProblem) + \
+        "\n\nSTRIPS:" + str(self.strips) + \
+        "\n\nADL:" + str(self.adl) + "\n"
+        
     def setPDDL(self, domain, problem):
         self.pddlDomain = domain
         self.pddlProblem = problem

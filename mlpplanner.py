@@ -12,22 +12,22 @@ class Action:
         self.cost = cost
 
     def __str__(self):
-        return 'action: ' + self.name + \
-        '\n  parameters: ' + str(self.parameters) + \
-        '\n  positive_preconditions: ' + str(self.positive_preconditions) + \
-        '\n  negative_preconditions: ' + str(self.negative_preconditions) + \
-        '\n  add_effects: ' + str(self.add_effects) + \
-        '\n  del_effects: ' + str(self.del_effects) + \
-        '\n  cost: ' + str(self.cost) + '\n'
+        return '\nAction: ' + self.name + \
+        '\n\tParameters: ' + str(self.parameters) + \
+        '\n\tPositive preconditions: ' + str(self.positive_preconditions) + \
+        '\n\tNegative preconditions: ' + str(self.negative_preconditions) + \
+        '\n\tAdd effects: ' + str(self.add_effects) + \
+        '\n\tDel effects: ' + str(self.del_effects) + \
+        '\n\tCost: ' + str(self.cost) + '\n'
 
     def __repr__(self):
-        return 'action: ' + self.name + \
-        '\n  parameters: ' + str(self.parameters) + \
-        '\n  positive_preconditions: ' + str(self.positive_preconditions) + \
-        '\n  negative_preconditions: ' + str(self.negative_preconditions) + \
-        '\n  add_effects: ' + str(self.add_effects) + \
-        '\n  del_effects: ' + str(self.del_effects) + \
-        '\n  cost: ' + str(self.cost) + '\n'
+        return '\nAction: ' + self.name + \
+        '\n\tParameters: ' + str(self.parameters) + \
+        '\n\tPositive preconditions: ' + str(self.positive_preconditions) + \
+        '\n\tNegative preconditions: ' + str(self.negative_preconditions) + \
+        '\n\tAdd effects: ' + str(self.add_effects) + \
+        '\n\tDel effects: ' + str(self.del_effects) + \
+        '\n\tCost: ' + str(self.cost) + '\n'
 
     def __eq__(self, other): 
         return self.__dict__ == other.__dict__

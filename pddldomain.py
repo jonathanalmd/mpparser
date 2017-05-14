@@ -34,10 +34,14 @@ class PDDLFunction:
         self.f_type = ""
     
     def __str__(self):
-        return "\n\tFunction-Name: " + self.name + "\n\tFunction-Type: " + str(self.f_type) + "\n\tFunction-Vars: " + str(self.f_vars) + "\n\n"
+        return "\n\tFunction-Name: " + self.name + \
+        "\n\tFunction-Type: " + str(self.f_type) + \
+        "\n\tFunction-Vars: " + str(self.f_vars) + "\n\n"
 
     def __repr__(self):
-        return "\n\tFunction-Name: " + self.name + "\n\tFunction-Type: " + str(self.f_type) + "\n\tFunction-Vars: " + str(self.f_vars) + "\n\n"
+        return "\n\tFunction-Name: " + self.name + \
+        "\n\tFunction-Type: " + str(self.f_type) + \
+        "\n\tFunction-Vars: " + str(self.f_vars) + "\n\n"
 
 class PDDLAction:
     def __init__(self):
@@ -47,10 +51,16 @@ class PDDLAction:
         self.effects = [] # class PDDLActionPredicate
     
     def __str__(self):
-        return "\n\tAction-Name: " + self.name + "\n\tAction-Parameters: " + str(self.parameters) + "\n\tAction-Preconditions: " + str(self.preconditions) + "\n\tAction-Effects: " + str(self.effects) + "\n\n"
+        return "\n\tAction-Name: " + self.name + \
+        "\n\tAction-Parameters: " + str(self.parameters) + \
+        "\n\tAction-Preconditions: " + str(self.preconditions) + \
+        "\n\tAction-Effects: " + str(self.effects) + "\n\n"
 
     def __repr__(self):
-        return "\n\tAction-Name: " + self.name + "\n\tAction-Parameters: " + str(self.parameters) + "\n\tAction-Preconditions: " + str(self.preconditions) + "\n\tAction-Effects: " + str(self.effects) + "\n\n"
+        return "\n\tAction-Name: " + self.name + \
+        "\n\tAction-Parameters: " + str(self.parameters) + \
+        "\n\tAction-Preconditions: " + str(self.preconditions) + \
+        "\n\tAction-Effects: " + str(self.effects) + "\n\n"
 
 class PDDLDomainInfo:
     def __init__(self, domain_name, predicates, types, constants, functions, actions):
@@ -80,10 +90,20 @@ class PDDLDomainInfo:
         return self.actions
 
     def __str__(self):
-        return "\nDomain Name:\n\t" + str(self.name) + "\nPredicates: \n\t" + str(self.predicates) + "\nTypes: \n\t" + str(self.types) + "\nConstants: \n\t" + str(self.constants) + "\nFunctions: \n\t" + str(self.functions) + "\nActions: \n\t" + str(self.actions) + "\n"
+        return "\nDomain Name:\n\t" + str(self.name) + \
+        "\nPredicates: \n\t" + str(self.predicates) + \
+        "\nTypes: \n\t" + str(self.types) + \
+        "\nConstants: \n\t" + str(self.constants) + \
+        "\nFunctions: \n\t" + str(self.functions) + \
+        "\nActions: \n\t" + str(self.actions) + "\n"
 
     def __repr__(self):
-        return "\nDomain Name:\n\t" + str(self.name) + "\nPredicates: \n\t" + str(self.predicates) + "\nTypes: \n\t" + str(self.types) + "\nConstants: \n\t" + str(self.constants) + "\nFunctions: \n\t" + str(self.functions) + "\nActions: \n\t" + str(self.actions) + "\n"
+        return "\nDomain Name:\n\t" + str(self.name) + \
+        "\nPredicates: \n\t" + str(self.predicates) + \
+        "\nTypes: \n\t" + str(self.types) + \
+        "\nConstants: \n\t" + str(self.constants) + \
+        "\nFunctions: \n\t" + str(self.functions) + \
+        "\nActions: \n\t" + str(self.actions) + "\n"
 
 
 

@@ -8,10 +8,16 @@ class StripsAction:
         self.effect = []
 
     def __str__(self):
-        return "\n\tAction Name: " + self.name + "\n\tParameters: " + str(self.param) + "\n\tPrecondition: " + str(self.precond) + "\n\tEffect: " + str(self.effect) + "\n"
+        return "\n\tAction Name: " + self.name + \
+        "\n\tParameters: " + str(self.param) + \
+        "\n\tPrecondition: " + str(self.precond) + \
+        "\n\tEffect: " + str(self.effect) + "\n"
 
     def __repr__(self):
-        return "\n\tAction Name: " + self.name + "\n\tParameters: " + str(self.param) + "\n\tPrecondition: " + str(self.precond) + "\n\tEffect: " + str(self.effect) + "\n"
+        return "\n\tAction Name: " + self.name + \
+        "\n\tParameters: " + str(self.param) + \
+        "\n\tPrecondition: " + str(self.precond) + \
+        "\n\tEffect: " + str(self.effect) + "\n"
 
 class StripsInfo:
     def __init__(self, initial_state, goal_state, actions):
@@ -29,11 +35,15 @@ class StripsInfo:
         return self.actions
 
     def __str__(self):
-        return "\nInitial State:\n\t" + str(self.initial_state) + "\nGoal State: \n\t" + str(self.goal_state) + "\nActions: \n\t" + str(self.actions) + "\n"
+        return "\nInitial State:\n\t" + str(self.initial_state) + \
+        "\nGoal State: \n\t" + str(self.goal_state) + \
+        "\nActions: \n\t" + str(self.actions) + "\n"
 
     def __repr__(self):
-        return "\nInitial State:\n\t" + str(self.initial_state) + "\nGoal State: \n\t" + str(self.goal_state) + "\nActions: \n\t" + str(self.actions) + "\n"
-
+        return "\nInitial State:\n\t" + str(self.initial_state) + \
+        "\nGoal State: \n\t" + str(self.goal_state) + \
+        "\nActions: \n\t" + str(self.actions) + "\n"
+        
 class StripsFormParse:
     def __init__(self):
         self.lista_ids = []
