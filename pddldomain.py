@@ -7,7 +7,7 @@ import re
 class PDDLPredicate:
     def __init__(self, pred_name):
         self.name = pred_name
-        self.p_vars = {} # {[?b,?b2]:"ball"}
+        self.p_vars = {} # {[?b,?b2]:"ball"} predicate vars can be typed
     
     def __str__(self):
         return self.name + " " + str(self.p_vars)
@@ -18,7 +18,7 @@ class PDDLPredicate:
 class PDDLActionPredicate:
     def __init__(self, pred_name):
         self.name = pred_name
-        self.p_vars = [] 
+        self.p_vars = [] # predicate vars can not be typed
 
     def __str__(self):
         return self.name + " " + str(self.p_vars)
@@ -108,6 +108,9 @@ class PDDLDomainInfo:
 
 
 class PDDLDomainParse:
+    '''
+    PDDL Domain main class to store the domain formalization 
+    '''
     def __init__(self):
         self.domain_name = ""
         self.domain_requirements = []
@@ -150,8 +153,6 @@ class PDDLDomainParse:
         # print(self.lista_predicados)
         # print(self.lista_pddl_vars_sep)
         # print(self.dealing_with_types_sep)
-        
-
         i = 0
         while i < len(self.lista_pddl_vars_sep):
             self.lista_pddl_vars_sep[i] = [x for x in self.lista_pddl_vars_sep[i] if x != []]
@@ -202,7 +203,6 @@ class PDDLDomainParse:
         # print(self.lista_pddl_vars_sep)
         # print("ACTION1>>",self.lista_pddl_vars)
         # print("ACTION2>>",self.lista_types)
-        # print(self.pddl_vars)
         # self.lista_actions.reverse()
         self.domain_actions[len(self.domain_actions)-len(self.lista_actions)].name = action_name
 
@@ -230,7 +230,6 @@ class PDDLDomainParse:
         # print("<func-vars>:",self.lista_pddl_vars)
         # print("<func-var_types>:",self.lista_types)
         # print("<func-type>:",self.lista_pddl_func_types)
-
         for i in range(0,len(self.lista_pddl_func)):
             func = PDDLFunction()
             func.name = self.lista_pddl_func[i]
@@ -262,7 +261,6 @@ class PDDLDomainParse:
     def appendConstants(self):
         # print("PDDL_ids:",self.lista_pddl_ids)
         # print("PDDL_types:",self.dealing_with_types)
-
         if self.lista_pddl_ids:
             len_pddl_ids = len(self.lista_pddl_ids)
             self.lista_pddl_ids.reverse()
@@ -308,23 +306,18 @@ class PDDLDomainParse:
         # last_predicado = last_predicado.split("*")
         # self.lista_action_predicados[1][-1] = last_predicado[-1]
         # last_predicado = last_predicado[:-1]
-        # print("\n\n\n")
-        # # print("2222LAST_PREDICADO>>>",last_predicado)
         # for logic_operator in last_predicado:
         #     op = logic_operator[0]
         #     num = int(logic_operator[1:])
         #     print("ef",op,num)
         # print("ef_predicados:",self.lista_action_predicados[1])
+
     def dealWithAction(self):
-        # print("ACTION>>>>",self.lista_actions)
-        # print(self.lista_pddl_vars_sep)
-        # print("ACTION2>>",self.lista_types)
         self.lista_pddl_vars[0] = [x for x in self.lista_pddl_vars[0] if x != []]
         self.lista_pddl_vars[1] = [x for x in self.lista_pddl_vars[1] if x != []]
         self.lista_pddl_vars[2] = [x for x in self.lista_pddl_vars[2] if x != []]
         # print("ACTION1>>",self.lista_pddl_vars)
         # print("<TYPE>>>>>",self.lista_types)
-
         if self.lista_types == []:
             for pddl_vars in self.lista_pddl_vars[0]:
                 self.lista_types.append("(NOTYPE)")
@@ -361,15 +354,12 @@ class PDDLDomainParse:
             #         self.lista_pddl_vars[i].append(["(NOVARS)"])
             #     i += 1
 
-            # print("PRED>",self.lista_action_predicados)
-            # print("VARS>",self.lista_pddl_vars)
-
-            #precondition
+            #preconditions
             var_list = []
             for var in self.lista_pddl_vars[1]:
                 for ivar in var:
                     var_list.append(ivar)
-            # print("VARLIST!!!!",var_list)
+
             i = 0
             self.lista_pddl_vars[1][i].reverse()
             for predicate in self.lista_action_predicados[0]:
@@ -386,7 +376,8 @@ class PDDLDomainParse:
                     pddl_predicate.p_vars = reversed_pred_vars
                     i = i + 1
                 action.preconditions.append(pddl_predicate)
-            #effect
+            
+            #effects
             var_list = []
             for var in self.lista_pddl_vars[2]:
                 for ivar in var:
@@ -409,15 +400,6 @@ class PDDLDomainParse:
                 action.effects.append(pddl_predicate)
 
             self.domain_actions.append(action)
-            # print("\n\n\n\n")
-            # print(action)
-            # print("<TYPES>",self.lista_types)
-            # print(action)
-
-            # print(self.lista_predicados)
-            # print("PTOTAL>>>>>>>>>>>",self.lista_action_predicados)
-
-
 
             self.lista_action_predicados = []
             self.cleanPDDLvars()
@@ -445,30 +427,23 @@ class PDDLDomainParse:
     def cleanPDDLvars(self):
         self.pddl_vars = []
 
-
     def dealWithParameters(self):
-        # print ("EEEE",self.pddl_vars)
         if self.pddl_vars:
             self.lista_pddl_vars = [x for x in self.lista_pddl_vars if x != []]
 
             lista = []
             lista = self.lista_pddl_vars
             lista.append(self.pddl_vars)
-            # print(lista)
             # lista = self.lista_pddl_vars.append(self.pddl_vars)
-            # print(">>>>>>.",lista)
             # print(">",self.lista_pddl_vars)
             if len(lista) == 1:
                 self.lista_pddl_vars = []
                 self.lista_pddl_vars.append(lista[0])
-                # print(">>BBBB>>>:",self.lista_pddl_vars)
-
             else:
                 self.lista_pddl_vars = []
                 self.lista_pddl_vars.append(lista)
-                # print(">>AAAAA>>>:",self.lista_pddl_vars)
-            self.cleanPDDLvars()
 
+            self.cleanPDDLvars()
 
     def dealWithActionPredicates(self):
         # print("PRED>>",self.lista_predicados)
@@ -481,20 +456,13 @@ class PDDLDomainParse:
         lista = self.lista_pddl_vars[1:] # tira a lista de parameters
         # lista.append(self.pddl_vars)
         # lista = self.lista_pddl_vars.append(self.pddl_vars)
-        # print(">>>>>>:",lista)
-        # print(self.lista_pddl_vars)
         # self.lista_pddl_vars = []
         # self.lista_pddl_vars.append(lista)
-        # print("AAAAAAAAA",self.lista_pddl_vars)
         lista2 = []
         lista2.append(self.lista_pddl_vars[0])
-        # print(lista2)
         lista2.append(lista)
-        # print(lista)
         self.lista_pddl_vars = lista2
-        # print("@!!!!!!!!!!",self.lista_pddl_vars)
 
-        # print("LOGIC>>",self.curLogicalOperator)
         self.dealWithActionPredicates()
 
     def dealWithEffects(self):
@@ -502,16 +470,12 @@ class PDDLDomainParse:
         lista = self.lista_pddl_vars[2:] # tira a lista de parameters e lista precond
         # lista.append(self.pddl_vars)
         # lista = self.lista_pddl_vars.append(self.pddl_vars)
-        # print(">>>>>>.",lista)
-        # print("hihi:",self.lista_pddl_vars)
         lista2 = self.lista_pddl_vars[:2]
         lista2.append(lista)
         self.lista_pddl_vars = lista2
-        # print("hihi:",self.lista_pddl_vars)
         self.lista_types.reverse()
 
         self.dealWithActionPredicates()
-
         self.dealWithAction()
 
     def getDomainName(self):
@@ -548,16 +512,24 @@ class PDDLDomainParse:
         print("\t",self.lista_pddl_func)
         print("\n",self.domain_functions)
         print("Actions:")
-        self.lista_actions.reverse()
         print("\t",self.lista_actions)
-        # print(self.lista_pddl_vars_sep)
-        # print(self.lista_pddl_vars)
-        # print(self.lista_types)
-        # print(self.pddl_vars)
-
         print(self.domain_actions)
 
     def getPDDLDomain(self):
         return PDDLDomainInfo(self.domain_name, self.domain_predicates, self.domain_types, self.dict_constants, self.domain_functions, self.domain_actions)
+
+    def __str__(self):
+        return "\nDomain name: " + self.domain_name + \
+        "\n\tPredicates: " + str(self.domain_predicates) + \
+        "\n\tConstants: " + str(self.dict_constants) + \
+        "\n\tFunctions: " + str(self.domain_functions) + \
+        "\n\tActions: " + str(self.domain_actions)
+
+    def __repr__(self):
+        return "\nDomain name: " + self.domain_name + \
+        "\n\tPredicates: " + str(self.domain_predicates) + \
+        "\n\tConstants: " + str(self.dict_constants) + \
+        "\n\tFunctions: " + str(self.domain_functions) + \
+        "\n\tActions: " + str(self.domain_actions)
 
 

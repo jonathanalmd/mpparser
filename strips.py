@@ -1,5 +1,4 @@
 
-
 class StripsAction:
     def __init__(self):
         self.name = ""
@@ -43,7 +42,7 @@ class StripsInfo:
         return "\nInitial State:\n\t" + str(self.initial_state) + \
         "\nGoal State: \n\t" + str(self.goal_state) + \
         "\nActions: \n\t" + str(self.actions) + "\n"
-        
+
 class StripsFormParse:
     def __init__(self):
         self.lista_ids = []
@@ -110,16 +109,17 @@ class StripsFormParse:
         self.lista_pred_names = []
         self.cleanListIds()
 
-    def printStripsInfo(self):
-        print ("\n")
-        print ("Initial State:\n\t",self.strips_initial)
-        print ("Goal State:\n\t",self.strips_goal)
-        print ("Actions:\n\t",self.strips_actions)
-        print ("\n")
-
     def getStrips(self):
         return StripsInfo(self.strips_initial, self.strips_goal, self.strips_actions)
 
+    def __str__(self):
+        return "\nInitial State: " + self.strips_initial + \
+        "\n\tGoal State: " + str(self.strips_goal) + \
+        "\n\tActions: " + str(self.strips_actions)
 
+    def __repr__(self):
+        return "\nInitial State: " + self.strips_initial + \
+        "\n\tGoal State: " + str(self.strips_goal) + \
+        "\n\tActions: " + str(self.strips_actions)
 
 

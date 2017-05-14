@@ -76,9 +76,7 @@ class PDDLProblemParse:
 
     def setProblemObjects(self):
         self.lista_obj_type.reverse()
-        # print(self.lista_obj_type)
         # print(self.lista_ids_sep)
-
         check_obj_repetition = []
         for obj_type, ids in zip(self.lista_obj_type, self.lista_ids_sep):
             self.problem_objects[obj_type] = ids
@@ -93,7 +91,6 @@ class PDDLProblemParse:
 
     def setProblemPredicates(self, runmode, operator):
         # print (self.lista_ids_sep)
-        # print ("\n\n")
         if runmode == "i":
             for init_pred in self.lista_ids_sep:
                 if init_pred[0] == "!":
@@ -186,13 +183,6 @@ class PDDLProblemParse:
     def appendProblemPred(self, ppred):
         self.lista_problem_pred.append(ppred)
 
-    def printProblemInfo(self):
-        print ("Problem Name:\n\t",self.problem_name)
-        print ("From Domain:\n\t",self.problem_domain)
-        print ("Objects:\n\t",self.problem_objects)
-        print ("Init Predicates:\n\t",self.problem_init_pred)
-        print ("Goal Predicates:\n\t",self.problem_goal_pred)
-
     def getPDDLProblem(self):
         return PDDLProblemInfo(self.problem_name, self.problem_domain, self.problem_objects, self.problem_init_pred, self.problem_goal_pred)
 
@@ -206,3 +196,20 @@ class PDDLProblemParse:
         unused_objects = defined_objects - used_objects
 
         return unused_objects
+
+    def __str__(self):
+        return "\nProblem: " + self.problem_name + \
+        "\n\tFrom Domain: " + str(self.problem_domain) + \
+        "\n\tObjects: " + str(self.problem_objects) + \
+        "\n\tInit: " + str(self.problem_init_pred) + \
+        "\n\tGoal: " + str(self.problem_goal_pred)
+
+    def __repr__(self):
+        return "\nProblem: " + self.problem_name + \
+        "\n\tFrom Domain: " + str(self.problem_domain) + \
+        "\n\tObjects: " + str(self.problem_objects) + \
+        "\n\tInit: " + str(self.problem_init_pred) + \
+        "\n\tGoal: " + str(self.problem_goal_pred)
+
+
+

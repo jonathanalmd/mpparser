@@ -117,6 +117,7 @@ def main():
         print (input_parser)
         parsed_data = parse(input_parser)
         print(parsed_data)
+        
     else: # planner mode
         parsed_data, rmode = runMlp()
 

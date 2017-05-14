@@ -17,7 +17,7 @@ class ADLAction:
         "\n\tParameters: " + str(self.param) + \
         "\n\tPrecondition: " + str(self.precond) + \
         "\n\tEffect: " + str(self.effect) + "\n"
-        
+
 class ADLInfo:
     def __init__(self, initial_state, goal_state, actions):
         self.initial_state = initial_state
@@ -34,10 +34,14 @@ class ADLInfo:
         return self.actions
 
     def __str__(self):
-        return "\nInitial State:\n\t" + str(self.initial_state) + "\nGoal State: \n\t" + str(self.goal_state) + "\nActions: \n\t" + str(self.actions) + "\n"
+        return "\nInitial State:\n\t" + str(self.initial_state) + \
+        "\nGoal State: \n\t" + str(self.goal_state) + \
+        "\nActions: \n\t" + str(self.actions) + "\n"
 
     def __repr__(self):
-        return "\nInitial State:\n\t" + str(self.initial_state) + "\nGoal State: \n\t" + str(self.goal_state) + "\nActions: \n\t" + str(self.actions) + "\n"
+        return "\nInitial State:\n\t" + str(self.initial_state) + \
+        "\nGoal State: \n\t" + str(self.goal_state) + \
+        "\nActions: \n\t" + str(self.actions) + "\n"
 
 
 class ADLFormParse:
@@ -102,9 +106,6 @@ class ADLFormParse:
     def setPredicates(self):
         if self.dealingwith == 0: # init
             # print ("<DEALING_INIT>")
-            # print ("\t<PRED>",self.lista_predicados)
-            # print ("\t>>>>>>",self.lista_ids_sep)
-
             for pred_name, pred_params in zip(self.lista_predicados, self.lista_ids_sep):
                 self.adl_init.append(pred_name)
                 self.adl_init.append(pred_params)
@@ -112,9 +113,6 @@ class ADLFormParse:
 
         elif self.dealingwith == 1: # goal
             # print ("<DEALING_GOAL>")
-            # print ("\t<PRED>",self.lista_predicados)
-            # print ("\t>>>>>>",self.lista_ids_sep)
-
             for pred_name, pred_params in zip(self.lista_predicados, self.lista_ids_sep):
                 self.adl_goal.append(pred_name)
                 self.adl_goal.append(pred_params)
@@ -122,11 +120,7 @@ class ADLFormParse:
 
         else: # action(s)
             # print ("<DEALING_ACTION>")
-            # print ("\t<PRED>",self.lista_predicados)
-            # print ("\t>>>>>>",self.lista_ids_sep)
-
-            if self.dealingwith % 2 == 0:
-                # print("precond")
+            if self.dealingwith % 2 == 0: # precondition
                 precond = []
                 for pred_name, pred_params in zip(self.lista_predicados, self.lista_ids_sep):
                     # aux_list = []
@@ -134,16 +128,13 @@ class ADLFormParse:
                     # aux_list.append(pred_params)
                     # aux_list = self.action_precond.append(aux_list)
                     # print(aux_list)
-
                     # precond[pred_name] = pred_params
-
                     precond.append(pred_name)
                     precond.append(pred_params)
                 
                 self.action_precond.append(precond)
 
-            else:
-                # print("effect")
+            else: # effect
                 effect = []
                 for pred_name, pred_params in zip(self.lista_predicados, self.lista_ids_sep):
                     # self.action_precond.append(pred_name)
@@ -175,16 +166,16 @@ class ADLFormParse:
 
         # print (self.adl_actions)
 
-    def printADLInfo(self):
-        print ("\n")
-        print ("Init Predicates:\n\t",self.adl_init)
-        print ("\n")
-        print ("Goal Predicates:\n\t",self.adl_goal)
-        print ("\n")
-        print ("Actions:\n\t",self.adl_actions)
-
     def getADL(self):
         return ADLInfo(self.adl_init, self.adl_goal, self.adl_actions)
 
+    def __str__(self):
+        return "\nInitial State: " + self.adl_init + \
+        "\n\tGoal State: " + str(self.adl_goal) + \
+        "\n\tActions: " + str(self.adl_actions)
 
+    def __repr__(self):
+        return "\nInitial State: " + self.adl_init + \
+        "\n\tGoal State: " + str(self.adl_goal) + \
+        "\n\tActions: " + str(self.adl_actions)
 

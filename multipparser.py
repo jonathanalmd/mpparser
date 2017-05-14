@@ -1,3 +1,5 @@
+# GLC specs 
+
 import sys
 import yacc 
 import lex
@@ -7,7 +9,6 @@ import pddlproblem
 import adl
 import strips
 import errorhandler
-
 
 class mlpParser:
     def __init__(self):
@@ -27,7 +28,7 @@ class mlpParser:
         "\nPDDL Problem:" + str(self.pddlProblem) + \
         "\n\nSTRIPS:" + str(self.strips) + \
         "\n\nADL:" + str(self.adl) + "\n"
-        
+
     def setPDDL(self, domain, problem):
         self.pddlDomain = domain
         self.pddlProblem = problem
@@ -130,8 +131,6 @@ class mlpParser:
         # [action_name, ['param1','param2'], ['predicate_precondition1',['var1','var2']], ['predicate_effect1',['var1']]]
         return self.strips.getActions()
 
-
-
     def getADL(self):
         # ADLInfo() class (adl.py)
         return self.adl
@@ -158,11 +157,8 @@ class mlpParser:
 
 
 
-
-
-# Get the token map
+# Get the token map from plex.py 
 tokens = plex.tokens
-
 
 # ========================================== RULES ================================================ #
 
@@ -1061,16 +1057,15 @@ def p_error(p):
     else:
         errorhandler.reportError("(")
 
+
 pparser = yacc.yacc()
 objDomain = pddldomain.PDDLDomainParse()
 objProblem = pddlproblem.PDDLProblemParse()
 objADL = adl.ADLFormParse()
 objStrips = strips.StripsFormParse()
 
-
 def parse(pmode, filelist):
     if pmode == "pddl":
-
         domain_f = open(filelist[0]).read()
         problem_f = open(filelist[1]).read()
 
@@ -1082,11 +1077,8 @@ def parse(pmode, filelist):
 
         # objDomain.printDomainInfo()
         # objProblem.printProblemInfo()
-
-        
         # print("U>",unused_predicates,defined_predicates,used_predicates)
         
-
         return objDomain.getPDDLDomain(), objProblem.getPDDLProblem()
 
     elif pmode == "adl":
@@ -1106,3 +1098,5 @@ def parse(pmode, filelist):
 
         # objStrips.printStripsInfo()
         return objStrips.getStrips() # return obj
+
+

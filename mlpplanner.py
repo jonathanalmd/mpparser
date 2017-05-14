@@ -1,7 +1,10 @@
+# apply parsed data to an algorithm (best first search and ...)
+
 import re
 
-class Action:
 
+class Action:
+    ''' Planning action representation'''
     def __init__(self, name, parameters, positive_preconditions, negative_preconditions, add_effects, del_effects, cost = 0):
         self.name = name
         self.parameters = parameters
@@ -34,12 +37,16 @@ class Action:
 
 
 class BFSPlanner:
+    ''' 
+    BFS algorithm and methods to adjust the information received from 
+    MLPparser in order to be used in BFS and the find a valid plan based
+    on the formalized domain/problem in PDDL, ADL or STRIPS.
+    '''
     def __init__(self, rmode):
         self.actions = []
         self.rmode = rmode 
 
     def getDomainActions(self,planning_domain):
-
         if self.rmode == "pddl":
             act = planning_domain.getPDDLDomainActions()
             action = []
@@ -375,7 +382,6 @@ class BFSPlanner:
         return state
 
     def setParsedData(self,planning):
-
         actions = self.getDomainActionsFormated(planning)
         state = self.getProblemInitFormated(planning)
         # goal = self.getProblemGoal(planning)
@@ -385,20 +391,16 @@ class BFSPlanner:
         return actions, state, goal_pos, goal_not
 
     def solve(self, planning):
+        ''' Receive a planning parsed data'''
         print("RUN_MODE>",self.rmode)
-
-        # Parsed data
+        # Set parsed data
         actions, state, goal_pos, goal_not = self.setParsedData(planning)
         # for act in actions:
         #     print(act)
         # print(state)
         # print(goal_pos)
         # print(goal_not)
-        # state = parser.state
-        # goal_pos = parser.positive_goals
-        # goal_not = parser.negative_goals
 
-        # Do nothing
         if self.applicable(state, goal_pos, goal_not):
             return []
         # Search
@@ -407,19 +409,25 @@ class BFSPlanner:
         while fringe:
             state = fringe.pop(0)
             plan = fringe.pop(0)
+
             for act in actions:
                 if self.applicable(state, act.positive_preconditions, act.negative_preconditions):
                     new_state = self.apply(state, act.add_effects, act.del_effects)
-                    if new_state not in visited:
+                    
+                    if new_state not in visited:    
                         if self.applicable(new_state, goal_pos, goal_not):
                             full_plan = [act]
+                            
                             while plan:
                                 act, plan = plan
                                 full_plan.insert(0, act)
+                            
                             return full_plan
+                        
                         visited.append(new_state)
                         fringe.append(new_state)
                         fringe.append((act, plan))
+
         return None
 
     def applicable(self, state, positive, negative):

@@ -2,7 +2,6 @@ import sys
 import lex
 
 # Reserved words
-
 reserved = [
     'DEFINE', 'DOMAIN', 'REQUIREMENTS', 'TYPES', 'CONSTANTS',
     'PREDICATES', 'FUNCTIONS', 'ACTION', 'PARAMETERS', 'PRECONDITION', 
@@ -11,7 +10,6 @@ reserved = [
     'GOAL', 'CONDITION', 'INITIAL', 'STATE','ACTIONS', 'PRECONDITIONS',
     'PRECOND', 'AND', 'NOT', 'OR'
 ]
-
 tokens = reserved + [
     'ID', 'NUM', 'MINUS',
     
@@ -63,20 +61,16 @@ t_RPAREN = r'\)'
 t_LBRACKET = r'\['
 t_RBRACKET = r'\]'
 
-
 # Identifiers and reserved words
-reserved_map = {}
-for r in reserved:
-    reserved_map[r.lower()] = r
-
-
+# reserved_map = {}
+# for r in reserved:
+#     reserved_map[r.lower()] = r
 # t_ID = r'[A-Za-z_][\w_]*'
 def t_ID(t):
     # r'[A-Za-z_][\w_]*'
     # t.type = reserved_map.get(t.value, "ID")
     # return t
     r'[a-zA-Z_][a-zA-Z0-9_-]*'
-
     if t.value.upper() in tokens:
         t.type = t.value.upper()
     # else:
@@ -88,11 +82,9 @@ def t_NUM(t):
     t.value = int(t.value)    
     return t
 
-
 def t_comment(t):
     r'\s*;.*'
     t.lexer.lineno += t.value.count('\n')
-
 
 def t_error(t):
     print("Illegal character %s" % repr(t.value[0]))
@@ -100,8 +92,8 @@ def t_error(t):
     t.lexer.skip(1)
 
 
-
 lexer = lex.lex()
-
 if __name__ == "__main__":
     lex.runmain(lexer)
+
+
