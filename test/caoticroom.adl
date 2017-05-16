@@ -1,0 +1,44 @@
+INIT(
+  dirty() and !insideroom() and !droped() and !stored() and !organized()
+)
+
+GOAL(
+  stored() and organized() and !insideroom() and !dirty()
+)
+
+
+action(
+    enter(),
+    precond: !insideroom()
+    effect: insideroom()
+)
+
+action(
+    leave(),
+    precond: insideroom() 
+    effect: !insideroom()
+)
+
+action(
+    clean(),
+    precond: dirty() and insideroom()
+    effect: !dirty()
+)
+
+action(
+    dropout(),
+    precond: !insideroom() and !dirty()
+    effect: droped()
+)
+
+action(
+    store(),
+    precond: insideroom() and droped() and !dirty()
+    effect: stored()
+)
+
+action(
+    organize(),
+    precond: stored() and droped() and insideroom() and !dirty()
+    effect: organized()
+)

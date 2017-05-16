@@ -1,0 +1,37 @@
+Initial state:
+  dirty(),
+  !insideroom(),
+  !droped(),
+  !stored(),
+  !organized()
+
+Goal state:
+  stored(),
+  organized(),
+  !insideroom(),
+  !dirty()
+
+Actions:
+    enter()
+    Preconditions: !insideroom()
+    Effect: insideroom()
+
+    leave()
+    Preconditions: insideroom() 
+    Effect: !insideroom()
+
+    clean()
+    Preconditions: dirty(), insideroom()
+    Effect: !dirty()
+
+    dropout()
+    Preconditions: !insideroom(), !dirty()
+    Effect: droped()
+
+    store()
+    Preconditions: insideroom(), droped(), !dirty()
+    Effect: stored()
+
+    organize()
+    Preconditions: stored(), droped(), insideroom(), !dirty()
+    Effect: organized()
